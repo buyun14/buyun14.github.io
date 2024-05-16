@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="false" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>verilog学习_personal.md(计组实验) | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="一、verilog学习组合逻辑电路（Combinational Logic Circuit）和时序逻辑电路（Sequential Logic Circuit）是数字电路的两大基本类型，它们在数字系统和计算机硬件中扮演着重要的角色。 组合逻辑电路组合逻辑电路的特点是输出仅仅依赖于当前的输入，与电路以前的状态无关。换句话说，组合逻辑电路不包含记忆元件，它没有内部状态。组合逻辑电路通常由逻辑门（如与门、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="verilog学习_personal.md(计组实验)">
+<meta property="og:url" content="https://buyun14.github.io/2024/05/17/verilog%E5%AD%A6%E4%B9%A0-personal-md/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="一、verilog学习组合逻辑电路（Combinational Logic Circuit）和时序逻辑电路（Sequential Logic Circuit）是数字电路的两大基本类型，它们在数字系统和计算机硬件中扮演着重要的角色。 组合逻辑电路组合逻辑电路的特点是输出仅仅依赖于当前的输入，与电路以前的状态无关。换句话说，组合逻辑电路不包含记忆元件，它没有内部状态。组合逻辑电路通常由逻辑门（如与门、">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/D%E8%A7%A6%E5%8F%91%E5%99%A8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-17%20025203.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/D%E8%A7%A6%E5%8F%91%E5%99%A8%E7%89%B9%E6%80%A7%E8%A1%A8.png">
+<meta property="article:published_time" content="2024-05-16T19:39:47.000Z">
+<meta property="article:modified_time" content="2024-05-16T20:10:31.468Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/D%E8%A7%A6%E5%8F%91%E5%99%A8.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS 订阅">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS 订阅">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-verilog学习-personal-md" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        verilog学习_personal.md(计组实验)
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-05-16T19:39:47.000Z" itemprop="datePublished">2024-05-17</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            4.2k 词 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="一、verilog学习"><a href="#一、verilog学习" class="headerlink" title="一、verilog学习"></a>一、verilog学习</h1><p>组合逻辑电路（Combinational Logic Circuit）和时序逻辑电路（Sequential Logic Circuit）是数字电路的两大基本类型，它们在数字系统和计算机硬件中扮演着重要的角色。</p>
+<h3 id="组合逻辑电路"><a href="#组合逻辑电路" class="headerlink" title="组合逻辑电路"></a>组合逻辑电路</h3><p>组合逻辑电路的特点是输出仅仅依赖于当前的输入，与电路以前的状态无关。换句话说，<font color="red">组合逻辑电路不包含记忆元件，它没有内部状态</font>。组合逻辑电路通常由逻辑门（如与门、或门、非门、异或门等）组成，这些逻辑门根据输入信号的组合产生输出信号。组合逻辑电路的设计相对简单，因为输出只由输入决定，不需要考虑电路的历史状态。</p>
+<h3 id="时序逻辑电路"><a href="#时序逻辑电路" class="headerlink" title="时序逻辑电路"></a>时序逻辑电路</h3><p>时序逻辑电路的输出不仅取决于当前的输入信号，还取决于电路的当前状态，即电路以前的历史输入。时序逻辑电路包含记忆元件，如触发器（flip-flops）和寄存器，这些元件能够存储信息。时序逻辑电路通常用于实现计数器、存储器和复杂的决策电路等。由于需要考虑时间因素和电路的状态，时序逻辑电路的设计比组合逻辑电路更为复杂。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>组合逻辑电路</strong>：<ul>
+<li>输出仅由当前输入决定。</li>
+<li>不包含记忆元件，没有内部状态。</li>
+<li>设计简单。</li>
+</ul>
+</li>
+<li><strong>时序逻辑电路</strong>：<ul>
+<li>输出由当前输入和电路的当前状态共同决定。</li>
+<li>包含记忆元件，能够存储信息。</li>
+<li>设计复杂，需要考虑时间因素和电路的历史状态。<br>在实际应用中，复杂的数字系统通常是由组合逻辑电路和时序逻辑电路结合而成的，以实现各种功能。</li>
+</ul>
+</li>
+</ul>
+<h1 id="二、D触发器"><a href="#二、D触发器" class="headerlink" title="二、D触发器"></a>二、D触发器</h1><p>D触发器（D Flip-Flop）是一种常用的时序逻辑电路，它具有一个数据输入端D（Data），一个时钟输入端CLK（Clock），以及一个输出端Q。<font color="red">D触发器的基本功能是当有时钟脉冲作用时，输出端Q的状态会变得与数据输入端D的状态相同，即Q&#x3D;D。</font>这一转换发生在时钟脉冲的上升沿或下降沿，具体取决于D触发器的设计类型。</p>
+<img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/D%E8%A7%A6%E5%8F%91%E5%99%A8.png" alt="D触发器" width="220" height="200">
+<img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-17%20025203.png" alt="D触发器" width=" " height=" ">
+
+<p><strong>1、D触发器特性表</strong><br><img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/D%E8%A7%A6%E5%8F%91%E5%99%A8%E7%89%B9%E6%80%A7%E8%A1%A8.png" alt="D触发器特性表" title="D触发器特性表"></p>
+<p><strong>2、Verilog HDL语言描述D触发器</strong><br>在Verilog HDL（硬件描述语言）中，描述一个基本的D触发器可以通过定义一个模块来实现。下面是一个简单的D触发器的Verilog代码示例，这个例子中，D触发器在时钟的上升沿将输入数据D传递到输出Q。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> d_flipflop (</span><br><span class="line">    <span class="keyword">input</span> <span class="keyword">wire</span> clk,      <span class="comment">// 时钟输入</span></span><br><span class="line">    <span class="keyword">input</span> <span class="keyword">wire</span> d,        <span class="comment">// 数据输入</span></span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> q         <span class="comment">// 数据输出</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">always</span> @(<span class="keyword">posedge</span> clk) <span class="keyword">begin</span> <span class="comment">// 在时钟的上升沿执行</span></span><br><span class="line">        q &lt;= d;                 <span class="comment">// 将D的值赋给Q</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<p>这段代码中：</p>
+<ul>
+<li><code>module d_flipflop</code> 定义了一个名为d_flipflop的模块。</li>
+<li><code>input wire clk</code>, <code>input wire d</code> 分别声明了时钟信号clk和数据输入信号d为模块的输入。</li>
+<li><code>output reg q</code> 声明了数据输出信号q为模块的输出，并且使用reg类型变量，因为输出值需要被寄存。</li>
+<li><code>always @(posedge clk)</code> 是一个过程块，它指定以下代码块内的语句将在时钟信号的上升沿(<code>posedge</code>)执行。</li>
+<li><code>q &lt;= d;</code> 这一行代码说明在每个时钟上升沿，输出q被赋值为当前的输入d的值。这里使用非阻塞赋值<code>&lt;=</code>，这是为了在多驱动情况下的正确行为，尤其是在描述寄存器传输时。</li>
+</ul>
+<p><strong>3、测试代码</strong><br>为了测试上述D触发器模块，我们可以编写一个简单的测试平台（testbench）来模拟时钟信号和数据输入，并观察输出端口q的行为。以下是使用Verilog HDL编写的测试代码示例：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> d_flipflop_testbench;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义时间单位和时间精度</span></span><br><span class="line">    <span class="meta">`<span class="keyword">timescale</span> 1ns / 1ps</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 引入D触发器模块</span></span><br><span class="line">    <span class="keyword">reg</span> clk;</span><br><span class="line">    <span class="keyword">reg</span> d;</span><br><span class="line">    <span class="keyword">wire</span> q;</span><br><span class="line"></span><br><span class="line">    d_flipflop dff (<span class="variable">.clk</span>(clk), <span class="variable">.d</span>(d), <span class="variable">.q</span>(q));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 生成时钟信号</span></span><br><span class="line">    <span class="keyword">always</span> #<span class="number">5</span> clk = ~clk; <span class="comment">// 5ns周期的时钟信号</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span></span><br><span class="line">        <span class="built_in">$monitor</span>(<span class="built_in">$time</span>, <span class="string">&quot; - Clock: %b, Input D: %b, Output Q: %b&quot;</span>, clk, d, q);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 测试序列</span></span><br><span class="line">        #<span class="number">10</span> d = <span class="number">0</span>; <span class="comment">// 等待10ns后设置d为0</span></span><br><span class="line">        #<span class="number">20</span> d = <span class="number">1</span>; <span class="comment">// 再等待10ns后设置d为1</span></span><br><span class="line">        #<span class="number">30</span> d = <span class="number">0</span>; <span class="comment">// 继续等待并改变d的值，观察q的响应</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 测试结束，$finish在仿真完成后停止仿真</span></span><br><span class="line">        #<span class="number">40</span> <span class="built_in">$finish</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+
+<p>这段代码做了以下几件事：</p>
+<ol>
+<li>引入了时间单位和时间精度定义，这有助于仿真时的时间尺度控制。</li>
+<li>实例化了之前定义的<code>d_flipflop</code>模块，并连接了输入输出端口。</li>
+<li>使用<code>always</code>块生成了一个5ns周期的时钟信号。</li>
+<li>在<code>initial</code>块中，首先定义了一个监视器（$monitor），用于打印仿真时间、时钟信号、输入数据d和输出数据q的状态，便于观察仿真结果。</li>
+<li>随后，设置了一系列测试序列，改变了输入d的值，并通过延时观察输出q是否跟随d的变化。</li>
+<li>最后，使用<code>$finish</code>指令在仿真达到预定时间后结束仿真。</li>
+</ol>
+<p>通过这个测试平台，我们可以对D触发器的功能进行验证，确保它在不同的输入序列下能够正确地工作。（以上代码结合通义千问回答）</p>
+<h4 id="备用代码"><a href="#备用代码" class="headerlink" title="备用代码"></a>备用代码</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">module dff(clk,clr,rst,d,q);//clr清0，rst复位</span><br><span class="line">	input clk,clr,rst,d;</span><br><span class="line">	output q;</span><br><span class="line">	reg q;</span><br><span class="line">	always@(posedge clk or posedge clr)</span><br><span class="line">	begin</span><br><span class="line">		if(clr==1&#x27;b1)q&lt;=1&#x27;b0;</span><br><span class="line">		else if(rst==1&#x27;b1)q&lt;=1&#x27;b1;</span><br><span class="line">		else q&lt;=d;</span><br><span class="line">	end</span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">module dff_t;</span><br><span class="line">	reg clk,rst,clr,d;</span><br><span class="line">	wire q;</span><br><span class="line">	initial</span><br><span class="line">		begin </span><br><span class="line">			clk=1&#x27;b0;</span><br><span class="line">			forever #10 clk=~clk;</span><br><span class="line">		end</span><br><span class="line">	initial </span><br><span class="line">		begin</span><br><span class="line">			clr=1&#x27;b0;</span><br><span class="line">			rst=1&#x27;b0; d=1&#x27;b0;</span><br><span class="line">			#10 rst=1&#x27;b1;clr=1&#x27;b0;d=1&#x27;b0;</span><br><span class="line">			#10 rst=1&#x27;b1;clr=1&#x27;b1;d=1&#x27;b1;</span><br><span class="line">			#10 rst=1&#x27;b0;clr=1&#x27;b0;d=1&#x27;b1;</span><br><span class="line">			#20 d=1&#x27;b0;</span><br><span class="line">			#20 d=1&#x27;b1;</span><br><span class="line">		end</span><br><span class="line">	dff U1(.clk(clk),.clr(clr),.rst(rst),.d(d),.q(q));</span><br><span class="line">endmodule </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><ol>
+<li><p><strong>置位（Set）和复位（Reset）</strong>：除了基本的数据输入外，一些D触发器还可能包含置位和复位输入端。当置位信号有效时，无论其他输入如何，输出Q会被强制为1；当复位信号有效时，Q会被强制为0。这些控制信号通常独立于时钟信号工作，并且优先级高于D输入。</p>
+</li>
+<li><p><strong>边沿触发</strong>：D触发器属于边沿触发型触发器，这意味着数据仅在时钟信号的特定边沿（上升沿或下降沿）被采样并更新输出状态。这样设计可以防止在时钟信号的稳定期由于输入信号的波动而引起输出的不确定变化，保证了电路的稳定性和可靠性。</p>
+</li>
+<li><p><strong>保持和禁止</strong>：在时钟脉冲的间隔期间，D触发器的输入通常需要保持稳定。这是因为触发器只在时钟脉冲的作用下改变状态，而在时钟的高电平或低电平稳态期间，输入信号的变化不会影响输出。</p>
+</li>
+</ol>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>D触发器在数字电路设计中极为重要，广泛应用于各种场合，包括但不限于：</p>
+<ul>
+<li><strong>寄存器</strong>：一系列D触发器可以构成一个移位寄存器，用于数据的存储和移位。</li>
+<li><strong>计数器</strong>：通过适当连接多个D触发器，可以实现不同进制的计数器。</li>
+<li><strong>状态机</strong>：在复杂系统中，D触发器用于保存系统的当前状态，是实现状态机的基础。</li>
+<li><strong>数据缓存</strong>：在数据传输过程中，D触发器可以作为缓冲，确保数据的同步和稳定性。</li>
+</ul>
+<h1 id="三、组合逻辑"><a href="#三、组合逻辑" class="headerlink" title="三、组合逻辑"></a>三、组合逻辑</h1><h4 id="1、assign语句实现组合逻辑"><a href="#1、assign语句实现组合逻辑" class="headerlink" title="1、assign语句实现组合逻辑"></a>1、assign语句实现组合逻辑</h4><p>举例：<code>assign  out = (a＆b)|c;</code><br>特点：<br>1、左值必须为wire类型；<br>2、只要任何输入发生变化，等号右边的表达式都会被立即重新计算，并将结果赋给左边的变量。</p>
+<h4 id="Testbench-测试平台"><a href="#Testbench-测试平台" class="headerlink" title="Testbench(测试平台)"></a>Testbench(测试平台)</h4><p>编写Testbench的目的在于通过仿真来验证设计模块的功能正确性。作为一个独立的模块，Testbench主要由三个关键部分组成：</p>
+<ol>
+<li><p><strong>实例化被测模块</strong>：<br>在Testbench中，首先需要通过实例化来引入被测设计（DUT, Device Under Test）。实例化的语法通常是这样的：<code>被测模块名 实例名(端口列表);</code> 这一步骤建立了Testbench与DUT之间的连接桥梁。</p>
+</li>
+<li><p><strong>向被测模块添加激励</strong>：<br>为了全面验证DUT的功能，Testbench需生成一系列的输入激励信号。这包括了各种可能的输入组合，覆盖正常操作、边界条件及异常情况，以确保DUT在所有预期情况下都能正确响应。</p>
+</li>
+<li><p><strong>判断输出是否符合预期</strong>：</p>
+<ul>
+<li><strong>查看波形</strong>：通过仿真软件提供的波形查看器，直观比较DUT的输出信号与预期结果。这是最直接的验证方式，可以观察信号的时间关系和变化。</li>
+<li><strong>使用断言和打印语句</strong>：除了波形观测外，还可以在Testbench中嵌入断言（Assertions）来自动检验某些条件是否满足，以及利用打印语句（如Verilog中的<code>$display</code>）输出关键变量的值，辅助分析DUT的行为是否符合设计规范。</li>
+</ul>
+</li>
+</ol>
+<h4 id="2、always语句结合阻塞赋值语句"><a href="#2、always语句结合阻塞赋值语句" class="headerlink" title="2、always语句结合阻塞赋值语句"></a>2、always语句结合阻塞赋值语句</h4><p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">always @(*) //或者always @(a, b, c)        </span><br><span class="line">begin</span><br><span class="line">t = a＆b;</span><br><span class="line">out = t|c;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<ol>
+<li>always语句类似于一个循环，<code>@()</code>里面表示循环条件，叫做敏感信号列表，即括号里的任何一个信号发生时，循环执行一次。</li>
+<li>对于组合逻辑，如例所示，敏感信号包括a，b，c，即等号右边所有的变量，可以用<code>*</code>表示。always语句中的赋值语句有两种，阻塞赋值语句和非阻塞赋值语句。阻塞赋值语句（&#x3D;）按顺序执行，用于实现组合逻辑电路。</li>
+<li>always语句中的赋值语句的左值必须是reg类型。</li>
+</ol>
+<h4 id="3、时序逻辑实现方法"><a href="#3、时序逻辑实现方法" class="headerlink" title="3、时序逻辑实现方法"></a>3、时序逻辑实现方法</h4><p>always语句结合非阻塞赋值语句<br>举例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">always  @(posedge clock)</span><br><span class="line">        begin</span><br><span class="line">          d_reg &lt;= f_reg;</span><br><span class="line">          e_reg &lt;= d_reg;</span><br><span class="line">        end</span><br></pre></td></tr></table></figure>
+<p>实现时序逻辑时，用非阻塞赋值语句。非阻塞赋值语句（&lt;&#x3D;）按并行执行。<br>(2024&#x2F;5&#x2F;17 3:30 编1)</p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/05/04/%E6%B5%8B%E8%AF%95/"
+      title="测试"
+     >
+
+    <p class="title-text">
+      
+        测试
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

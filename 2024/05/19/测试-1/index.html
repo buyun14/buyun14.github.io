@@ -14,24 +14,27 @@
   
 
   
-  <title>代理服务器的搭建 | Buyun&#39;s Blog</title>
+  <title>搭建一台代理服务器（失败） | Buyun&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta name="description" content="测试文件（没有解决）这是一个测试文件 该死的，所有代理服务器搭建的教程无一例外的卡在了yum这一步，无论是Debian，unbuntu还是如此云云。 1.安装步骤 1yum -y install tinyproxy 牛魔的，天天yum: command not found，真的艹了。搜索的解决办法也一个比一个扯淡。 真正的救星 扯淡 最近试用Debian，用root用户登录，执行yum命令时，居然">
+  <meta name="description" content="最近从GitHub学生包白嫖了digitalocean的200刀乐优惠券，速速去又租了一台服务器学习学习，然并卵因种种因素闲置了下来，暂时记录一下拿它整过的幺蛾子。 首先是代理服务器的尝试，（虽然在之前考虑过将其作为yunzai Bot的后续部署平台，但emmmm，代理服务器对我真的真的很重要好吧） 原参考一位使用tinyproxy一键部署的教程已经不可考，因此再次主动搜集tinyproxy相关并">
 <meta property="og:type" content="article">
-<meta property="og:title" content="代理服务器的搭建">
+<meta property="og:title" content="搭建一台代理服务器（失败）">
 <meta property="og:url" content="https://buyun14.github.io/2024/05/19/%E6%B5%8B%E8%AF%95-1/index.html">
 <meta property="og:site_name" content="Buyun&#39;s Blog">
-<meta property="og:description" content="测试文件（没有解决）这是一个测试文件 该死的，所有代理服务器搭建的教程无一例外的卡在了yum这一步，无论是Debian，unbuntu还是如此云云。 1.安装步骤 1yum -y install tinyproxy 牛魔的，天天yum: command not found，真的艹了。搜索的解决办法也一个比一个扯淡。 真正的救星 扯淡 最近试用Debian，用root用户登录，执行yum命令时，居然">
+<meta property="og:description" content="最近从GitHub学生包白嫖了digitalocean的200刀乐优惠券，速速去又租了一台服务器学习学习，然并卵因种种因素闲置了下来，暂时记录一下拿它整过的幺蛾子。 首先是代理服务器的尝试，（虽然在之前考虑过将其作为yunzai Bot的后续部署平台，但emmmm，代理服务器对我真的真的很重要好吧） 原参考一位使用tinyproxy一键部署的教程已经不可考，因此再次主动搜集tinyproxy相关并">
 <meta property="og:locale">
+<meta property="og:image" content="https://img-blog.csdn.net/20180715115716747?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzE4NDgzNjI3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/201807151159410?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzE4NDgzNjI3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="article:published_time" content="2024-05-18T16:39:10.000Z">
-<meta property="article:modified_time" content="2024-05-20T22:12:40.225Z">
+<meta property="article:modified_time" content="2024-05-22T18:37:58.046Z">
 <meta property="article:author" content="buyun">
-<meta property="article:tag" content="blog">
+<meta property="article:tag" content="代理">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180715115716747?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzE4NDgzNjI3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
   
     <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
   
@@ -159,6 +162,13 @@
 
     
       
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li></ul>
+    </div>
+  </div>
+
 
     
   </div>
@@ -181,7 +191,7 @@
   
     
       <h1 class="p-name article-title" itemprop="headline name">
-        代理服务器的搭建
+        搭建一台代理服务器（失败）
       </h1>
     
   
@@ -200,33 +210,49 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            669 words 
+            2.3k words 
           </div>
         </div>
         
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li></ul>
+
       </header>
       <div class="e-content article-entry" itemprop="articleBody">
         
-          <h3 id="测试文件（没有解决）"><a href="#测试文件（没有解决）" class="headerlink" title="测试文件（没有解决）"></a>测试文件（没有解决）</h3><p><b>这是一个测试文件</b></p>
-<p>该死的，所有代理服务器搭建的教程无一例外的卡在了yum这一步，无论是Debian，unbuntu还是如此云云。</p>
-<p><strong>1.安装步骤</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install tinyproxy</span><br></pre></td></tr></table></figure>
-<p>牛魔的，天天<code>yum: command not found</code>，真的艹了。搜索的解决办法也一个比一个扯淡。</p>
-<p><del><strong>真正的救星</strong></del> 扯淡</p>
-<p>最近试用Debian，用root用户登录，执行yum命令时，居然提示：yum: command not found<br>可以用以下方法解决</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install build-essential</span><br><span class="line">sudo apt-get install yum</span><br></pre></td></tr></table></figure>
-<p>又报错，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Package yum is not available, but is referred to by another package.</span><br><span class="line">This may mean that the package is missing, has been obsoleted, or</span><br><span class="line">is only available from another source</span><br></pre></td></tr></table></figure>
-<p>尝试执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get upgrade</span><br></pre></td></tr></table></figure>
-<p>等等，中途弹了个什么玩意。。。<br>还是不行。。。。。</p>
-<p>wait，我茅塞顿开了，何必用yum安装，yum也是靠apt-get直接安装的，直接<code>apt-get install tiny proxy</code><br>nnd,傻了，安装直接用最基础的，真香。</p>
-<p><strong>2.修改配置</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/tinyproxy/tinyproxy.conf</span><br></pre></td></tr></table></figure>
-<p>然后设置端口和链接IP</p>
-<p><strong>3.启动代理</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service tinyproxy start</span><br></pre></td></tr></table></figure>
-<p>emmm,用不了</p>
+          <p>最近从GitHub学生包白嫖了<strong>digitalocean</strong>的200刀乐优惠券，速速去又租了一台服务器学习学习，然并卵因种种因素闲置了下来，暂时记录一下拿它整过的幺蛾子。</p>
+<p>首先是代理服务器的尝试，（虽然在之前考虑过将其作为yunzai Bot的后续部署平台，但emmmm，<del>代理服务器对我真的真的很重要好吧</del>）</p>
+<p>原参考一位使用tinyproxy一键部署的教程已经不可考，因此再次主动搜集tinyproxy相关并尝试理解原理（代理服务器和VPN还是有差距的？）<br>本次搜集的参考文章<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2391014" title="TinyProxy">解锁服务器外联：TinyProxy一键搭建指南</a></p>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在服务器需要访问外网的情况下，由于网络安全等原因，许多生产服务器限制了对外网的访问。本文介绍如何通过在一台能够访问外网的服务器上部署TinyProxy来实现代理，使得其他服务器可以通过该代理访问外网。<br><em><strong>在这里我就已经产生一些疑问了，TinyProxy使用的代理方式是什么？HTTP和HTTPS代理又意味着什么。</strong></em></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>Linux服务器下，使用如下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install tinyproxy</span><br></pre></td></tr></table></figure>
+<p>在这里我没有去尝试<code>yum</code> <code>rpm</code>等命令行包管理器（才不是因为不会），你也不想<code>yum:commnd no found</code>吧。</p>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>这一步，在安装完成后，需要配置TinyProxy以满足特定需求。首先，编辑配置文件&#96;&#x2F;etc&#x2F;tinyproxy.conf&#96;&#96;：(需要对Linux有一定的了解，vim编辑器了解一下亲)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Port 8888  # 代理port，默认是8888, 可以改成任何自己想要的</span><br><span class="line"></span><br><span class="line">Allow 127.0.0.1 # 允许能通过该代理的服务器IP</span><br><span class="line">#若想任何IP都可以连到Proxy, 在Allow前面用 # 注释</span><br></pre></td></tr></table></figure>
+<p>有时修改完配置后仍然无法正常连接，可能会出现500错误。(虽然我没有遇到)<br>该问题的解决办法是DNS问题，这个地方卡住一会儿，在该文件<code>/etc/resolv.conf</code>末尾增加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 8.8.4.4</span><br></pre></td></tr></table></figure>
+<p>好了一会儿后续该文件又恢复原状，找到原因是由于这个文件是由systemd-resolved服务管理的，不应该手动编辑。systemd-resolved是systemd的一部分，它负责处理DNS解析和名称解析。这个服务会自动处理DNS服务器的添加、删除和重新排序，以及域名的搜索列表。</p>
+<p>为了避免可能的配置冲突或服务无法正确启动的问题，systemd-resolved通常会覆盖手动编辑&#x2F;etc&#x2F;resolv.conf文件的内容。因此，即使手动编辑了这个文件，一旦systemd-resolved服务重启，它会重新应用自己的配置。</p>
+<p>更改DNS服务器或域名搜索列表，应该使用systemd-resolved提供的配置文件&#x2F;etc&#x2F;systemd&#x2F;resolved.conf。这样的更改会在systemd-resolved服务重启时被正确应用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[Resolve]</span><br><span class="line">DNS=8.8.8.8 8.8.4.4</span><br><span class="line">Domains=example.com</span><br></pre></td></tr></table></figure>
+<p>在更改后，使用以下命令重启systemd-resolved服务以应用更改:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart systemd-resolved</span><br></pre></td></tr></table></figure>
+<h3 id="启动，重启，停止"><a href="#启动，重启，停止" class="headerlink" title="启动，重启，停止"></a>启动，重启，停止</h3><p>运行以下命令完成启动，重启，停止</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service tinyproxy start/restart/stop</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>对于要通过代理访问外网的每台机器，需要在网络设置或系统级代理配置中指定代理服务器地址和端口。<br><em><strong>其实在这里我就产生疑惑了，这是我的代理服务器需要做这些还是说这是我的目的机所需要完成的，比如 Windows11网络和Internet &gt; 代理 中的设置代理服务器，然而如果直接启用，会导致我的电脑无法访问任何外部链接，应该是哪一步骤理解错了。</strong></em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export HTTP_PROXY=http://your-proxy-server:8888</span><br><span class="line">export HTTPS_PROXY=http://your-proxy-server:8888</span><br></pre></td></tr></table></figure>
+<p>或者，可以在 <code>/etc/profile</code> 或 <code>~/.bashrc</code> 文件中添加这些设置。</p>
+<p>然后就可以在该服务器上运行</p>
+<h3 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h3><p>1.(该方法并不能解决需求)查阅了相关文章，<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41010318/article/details/85015976">Ubuntu上安装tinyproxy搭建HTTP代理服务器</a>,这位竞然是通过局域网连接的 <img src="https://img-blog.csdn.net/20180715115716747?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzE4NDgzNjI3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="连接方式" title="连接方式"> <img src="https://img-blog.csdn.net/201807151159410?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzE4NDgzNjI3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70"></p>
+<p>2.使用todesk（竟然能见到老熟人）<br>能Ping通为什么会连接失败呢？？？<br>结果：连接失败</p>
+<h4 id="1-apt-get是什么？"><a href="#1-apt-get是什么？" class="headerlink" title="1.apt-get是什么？"></a>1.apt-get是什么？</h4><p><code>apt-get</code> 是一个在基于Debian的Linux发行版中使用的命令行包管理器。它用于安装、升级、卸载和管理软件包。<code>apt-get</code> 命令通常在 <code>dpkg</code> 包管理器的基础上工作，<code>dpkg</code> 是Debian及其派生发行版中用于安装和卸载软件包的底层系统。<br>以下是一些常用的 <code>apt-get</code> 命令：</p>
+<ul>
+<li>安装软件包：<code>sudo apt-get install package_name</code></li>
+<li>更新软件包列表：<code>sudo apt-get update</code></li>
+<li>升级所有已安装的软件包：<code>sudo apt-get upgrade</code></li>
+<li>搜索软件包：<code>apt-get search package_name</code></li>
+<li>列出软件包信息：<code>apt-cache show package_name</code></li>
+<li>卸载软件包：<code>sudo apt-get remove package_name</code><br>在使用 <code>apt-get</code> 时，通常需要使用 <code>sudo</code> 来获取超级用户权限，因为管理软件包通常需要对系统进行更改。<br>请注意，<code>apt-get</code> 是一个非常强大和常用的工具，但在使用时需要谨慎，尤其是在自动化的脚本中或进行系统维护时，因为不正确的使用可能会导致系统不稳定或软件包依赖性问题。</li>
+</ul>
 
         
       </div>

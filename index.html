@@ -155,6 +155,13 @@
 
     
       
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li></ul>
+    </div>
+  </div>
+
 
     
   </div>
@@ -176,7 +183,7 @@
   
     
       <h1 itemprop="name">
-        <a class="p-name article-title" href="/2024/05/19/%E6%B5%8B%E8%AF%95-1/">代理服务器的搭建</a>
+        <a class="p-name article-title" href="/2024/05/19/%E6%B5%8B%E8%AF%95-1/">搭建一台代理服务器（失败）</a>
       </h1>
     
   
@@ -195,26 +202,24 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            669 words 
+            2.3k words 
           </div>
         </div>
         
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li></ul>
+
       </header>
       <div class="e-content article-entry" itemprop="articleBody">
         
           <div class="truncate-text">
             
-              测试文件（没有解决）这是一个测试文件
-该死的，所有代理服务器搭建的教程无一例外的卡在了yum这一步，无论是Debian，unbuntu还是如此云云。
-1.安装步骤
-1yum -y install tinyproxy
-牛魔的，天天yum: command not found，真的艹了。搜索的解决办法也一个比一个扯淡。
-真正的救星 扯淡
-最近试用Debian，用root用户登录，执行yum命令时，居然提示：yum: command not found可以用以下方法解决
-123sudo apt-get updatesudo apt-get install build-essentialsudo apt-get install yum
-又报错，
-123Package yum is not available, but is referred to by another package.This may mean that the package is missing, has been obsoleted, oris only available from another source
-...
+              最近从GitHub学生包白嫖了digitalocean的200刀乐优惠券，速速去又租了一台服务器学习学习，然并卵因种种因素闲置了下来，暂时记录一下拿它整过的幺蛾子。
+首先是代理服务器的尝试，（虽然在之前考虑过将其作为yunzai Bot的后续部署平台，但emmmm，代理服务器对我真的真的很重要好吧）
+原参考一位使用tinyproxy一键部署的教程已经不可考，因此再次主动搜集tinyproxy相关并尝试理解原理（代理服务器和VPN还是有差距的？）本次搜集的参考文章解锁服务器外联：TinyProxy一键搭建指南
+引言在服务器需要访问外网的情况下，由于网络安全等原因，许多生产服务器限制了对外网的访问。本文介绍如何通过在一台能够访问外网的服务器上部署TinyProxy来实现代理，使得其他服务器可以通过该代理访问外网。在这里我就已经产生一些疑问了，TinyProxy使用的代理方式是什么？HTTP和HTTPS代理又意味着什么。
+安装Linux服务器下，使用如下命令
+12sudo apt-get updatesudo apt-get install tinyproxy
+在这里我没有去尝试yum...
             
           </div>
         

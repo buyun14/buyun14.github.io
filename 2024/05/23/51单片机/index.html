@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>51单片机 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="51单片机的学习前置条件普中开发板芯片类型：STC89C52RC软件：程序烧录：PZ-ISP&#x2F;STC-ISP.exe 程序编译：Keil_v5 vs2022 第一课 点亮一个LED具体步骤：（略） 名词解释1电平是电子学中的一个术语，指的是电子信号的电压大小。在电子电路中，电平的高低通常用来表示数字信息，比如逻辑”1”和”0”。在模拟电路中，电平则对应着声音、图像等模拟信号的强度。在数字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="51单片机">
+<meta property="og:url" content="https://buyun14.github.io/2024/05/23/51%E5%8D%95%E7%89%87%E6%9C%BA/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="51单片机的学习前置条件普中开发板芯片类型：STC89C52RC软件：程序烧录：PZ-ISP&#x2F;STC-ISP.exe 程序编译：Keil_v5 vs2022 第一课 点亮一个LED具体步骤：（略） 名词解释1电平是电子学中的一个术语，指的是电子信号的电压大小。在电子电路中，电平的高低通常用来表示数字信息，比如逻辑”1”和”0”。在模拟电路中，电平则对应着声音、图像等模拟信号的强度。在数字">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20030839.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/64277c7a3f2e488fa075f2fc031ff264.png">
+<meta property="og:image" content="https://github.com/buyun14/KokomiPhoto/blob/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20051547.png?raw=true">
+<meta property="og:image" content="https://github.com/buyun14/KokomiPhoto/blob/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20052131.png?raw=true">
+<meta property="og:image" content="https://github.com/buyun14/KokomiPhoto/blob/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20052853.png?raw=true">
+<meta property="og:image" content="https://github.com/buyun14/KokomiPhoto/blob/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20044910.png?raw=true">
+<meta property="article:published_time" content="2024-05-23T10:57:59.000Z">
+<meta property="article:modified_time" content="2024-05-23T21:47:00.000Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="单片机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20030839.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-51单片机" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        51单片机
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-05-23T10:57:59.000Z" itemprop="datePublished">2024-05-23</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            5.1k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="51单片机的学习"><a href="#51单片机的学习" class="headerlink" title="51单片机的学习"></a>51单片机的学习</h2><h3 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h3><p>普中开发板<br>芯片类型：STC89C52RC<br>软件：程序烧录：PZ-ISP&#x2F;STC-ISP.exe 程序编译：Keil_v5 vs2022</p>
+<h3 id="第一课-点亮一个LED"><a href="#第一课-点亮一个LED" class="headerlink" title="第一课 点亮一个LED"></a>第一课 点亮一个LED</h3><p>具体步骤：（略）</p>
+<h3 id="名词解释1"><a href="#名词解释1" class="headerlink" title="名词解释1"></a>名词解释1</h3><p><strong>电平</strong>是电子学中的一个术语，指的是电子信号的电压大小。在电子电路中，电平的高低通常用来表示数字信息，比如逻辑”1”和”0”。在模拟电路中，电平则对应着声音、图像等模拟信号的强度。<br>在数字电路中，电平通常分为两种：高电平和低电平。<br>在常见的逻辑电路中，比如CMOS逻辑门，高电平通常被定义为比地电平（GND）高的电压，而低电平则被定义为比地电平低的电压。<br>电平的测量单位通常是伏特（V），但在数字电路中，也会用逻辑电平（如5V、3.3V）或者音量单位（如分贝，dB）来表示。<br>正确理解和使用电平是电子工程和计算机科学中的基础知识点。</p>
+<h4 id="程序编译"><a href="#程序编译" class="headerlink" title="程序编译"></a>程序编译</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**************************************************************************************</span></span><br><span class="line"><span class="comment">深圳市普中科技有限公司（PRECHIN 普中）</span></span><br><span class="line"><span class="comment">技术支持：www.prechin.net</span></span><br><span class="line"><span class="comment">PRECHIN</span></span><br><span class="line"><span class="comment"> 普中</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment">实验名称：点亮第一个LED</span></span><br><span class="line"><span class="comment">接线说明：	</span></span><br><span class="line"><span class="comment">实验现象：下载程序后“LED模块”的D1指示灯点亮</span></span><br><span class="line"><span class="comment">注意事项：																				  </span></span><br><span class="line"><span class="comment">***************************************************************************************/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;reg52.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span><span class="comment">//这句我自己加的hhh</span></span></span><br><span class="line">sbit LED1=P2^<span class="number">0</span>;	<span class="comment">//将P2.0管脚定义为LED1</span></span><br><span class="line">sbit LED2 = P2 ^ <span class="number">1</span>;	<span class="comment">//将P2.1管脚定义为LED2</span></span><br><span class="line">sbit LED3 = P2 ^ <span class="number">2</span>;	<span class="comment">//将P2.2管脚定义为LED3</span></span><br><span class="line">sbit LED4 = P2 ^ <span class="number">3</span>;	<span class="comment">//将P2.3管脚定义为LED4</span></span><br><span class="line">sbit LED5 = P2 ^ <span class="number">4</span>;	<span class="comment">//将P2.4管脚定义为LED5</span></span><br><span class="line">sbit LED6 = P2 ^ <span class="number">5</span>;	<span class="comment">//将P2.5管脚定义为LED6</span></span><br><span class="line">sbit LED7 = P2 ^ <span class="number">6</span>;	<span class="comment">//将P2.6管脚定义为LED7</span></span><br><span class="line">sbit LED8 = P2 ^ <span class="number">7</span>;	<span class="comment">//将P2.7管脚定义为LED8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*******************************************************************************</span></span><br><span class="line"><span class="comment">* 函 数 名       : main</span></span><br><span class="line"><span class="comment">* 函数功能		 : 主函数</span></span><br><span class="line"><span class="comment">* 输    入       : 无</span></span><br><span class="line"><span class="comment">* 输    出    	 : 无</span></span><br><span class="line"><span class="comment">*******************************************************************************/</span></span><br><span class="line"><span class="comment">/*void main()//这串是原实现</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">	LED1=0;	//LED1端口设置为低电平</span></span><br><span class="line"><span class="comment">	while(1)</span></span><br><span class="line"><span class="comment">	&#123;</span></span><br><span class="line"><span class="comment">		</span></span><br><span class="line"><span class="comment">	&#125;		</span></span><br><span class="line"><span class="comment">&#125;*/</span></span><br><span class="line"><span class="type">void</span> __delay_ms(<span class="type">unsigned</span> <span class="type">int</span> ms);</span><br><span class="line"><span class="type">void</span> __delay_ms(<span class="type">unsigned</span> <span class="type">int</span> ms) &#123;</span><br><span class="line">	<span class="comment">//作用：延时函数，延时时间为ms毫秒</span></span><br><span class="line">	<span class="comment">// 1ms延时</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> i, j;</span><br><span class="line">	<span class="keyword">for</span> (i = ms; i &gt; <span class="number">0</span>; i--)<span class="comment">//延时时间为ms毫秒</span></span><br><span class="line">        <span class="keyword">for</span> (j = <span class="number">120</span>; j &gt; <span class="number">0</span>; j--);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    LED1 = <span class="number">0</span>;  <span class="comment">//将LED1设为低电平</span></span><br><span class="line">	LED2 = <span class="number">0</span>;  <span class="comment">//将LED2设为低电平</span></span><br><span class="line">	LED3 = <span class="number">0</span>;  <span class="comment">//将LED3设为低电平</span></span><br><span class="line">	LED4 = <span class="number">0</span>;  <span class="comment">//将LED4设为低电平</span></span><br><span class="line">	LED5 = <span class="number">0</span>;  <span class="comment">//将LED5设为低电平</span></span><br><span class="line">	LED6 = <span class="number">0</span>;  <span class="comment">//将LED6设为低电平</span></span><br><span class="line">	LED7 = <span class="number">0</span>;  <span class="comment">//将LED7设为低电平</span></span><br><span class="line">	LED8 = <span class="number">0</span>;  <span class="comment">//将LED8设为低电平</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="type">int</span> i = <span class="number">0</span>;<span class="comment">//注意，i需要在循环外定义，否则会报错</span></span><br><span class="line">		<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++) &#123;</span><br><span class="line">			P2 = <span class="number">0x01</span> &lt;&lt; i;<span class="comment">//将P2的第i位设置为高电平</span></span><br><span class="line">			__delay_ms(<span class="number">1000</span>);<span class="comment">//延时1s</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//LED1 = ~LED1;  //LED1取反</span></span><br><span class="line">		<span class="comment">//__delay_ms(1000);  //延时1s</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="实验现象"><a href="#实验现象" class="headerlink" title="实验现象"></a>实验现象</h4><p>LED1~8依次变暗闪烁</p>
+<h3 id="名词解释2"><a href="#名词解释2" class="headerlink" title="名词解释2"></a>名词解释2</h3><p>（参考链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u012749085/article/details/125597424">【工具使用】Keil5软件使用-基础使用篇</a> ）</p>
+<p><strong>IDE</strong>：Integrated Development Environment，是开发集成环境的意思，一般包括代码编辑器、编译器、调试器和图形用户界面等工具。因为做嵌入式开发的，首先需要有可以编写代码的编辑器，然后需要有把代码转换成机器可执行代码的编译器，有时候可能需要在对应硬件芯片上调试，那就需要有个调试器，为了操作方便，一般会把这些都图形化。这么下来的一整套工具集成在一个应用程序里，就是所谓的IDE，这篇文章介绍的Keil uVision就是IDE的一种。</p>
+<p><strong>Keil</strong>：其实Keil是个公司名，其旗下开发的软件都以Keil开头命名。目前有Keil MDK-ARM、Keil C51、KeilC166和KeilC251等版本。</p>
+<p><strong>uVision</strong>：uVision是由keil公司开发的集成开发环境（IDE），可以进行代码编辑，文件管理，程序的编译调试等。</p>
+<p><strong>MDK、C51</strong>：如果想要开发ARM内核的芯片，需要安装MDK-ARM，如果想要开发51内核的芯片，那就需要安装c51。也就是说，MDK、c51只是Keil针对不同芯片内核开发的不同开发集成环境。</p>
+<p><strong>CMSIS</strong>：ARM Cortex™ 微控制器软件接口标准(CMSIS：Cortex Microcontroller Software Interface Standard) 是 Cortex-M 处理器系列的与供应商无关的硬件抽象层。</p>
+<p><strong>烧录</strong>：烧软件只是一种叫法，来源于最早刻录光盘，因为是用激光讲数据烧在光盘上，所以后来人们把这种不可逆的记录方式称之为烧录。</p>
+<p><strong>bin文件</strong>：二进制文件，其用途依系统或应用而定。一种文件格式binary的缩写。一个后缀名为”.bin”的文件，只是表明它是binary格式。一般来讲是机器代码，汇编语言编译后的结果。</p>
+<p><strong>axf文件</strong>：axf文件是ARM芯片使用的文件格式，它除了包含bin代码外，还包括了输出给调试器的调试信息，例如每行C语言所对应的源文件行号等。</p>
+<p><strong>Hex文件</strong>：Intel HEX文件是由一行行符合Intel HEX文件格式的文本所构成的ASCII文本文件。在Intel HEX文件中，每一行包含一个HEX记录。这些记录由对应机器语言码和&#x2F;或常量数据的十六进制编码数字组成。Intel HEX文件通常用于传输将被存于ROM或者EPROM中的程序和数据。</p>
+<h3 id="创建项目文件"><a href="#创建项目文件" class="headerlink" title="创建项目文件"></a>创建项目文件</h3><p>上述步骤中，我采用直接套用实验模板，仅仅只进行了修改代码方面的操作，没有对项目文件有具体的了解，在这里自行探索补充。</p>
+<h4 id="新建项目并配置"><a href="#新建项目并配置" class="headerlink" title="新建项目并配置"></a>新建项目并配置</h4><p><img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20030839.png" alt="芯片选择"><br>没有对应芯片型号，选择相近的AT89C52即可（教程说的）。</p>
+<ol>
+<li>添加模板</li>
+<li>添加<code>.c</code>文件</li>
+<li>在配置选项中勾选生成HEX文件</li>
+<li>头文件<code>#include &quot;reg52.h&quot;</code> <code>#include &lt;reg52.h&gt;</code> 这两种的区别在于，<code>&lt;&gt;</code>会在编译器安装路径<code>&quot;D:\Keil_v5\C51\INC\REG52.H&quot;</code>下搜索有无对应头文件，没有则报错，<code>&quot;&quot;</code>是先在当前工程目录下搜索文件，如果没有再去软件安装路径下搜索，如果还没有，才会报错。</li>
+<li>头文件<code>reg52.h</code>将常用模块的地址进行了定义，方便我们的引用。（不用汇编了，好耶！）</li>
+</ol>
+<h3 id="芯片介绍和原理学习"><a href="#芯片介绍和原理学习" class="headerlink" title="芯片介绍和原理学习"></a>芯片介绍和原理学习</h3><h4 id="1"><a href="#1" class="headerlink" title="1"></a>1</h4><p>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_50562428/article/details/130604730">STC89C52RC单片机原理图详解</a><br>（还是得自己写一遍，不进脑啊hhh）</p>
+<p><font color=#fe2c24>单片机上电时，所有I&#x2F;O口默认为高电平。</p>
+<p>单片机I&#x2F;O口连接的模块（重复I&#x2F;O口在同一时间只能实现一个功能）：</font><br>（1）P0.0<del>P0.7：数码管、外接显示屏LCD1602<br>（笔记：P0口可以作为I&#x2F;O，也可以作为扩展（数据地址总线 多路开关）？new words<code>8031单片机</code> 还涉及了D触发器（当初没好好学hhh在这补上了））<br>（2）P1.0</del>P1.7：矩阵键盘</p>
+<p>（3）P2.0~P2.7：LED模块的8个LED灯</p>
+<pre><code>P2.2~P2.4：138译码器选择位；
+
+P2.5~P2.7：外接显示屏LCD1602
+</code></pre>
+<p>（4）P3.0-P3.3：四个独立按键K1~K4</p>
+<p><img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/64277c7a3f2e488fa075f2fc031ff264.png" alt="STC89C52RC单片机"></p>
+<h4 id="2"><a href="#2" class="headerlink" title="2"></a>2</h4><p>P0作为输出情况下：<br>P0只能输出低电平，这是由他的物理结构决定的（一端通一端截止），<strong>输出高电平（除非外部上拉电阻）</strong>。<br>作为输入：<br>（涉及读引脚，读锁存器）</p>
+<p><strong>P1口</strong><img src="https://github.com/buyun14/KokomiPhoto/blob/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20051547.png?raw=true" alt="P1口"><br>类比P0只能作为I&#x2F;O使用了<br>（双向口，拥有上拉电阻，可输出高&#x2F;低电平）</p>
+<p><strong>P2口</strong> <img src="https://github.com/buyun14/KokomiPhoto/blob/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20052131.png?raw=true" alt="P2"><br>(地址总线（控制多路开关）是高八位，P0是低八位)</p>
+<p><strong>P3口</strong> <img src="https://github.com/buyun14/KokomiPhoto/blob/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20052853.png?raw=true" alt="P3"></p>
+<h3 id="碎片化知识"><a href="#碎片化知识" class="headerlink" title="碎片化知识"></a>碎片化知识</h3><ol>
+<li><p>可能您指的是“<code>rom</code>”，它是“read-only memory”的缩写，中文意思是只读存储器。在单片机中，ROM用来存储程序代码，这些代码在单片机运行时可以被读取但不能被修改。8031是一款老式的单片机，它确实有ROM部分，用来存储固件程序。<br>如果您的老师提到8031没有“room”，可能是指8031没有额外的ROM或者其他类型的存储器。在8031的早期版本中，其内置的ROM容量可能比较有限，随着技术的发展，后来的单片机产品如8051等，在ROM和RAM的容量上都有所增加。(AI真好用)</p>
+</li>
+<li><p>P0口的作用 <img src="https://github.com/buyun14/KokomiPhoto/blob/main/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-05-24%20044910.png?raw=true"></p>
+</li>
+<li><p>两个MOSFET（金属氧化物半导体场效应晶体管）组成的推拉结构通常被称为推拉式MOSFET驱动器或推拉式放大器。这种结构使用两个MOSFET晶体管，一个作为推挽（Push-Pull）配置的驱动器，来提供电流的高效开关和放大功能。<br>在这种配置中，一个MOSFET晶体管负责“推”（Push）电流，而另一个负责“拉”（Pull）电流。<font color=red>当需要电流流过负载时，一个MOSFET导通（on），而另一个截止（off）；当需要停止电流流过负载时，导通的MOSFET被切换为截止，而另一个MOSFET则导通。</font>这样，电流就可以在两个MOSFET之间切换，从而实现对负载的控制。<br>推拉式MOSFET驱动器在模拟电路和开关电路中非常常见，因为它们可以提供较高的电源至地之间的电压摆幅，同时减少电源电流的峰值。这种结构通常用于驱动继电器、电动机、LED和其他需要较高电流驱动的负载。<br>在推拉式配置中，MOSFET晶体管可以工作在互补模式，即当一个晶体管导通时，另一个晶体管截止，这样可以有效地控制电流的流动，并减少开关过程中的能量损耗。此外，通过适当的电路设计，可以实现晶体管之间的无缝切换，从而减少开关时间，提高整体电路的性能。(AI)</p>
+</li>
+<li><p>在MOSFET（金属氧化物半导体场效应晶体管）的术语中，”漏极”（Drain）和”OC门”（Overlap Gate）是两个不同的部分，但它们在某些情况下可能有关联。</p>
+<ol>
+<li>漏极（Drain）：<br> 漏极是MOSFET的一个端口，电流从该端口流出。在N沟道MOSFET中，电子从源极流向漏极；在P沟道MOSFET中，空穴从源极流向漏极。漏极与源极之间的路径称为漏极路径，它是电流的主要通道。</li>
+<li>OC门（Overlap Gate）：<br> OC门通常指的是场效应晶体管的栅极和源极&#x2F;漏极之间的一种结构特征。在这种结构中，栅极与源极或漏极的一部分是重叠的，这种重叠设计有助于减少栅极到源极或漏极之间的电阻，从而提高开关速度和减少电源电流。</li>
+<li>   在某些推拉式MOSFET驱动器或放大器电路中，OC门可能指的是用于控制MOSFET导通和截止的信号输入端。在这种情况下，OC门可能与源极或漏极的重叠结构无关，而是指一个用于开启或关闭MOSFET的信号输入。</li>
+</ol>
+</li>
+<li><p>STC89Cxx系列芯片命名规则</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">stc表示stc公司生产的芯片</span><br><span class="line"></span><br><span class="line">8表示芯片8051内核芯片，跟传统51单片机兼容</span><br><span class="line"></span><br><span class="line">9表示内部含有flash的一种pelome存储器</span><br><span class="line"></span><br><span class="line">如80C51中的0内部含有ROM存储器</span><br><span class="line"></span><br><span class="line">87C51，7表示含有EPROM（紫外线可插足）存储器</span><br><span class="line"></span><br><span class="line">c表示是CMOS的产品</span><br><span class="line"></span><br><span class="line">2表示内部存储空间是8kb</span><br><span class="line"></span><br><span class="line">1是4kb</span><br><span class="line"></span><br><span class="line">以1为基数，乘4即为flash容量</span><br><span class="line"></span><br><span class="line">rc是stc内部RAM的大小，512b</span><br><span class="line"></span><br><span class="line">rc+是1280b</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="之后的学习-可能？"><a href="#之后的学习-可能？" class="headerlink" title="之后的学习(可能？)"></a>之后的学习(可能？)</h2><p>Cortex-A(嵌入式Linux)</p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/05/23/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E4%BA%86%E8%A7%A3%E5%B1%80%E5%9F%9F%E7%BD%91/"
+      title="从实践了解局域网"
+     >
+
+    <p class="title-text">
+      
+        从实践了解局域网
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

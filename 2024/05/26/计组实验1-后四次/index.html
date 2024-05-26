@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>计组实验1_后四次 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="前言：请勿直接COPY本教程中的代码！本篇文章只限于提供思路与常见错误的分享与交流 PPT讲述部分实验内容（总体）设计实现单周期CPU。 设计实现能够执行addu指令的单周期CPU； 增加实现以下R型指令：addu，subu，add，and，or，slt； 增加实现以下I型指令：addi，addiu，andi，ori，lui； 增加实现以下和数据存储器相关的指令：lw，sw； 增加实现以下跳转指令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计组实验1_后四次">
+<meta property="og:url" content="https://buyun14.github.io/2024/05/26/%E8%AE%A1%E7%BB%84%E5%AE%9E%E9%AA%8C1-%E5%90%8E%E5%9B%9B%E6%AC%A1/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="前言：请勿直接COPY本教程中的代码！本篇文章只限于提供思路与常见错误的分享与交流 PPT讲述部分实验内容（总体）设计实现单周期CPU。 设计实现能够执行addu指令的单周期CPU； 增加实现以下R型指令：addu，subu，add，and，or，slt； 增加实现以下I型指令：addi，addiu，andi，ori，lui； 增加实现以下和数据存储器相关的指令：lw，sw； 增加实现以下跳转指令">
+<meta property="og:locale">
+<meta property="og:image" content="https://github.com/buyun14/KokomiPhoto/blob/main/img/pc%E9%A2%98%E7%9B%AE.png?raw=true">
+<meta property="og:image" content="https://github.com/buyun14/KokomiPhoto/blob/main/img/im%E9%A2%98%E7%9B%AE.png?raw=true">
+<meta property="og:image" content="https://github.com/buyun14/KokomiPhoto/blob/main/img/gpr%E9%A2%98%E7%9B%AE.png?raw=true">
+<meta property="og:image" content="https://buyun14.github.io/">
+<meta property="article:published_time" content="2024-05-26T00:52:09.000Z">
+<meta property="article:modified_time" content="2024-05-26T00:53:48.090Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="CPU,单周期">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/buyun14/KokomiPhoto/blob/main/img/pc%E9%A2%98%E7%9B%AE.png?raw=true">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">標籤</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/CPU-%E5%8D%95%E5%91%A8%E6%9C%9F/" rel="tag">CPU,单周期</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-计组实验1-后四次" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        计组实验1_后四次
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-05-26T00:52:09.000Z" itemprop="datePublished">2024-05-26</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分類 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            4.5k 詞 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPU-%E5%8D%95%E5%91%A8%E6%9C%9F/" rel="tag">CPU,单周期</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p><strong>前言</strong>：<br><strong>请勿直接COPY本教程中的代码！</strong><br><strong>本篇文章只限于提供思路与常见错误的分享与交流</strong></p>
+<h2 id="PPT讲述部分"><a href="#PPT讲述部分" class="headerlink" title="PPT讲述部分"></a>PPT讲述部分</h2><h3 id="实验内容（总体）"><a href="#实验内容（总体）" class="headerlink" title="实验内容（总体）"></a>实验内容（总体）</h3><h4 id="设计实现单周期CPU。"><a href="#设计实现单周期CPU。" class="headerlink" title="设计实现单周期CPU。"></a>设计实现单周期CPU。</h4><ol>
+<li>设计实现能够执行<strong>addu指令</strong>的单周期CPU；</li>
+<li>增加实现以下<strong>R型指令</strong>：<code>addu</code>，<code>subu</code>，<code>add</code>，<code>and</code>，<code>or</code>，<code>slt</code>；</li>
+<li>增加实现以下<strong>I型指令</strong>：<code>addi</code>，<code>addiu</code>，<code>andi</code>，<code>ori</code>，<code>lui</code>；</li>
+<li>增加实现以下和数据存储器相关的指令：<code>lw</code>，<code>sw</code>；</li>
+<li>增加实现以下跳转指令：<code>beq</code>，<code>j</code>，<code>jal</code>，<code>jr</code> 。</li>
+</ol>
+<h4 id="在单周期CPU的基础上开发实现流水线CPU。"><a href="#在单周期CPU的基础上开发实现流水线CPU。" class="headerlink" title="在单周期CPU的基础上开发实现流水线CPU。"></a>在单周期CPU的基础上开发实现流水线CPU。</h4><ol>
+<li>设计实现不考虑冒险的五级流水线CPU；</li>
+<li>处理各种数据冒险；</li>
+<li>处理各种控制冒险。</li>
+</ol>
+<h2 id="实验作业"><a href="#实验作业" class="headerlink" title="实验作业"></a>实验作业</h2><h3 id="第一次实验"><a href="#第一次实验" class="headerlink" title="第一次实验"></a>第一次实验</h3><h4 id="PC模块"><a href="#PC模块" class="headerlink" title="PC模块"></a>PC模块</h4><p><img src="https://github.com/buyun14/KokomiPhoto/blob/main/img/pc%E9%A2%98%E7%9B%AE.png?raw=true" alt="题目一"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module pc(pc,clock,reset,npc);</span><br><span class="line">output [31:0] pc;</span><br><span class="line">input clock;</span><br><span class="line">input reset;</span><br><span class="line">input [31:0] npc;</span><br><span class="line">注意: 1.clock上升沿有效，reset低电平有效;</span><br><span class="line">    2.reset信号有效时，pc复位为0x0000 3000:采用同步复位。</span><br></pre></td></tr></table></figure>
+<p><strong>解析</strong>：(见常见问题)</p>
+<p><strong>结果</strong>：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> pc(</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] pc,</span><br><span class="line">    <span class="keyword">input</span> <span class="keyword">wire</span> clock,</span><br><span class="line">    <span class="keyword">input</span> <span class="keyword">wire</span> reset,</span><br><span class="line">    <span class="keyword">input</span> <span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] npc</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Sequential logic for PC update</span></span><br><span class="line"><span class="keyword">always</span> @(<span class="keyword">posedge</span> clock) <span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">if</span> (reset == <span class="number">1&#x27;b0</span>) <span class="keyword">begin</span> <span class="comment">// synchronous reset, active low</span></span><br><span class="line">        pc &lt;= <span class="number">32&#x27;h3000</span>;      <span class="comment">// Reset PC to 0x0000_3000</span></span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">        pc &lt;= npc;            <span class="comment">// Otherwise, update PC with the next program counter value (npc)</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>常见错误</strong>：</p>
+<ol>
+<li><p><code>pc.v</code>中，如果你的always是这样写的：<code>always @(posedge clock or negedge reset)</code>或<code>always@(posedge clock,negedge reset )</code>,那么请去掉<code>negedge reset</code>，只留<code>always @(posedge clock)</code>。</p>
+</li>
+<li><p>为什么这道题使用<code>always @(posedge clock)</code>而不是<code>posedge clock or negedge reset</code>？<br><strong>解答</strong>：<br>1.这个问题很好，实际上，在某些情况下，确实需要同时考虑时钟边沿和异步复位信号的边沿来确保复位操作的即时性和准确性。但根据题目要求，“采用同步复位”，这意味着复位信号应该与时钟信号同步处理，因此只在时钟的上升沿检查复位信号是合理的。<br>2.使用<code>always @(posedge clock)</code>确保了所有的状态变化都发生在时钟的上升沿，这样可以减少亚稳态的可能性，并便于时序分析和避免竞争冒险现象。对于同步复位，当复位信号在时钟上升沿保持低电平时，复位动作才会被执行，这是同步电路设计中常见的做法。<br>3.<font color=green>而使用<code>posedge clock or negedge reset</code>会监听时钟上升沿和复位信号的下降沿，这通常用于异步复位情况，即无论时钟状态如何，只要复位信号从高变低，就会立即响应复位。由于题目明确指出了“同步复位”，所以仅使用<code>always @(posedge clock)</code>是正确的选择。</font></p>
+</li>
+</ol>
+<h4 id="im模块"><a href="#im模块" class="headerlink" title="im模块"></a>im模块</h4><p><img src="https://github.com/buyun14/KokomiPhoto/blob/main/img/im%E9%A2%98%E7%9B%AE.png?raw=true" alt="题目2"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module im(instruction,pc);</span><br><span class="line"></span><br><span class="line">output [31:0] instruction;</span><br><span class="line"></span><br><span class="line">input [31:0] pc;</span><br><span class="line"></span><br><span class="line">reg [31:0] ins_memory[1023:0]; //4k指令存储器</span><br><span class="line"></span><br><span class="line">说明：im模块的输入pc为32位，但指令存储器只有4kB大小，所以取指令时只取pc的低12位作为地址。</span><br></pre></td></tr></table></figure>
+<p><strong>解析</strong><br>根据说明，<code>im</code>模块的输入<code>pc</code>是一个32位的值，但是指令存储器<code>ins_memory</code>只有4kB的大小，因此我们只需要使用<code>pc</code>的低12位作为地址来访问指令存储器。<br>在Verilog中，数组的索引是从0开始的，所以我们需要从<code>pc</code>中提取低12位来作为数组<code>ins_memory</code>的索引。这可以通过位选择操作符来实现。<br>下面是一个简化的<code>im</code>模块实现：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> im (</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] instruction,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] pc</span><br><span class="line">);</span><br><span class="line">    <span class="comment">// 指令存储器，大小为4kB，即1023条32位宽的指令</span></span><br><span class="line">    <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] ins_memory[<span class="number">1023</span>:<span class="number">0</span>];</span><br><span class="line">    <span class="comment">// 将指令与从指令存储器中读取的指令值绑定</span></span><br><span class="line">    <span class="keyword">assign</span> instruction = ins_memory[pc[<span class="number">11</span>:<span class="number">2</span>]];<span class="comment">//常见问题</span></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<p>在这个模块中，我们使用了一个32位宽的寄存器数组<code>ins_memory</code>来模拟指令存储器。<code>assign</code>语句是一个连续赋值语句，它将输出<code>instruction</code>与指令存储器中对应于<code>pc</code>低12位的地址的值绑定。这样，每当<code>pc</code>的值改变时，<code>instruction</code>就会输出相应的指令。<br>请注意，由于我们在<code>assign</code>语句中使用了<code>pc[11:2]</code>，这意味着<code>pc</code>的高20位将被忽略，只有低12位用于寻址4kB的指令存储器。这是因为在Verilog中，数组的索引必须是常数或常数表达式，所以我们必须使用位选择来获取<code>pc</code>的低12位作为索引。</p>
+<p><strong>结果</strong>：</p>
+<p><strong>常见错误</strong>：</p>
+<ol>
+<li>文件通过编译，提交至平台后结果错误，具体表现为PC输出的地址全红。<br>主要原因：检查你的<code>instruction = ins_memory[pc[11:2]]</code>部分，多数的人可能写为<code>instruction = ins_memory[pc[11:0]]</code>,为什么是11:2呢，不是低12位吗？<br>答：<font color=green>1024&#x3D;2^10 </font>,虽然低12位用于寻址，但1024条指令只会占用最多10个位，所以1和0一直没有用到，对于一个4kB的存储器（即2^10个存储单元），我们只需要10位来寻址,但又不能违反题目用低12位的要求（不然直接用9:0）（<font color=blue>这比题目有问题，误导你</font>），<font color=green>所以使用11:2或[11:0]&gt;&gt;2,右移两位，</font>这样就对了。</li>
+</ol>
+<h4 id="gpr模块"><a href="#gpr模块" class="headerlink" title="gpr模块"></a>gpr模块</h4><p><strong>题目</strong><br><img src="https://github.com/buyun14/KokomiPhoto/blob/main/img/gpr%E9%A2%98%E7%9B%AE.png?raw=true"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">module gpr(a,b,clock,reg_write,num_write,rs,rt,data_write);</span><br><span class="line"></span><br><span class="line">output [31:0] a;  </span><br><span class="line"></span><br><span class="line">output [31:0] b;</span><br><span class="line"></span><br><span class="line">input clock;</span><br><span class="line"></span><br><span class="line">input reg_write;</span><br><span class="line"></span><br><span class="line">input [4:0] rs; //读寄存器1</span><br><span class="line"></span><br><span class="line">input [4:0] rt; //读寄存器2</span><br><span class="line"></span><br><span class="line">input [4:0] num_write; //写寄存器</span><br><span class="line"></span><br><span class="line">input [31:0] data_write; //写数据</span><br><span class="line"></span><br><span class="line">reg [31:0] gp_registers[31:0];  //32个寄存器</span><br><span class="line"></span><br><span class="line">提示：   gp_registers[0] 永远等于0</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析</strong><br>已经在结果中给出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在Verilog中，5&#x27;b0和4&#x27;b0表示二进制数，</span><br><span class="line">其中5&#x27;b和4&#x27;b分别是5位和4位的无符号整数。</span><br><span class="line">在二进制数中，每一位可以取0或1，因此5&#x27;b0表示一个5位的二进制数，其值为00000（二进制），即0（十进制）。</span><br><span class="line">同样，4&#x27;b0表示一个4位的二进制数，其值为0000（二进制），也是0（十进制）。</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> gpr(</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] a,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] b,</span><br><span class="line">    <span class="keyword">input</span> clock,</span><br><span class="line">    <span class="keyword">input</span> reg_write,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rs,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] num_write,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] data_write</span><br><span class="line">);<span class="comment">//你也可以在外部定义输入输出端口</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 寄存器组，共32个寄存器，每个寄存器32位宽</span></span><br><span class="line">    <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] gp_registers[<span class="number">31</span>:<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化第一个寄存器为0</span></span><br><span class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span></span><br><span class="line">        gp_registers[<span class="number">0</span>] = <span class="number">32&#x27;h00000000</span>;</span><br><span class="line">        <span class="comment">//32&#x27;h00000000表示32位宽的0，也可以写成32&#x27;b0</span></span><br><span class="line">        <span class="comment">// 初始化其他寄存器为随机值或其他初始值</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 读取操作</span></span><br><span class="line">    <span class="keyword">always</span> @(<span class="keyword">posedge</span> clock) <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span> (reg_write) <span class="keyword">begin</span></span><br><span class="line">            a &lt;= data_write;</span><br><span class="line">            b &lt;= data_write;</span><br><span class="line">        <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">            a &lt;= gp_registers[rs];</span><br><span class="line">            b &lt;= gp_registers[rt];</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    //读取操作二</span></span><br><span class="line"><span class="comment">    always @(*) begin</span></span><br><span class="line"><span class="comment">        a = (rs == 5&#x27;b0) ? 32&#x27;h00000000 : gp_registers[rs];</span></span><br><span class="line"><span class="comment">        b = (rt == 4&#x27;b0) ? 32&#x27;h00000000 : gp_registers[rt];</span></span><br><span class="line"><span class="comment">    end</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="comment">// 写入操作</span></span><br><span class="line">    <span class="keyword">always</span> @(<span class="keyword">posedge</span> clock) <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span> (reg_write &amp;&amp; num_write != <span class="number">0</span>) <span class="keyword">begin</span></span><br><span class="line">            gp_registers[num_write] &lt;= data_write;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    //写入操作二</span></span><br><span class="line"><span class="comment">    always @(posedge clock) begin</span></span><br><span class="line"><span class="comment">        if (reg_write &amp;&amp; num_write != 0) begin</span></span><br><span class="line"><span class="comment">            gp_registers[num_write] &lt;= data_write;</span></span><br><span class="line"><span class="comment">        end else begin</span></span><br><span class="line"><span class="comment">            gp_registers[num_write] &lt;= gp_registers[num_write];</span></span><br><span class="line"><span class="comment">            //等同于无操作</span></span><br><span class="line"><span class="comment">        end</span></span><br><span class="line"><span class="comment">    end</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>常见问题</strong>:<br>(暂无)</p>
+<h4 id="alu模块"><a href="#alu模块" class="headerlink" title="alu模块"></a>alu模块</h4><p><strong>题目</strong><br><img src="/"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module alu(c,a,b);</span><br><span class="line"></span><br><span class="line">output [31:0] c;</span><br><span class="line"></span><br><span class="line">input [31:0] a;</span><br><span class="line"></span><br><span class="line">input [31:0] b;</span><br><span class="line"></span><br><span class="line">说明：目前只是实现 + 功能。其他功能和输入输出信号根据需要慢慢添加。</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong><br>(无)<br><strong>结果</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> alu(</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] c,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] a,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] b</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加法操作</span></span><br><span class="line">    <span class="keyword">always</span> @(<span class="keyword">posedge</span> clock) <span class="keyword">begin</span></span><br><span class="line">        <span class="comment">// 这里可以添加更多的逻辑操作，如进位、溢出等</span></span><br><span class="line">        c &lt;= a + b;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    //加法操作二</span></span><br><span class="line"><span class="comment">    always@(*)</span></span><br><span class="line"><span class="comment">    begin</span></span><br><span class="line"><span class="comment">        c=a+b;</span></span><br><span class="line"><span class="comment">    end</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<p><strong>常见错误</strong><br>（暂无）</p>
+<h4 id="单周期CPU（ADDU）"><a href="#单周期CPU（ADDU）" class="headerlink" title="单周期CPU（ADDU）"></a>单周期CPU（ADDU）</h4><p><strong>题目</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">利用实现的各个基本模块，实现一个能执行addu指令的 单周期CPU。顶层模块定义如下：   </span><br><span class="line"></span><br><span class="line">module s_cycle_cpu(clock,reset);</span><br><span class="line"></span><br><span class="line">//输入</span><br><span class="line"></span><br><span class="line">input clock;</span><br><span class="line"></span><br><span class="line">input reset;</span><br><span class="line"></span><br><span class="line">说明：各模块的实例化命名必须按照如下规则：如pc模块实例命名为：PC。</span><br></pre></td></tr></table></figure>
+<p><strong>分析</strong></p>
+<p><strong>结果</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>常见错误</strong></p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/05/23/51%E5%8D%95%E7%89%87%E6%9C%BA/"
+      title="51单片机"
+     >
+
+    <p class="title-text">
+      
+        51单片机
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

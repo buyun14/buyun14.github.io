@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>mc服务器 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="环境：Debian 12 x64 1安装java步骤 1. 更新系统在安装任何东西之前，您需要确保您的系统是最新的。您可以通过在终端中运行以下命令来执行此操作。 1sudo apt update &amp;&amp; sudo apt upgrade -y 上述命令可能需要几分钟时间，具体取决于您的 Internet 连接速度。 步骤 2. 在 Debian 11 上安装 Java JDK 17建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mc服务器">
+<meta property="og:url" content="https://buyun14.github.io/2024/06/03/mc%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="环境：Debian 12 x64 1安装java步骤 1. 更新系统在安装任何东西之前，您需要确保您的系统是最新的。您可以通过在终端中运行以下命令来执行此操作。 1sudo apt update &amp;&amp; sudo apt upgrade -y 上述命令可能需要几分钟时间，具体取决于您的 Internet 连接速度。 步骤 2. 在 Debian 11 上安装 Java JDK 17建">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-06-03T00:58:57.000Z">
+<meta property="article:modified_time" content="2024-06-03T18:14:16.926Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-mc服务器" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        mc服务器
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-06-03T00:58:57.000Z" itemprop="datePublished">2024-06-03</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            4.6k words 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p>环境：Debian 12 x64</p>
+<h1 id="1"><a href="#1" class="headerlink" title="1"></a>1</h1><p><strong>安装java</strong><br><strong>步骤 1. 更新系统</strong><br>在安装任何东西之前，您需要确保您的系统是最新的。您可以通过在终端中运行以下命令来执行此操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt upgrade -y</span><br></pre></td></tr></table></figure>
+<p>上述命令可能需要几分钟时间，具体取决于您的 Internet 连接速度。</p>
+<p><strong>步骤 2. 在 Debian 11 上安装 Java JDK 17</strong><br>建议检查您的系统上是否已安装 Java。为此，请在终端中运行以下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<p>如果尚未安装 Java，您将获得类似于此的输出。输出显示系统上没有找到 Java 安装。否则，如果已安装，您应该获得一个版本号。</p>
+<p>安装 JDK 的最简单方法是使用 apt 包管理器。 Debian 11 的默认存储库包括 Java 17，如下面的屏幕截图所示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-cache search openjdk | grep 17</span><br></pre></td></tr></table></figure>
+<p>运行以下命令在 Debian 11 上安装 Java 17。我们将同时安装 JDK 和 JRE 以运行 Java 应用程序和小程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install openjdk-17-jdk</span><br><span class="line">sudo apt install openjdk-17-jre</span><br></pre></td></tr></table></figure>
+<p>安装完成后，运行以下命令以检查它是否正常工作。如果一切正常，您应该会得到类似于下图的输出。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<p>为了验证 JDK 是否安装正确，我们将检查 javac 的版本，即 Java 编译器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac -version</span><br></pre></td></tr></table></figure>
+<p><strong>步骤 3. 配置环境变量</strong><br>某些 Java 应用程序需要 JAVA_HOME 环境变量才能正常运行。有些程序的执行方式非常具体。如果 JAVA_HOME 没有设置，你会得到一个错误。设置 JAVA_HOME 将防止出现此问题。</p>
+<p>首先，让我们使用 update-alternatives 命令确定安装 Java 的 Java 路径。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --config java</span><br></pre></td></tr></table></figure>
+<p>此命令将输出 Java 的安装路径，如下面的屏幕截图所示。</p>
+<p>&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-11-openjdk-amd64&#x2F;bin&#x2F;java 是OpenJDK 11的安装路径<br>usr&#x2F;lib&#x2F;jvm&#x2F;java-17-openjdk-amd64&#x2F;bin&#x2F;java 是OpenJDK 17的安装路径</p>
+<p>复制您要使用的路径。现在，使用您喜欢的文本编辑器打开一个新的环境文件。我们将在此示例中使用 nano 编辑器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/environment</span><br></pre></td></tr></table></figure>
+<p>您必须将在行 export JAVA_HOME&#x3D;… 末尾复制的路径粘贴到文件中，如下所示。</p>
+<p>该文件会将 OpenJDK 17 的 JAVA_HOME 路径设置为系统中所有用户的环境变量。按 CTRL+X、Y 和 Enter 保存并退出文件。</p>
+<p>要应用更改，请运行以下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo source /etc/environment</span><br></pre></td></tr></table></figure>
+<p>要验证是否已应用路径变量，请运行以下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $JAVA_HOME</span><br></pre></td></tr></table></figure>
+<p>路径应设置为您在上面复制的 OpenJDK 17 的路径。</p>
+<p>以后使用Java程序就不用每次都设置JAVA_HOME路径了。此外，如果您想使用其他 OpenJDK 版本而不是 17，请相应地调整路径。</p>
+<p><strong>步骤 4. 测试 Java 安装</strong><br>在此步骤中，我们将通过创建一个简单的 helloworld Java 应用程序、编译并使用 JRE 执行它来测试 Java 是否已正确安装在您的系统上。</p>
+<p>首先，运行以下命令创建一个名为 helloworld 的新目录并导航到其中。在这里，我们将存储与第一个 Java 应用程序相关的所有文件。</p>
+<p>mkdir helloworld &amp;&amp; cd helloworld<br>接下来，使用您喜欢的文本编辑器创建一个名为 helloworld.java 的新文件。</p>
+<p>sudo nano helloworld.java<br>现在，使用以下内容填充文件。</p>
+<p>public class helloworld{<br>   public static void main(String[] args) {<br>      System.out.println(“Howtoforge-Hello World”);<br>   }<br>}<br>按 CTRL+X、Y 和 Enter 保存并退出文件。</p>
+<p>现在我们已经创建了程序，我们需要使用 javac 编译器将 Java 源代码编译成字节码（类文件）。</p>
+<p>javac helloworld.java<br>您将获得一个名为 helloworld.class 的新文件，它是已编译的 Java 类文件。</p>
+<p>上面的命令只会将 Java 源代码编译成字节码。为了运行该程序，我们以类文件的名称作为参数运行 java 命令。</p>
+<p>java helloworld<br>如果一切正常，您会在屏幕上看到消息“Howtoforge-Hello World”。</p>
+<p>您已成功安装 Java。要进一步阅读 Java 语言，请参阅其官方文档。</p>
+<h1 id="2"><a href="#2" class="headerlink" title="2"></a>2</h1><p>下载MC服务器端<br><strong>3、下载forge</strong><br>   (1)在服务器的终端（shell）中依次输入以下指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#创建服务端的目录</span><br><span class="line">mkdir /home/mc</span><br><span class="line">mkdir /home/mc/Minecraft1.20.1</span><br><span class="line">cd /home/mc/Minecraft1.20.1     #跳转到 /home/mc/Minecraft1.20.1 目录</span><br><span class="line"></span><br><span class="line">#下载 1.20.1-47.2.0 forge</span><br><span class="line">wget --no-check-certificate https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.2.0/forge-1.20.1-47.2.0-installer.jar</span><br></pre></td></tr></table></figure>
+
+<p><strong>5、安装Tmux</strong></p>
+<p>    为了方便管理服务端，需要安装Tmux。</p>
+<p>    在服务器的终端（shell）中依次输入以下指令：</p>
+<p>命令结束后如果有如[y&#x2F;d&#x2F;n]，则按y</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># centos安装命令</span><br><span class="line">sudo yum install tmux</span><br></pre></td></tr></table></figure>
+<p>如果yum no found</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install tmux</span><br></pre></td></tr></table></figure>
+<p> 新建新的会话，将其命名为mc，然后就进入了名为mc的会话窗口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new -s mc</span><br></pre></td></tr></table></figure>
+<p>还有，如果不小心退出了名为mc的会话窗口，请输入以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach -t mc   #与之前建立的名为mc的会话窗口重新建立会话 </span><br></pre></td></tr></table></figure>
+<p><strong>6、初启动服务端</strong></p>
+<p>    (1)在名为mc的会话窗口依次输入以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#安装并启动服务端</span><br><span class="line">java -jar forge-1.20.1-47.2.0-installer.jar nogui --installServer</span><br></pre></td></tr></table></figure>
+<p>    安装时间比较长，大概十几二十分钟，中间可能会停下来不动，正常情况，继续等待。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#启动服务器</span><br><span class="line">bash /home/mc/Minecraft1.20.1/run.sh</span><br></pre></td></tr></table></figure>
+<p>    启动几乎必定失败，要同意eula协议</p>
+<p>    等待生成然后编辑eula.txt文件，输入以下指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /home/mc/Minecraft1.20.1/eula.txt</span><br></pre></td></tr></table></figure>
+<p>    按下”I”键，进入编辑模式，使用方向键移动光标，将eula&#x3D;false 改为 eula&#x3D;true</p>
+<p>按Esc退出编辑模式，然后输入:wq，回车，完成保存并退出。</p>
+<p>    启动服务端看看效果    </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#启动服务器</span><br><span class="line">bash /home/mc/Minecraft1.20.1/run.sh</span><br></pre></td></tr></table></figure>
+<p>    看到For help, type “help”或Successfully initialized permission handler forge:default_handler表示服务器启动成功</p>
+<p>    可以用”服务器的公网ip:25565”来加入游戏<br>7、配置服务器并加入模组</p>
+<p>    (1)接下来要编辑三个文件，在名为mc的会话窗口输入以下命令：</p>
+<p>stop		#停止服务器<br>    a.编辑 run.sh，在名为mc的会话窗口输入以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /home/mc/Minecraft1.20.1/run.sh</span><br></pre></td></tr></table></figure>
+<p>     在</p>
+<p>java @user_jvm_args.txt @libraries&#x2F;net&#x2F;minecraftforge&#x2F;forge&#x2F;1.20.1-47.2.0&#x2F;unix_args.txt<br>     的后面添加nogui</p>
+<p>     添加后的效果：</p>
+<p>java @user_jvm_args.txt @libraries&#x2F;net&#x2F;minecraftforge&#x2F;forge&#x2F;1.20.1-47.2.0&#x2F;unix_args.txt nogui “$@”<br>    按Esc退出编辑模式，然后输入:wq，回车，完成保存并退出。</p>
+<p>    b.编辑 user_jvm_args.txt，在名为mc的会话窗口输入以下命令：</p>
+<p>vim &#x2F;home&#x2F;mc&#x2F;Minecraft1.20.1&#x2F;user_jvm_args.txt<br>     在文件末尾中添加如下代码：</p>
+<h1 id="编辑你的-mc-进程所使用的内存量，自行修改"><a href="#编辑你的-mc-进程所使用的内存量，自行修改" class="headerlink" title="编辑你的 mc 进程所使用的内存量，自行修改"></a>编辑你的 mc 进程所使用的内存量，自行修改</h1><p>-Xms512M   # 最小占用内存，这里我设为512M<br>-Xmx2000M  # 最大占用内存，这里我设为2000M<br>     按Esc退出编辑模式，然后输入:wq，回车，完成保存并退出。</p>
+<p>     c.更改服务器配置文件server.properties，在名为mc的会话窗口输入以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">    vim /home/mc/Minecraft1.20.1/server.properties</span><br></pre></td></tr></table></figure>
+<p>    如果你或者你的小伙伴不是使用微软正版账号登录的，你需要将 enforce-secure-profile 和 online-mode 设置成 “false”，才能进入世界</p>
+<p>    #按Esc退出编辑模式，然后输入:wq，回车，完成保存并退出。</p>
+<p>     (3)安装mod</p>
+<p>    将你需要安装的 mod（ .jar文件，要forge版的）放入到&#x2F;home&#x2F;mc&#x2F;Minecraft1.20.1&#x2F;mods</p>
+<p>     (4)删除旧存档</p>
+<p>    你刚刚创建的存档是没有用mod加载的，所以要把刚刚创建的存档删除掉</p>
+<p>    在名为mc的会话窗口输入以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#删除旧存档</span><br><span class="line">cd /home/mc/Minecraft1.20.1 #切换到/home/mc/Minecraft1.20.1目录</span><br><span class="line">rm -rf world</span><br></pre></td></tr></table></figure>
+
+
+
+<p>8、启动服务器与授权op</p>
+<p>    安装好模组后就可以再次启动了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash /home/mc/Minecraft1.20.1/run.sh    #启动！</span><br></pre></td></tr></table></figure>
+<p>    服务器完全启动后，就可以看到有一个&gt;符号，输入以下命令就可以给玩家授予op权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">op name     #name是玩家的名字</span><br></pre></td></tr></table></figure>
+
+<p>Tips：</p>
+<p>与mc窗口重新建立会话的命令</p>
+<p>    如果你与服务器断开了远程连接，再次重新连接时，看到的是一个暂时与mc服务端无法交互的终端（shell），输入stop不能关闭mc的服务端，那么你可以在终端（shell）输入以下命令：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux attach -t mc   #与之前建立的名为mc的会话窗口重新建立会话</span><br></pre></td></tr></table></figure>
+<p>    这是之前用tmux建立的会话窗口，有了这个，你就可以随时与mc的服务端进行交互了</p>
+<p>    快捷键Ctrl+b d退出与mc窗口的会话，此时mc服务端转到了后台运行</p>
+<p>与mc服务端交互的命令  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#给玩家授予op权限</span><br><span class="line">op &lt;name&gt;</span><br><span class="line"></span><br><span class="line">#解除授予给玩家的op权限</span><br><span class="line">deop &lt;name&gt;</span><br><span class="line"></span><br><span class="line">#保存存档</span><br><span class="line">save-all</span><br><span class="line"></span><br><span class="line">#关闭服务端</span><br><span class="line">stop</span><br></pre></td></tr></table></figure>
+
+<p>启动mc服务端的命令   </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash /home/mc/Minecraft1.20.1/run.sh</span><br></pre></td></tr></table></figure>
+
+<p>查看内存占用的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">free -h</span><br></pre></td></tr></table></figure>
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2024/06/04/yunzaiBOT%E9%83%A8%E7%BD%B2/"
+      title="yunzaiBOT部署"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        yunzaiBOT部署
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/05/26/%E8%AE%A1%E7%BB%84%E5%AE%9E%E9%AA%8C1-%E5%90%8E%E5%9B%9B%E6%AC%A1/"
+      title="计组实验1_后四次"
+     >
+
+    <p class="title-text">
+      
+        计组实验1_后四次
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

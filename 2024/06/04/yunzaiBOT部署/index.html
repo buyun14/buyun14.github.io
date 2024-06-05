@@ -14,20 +14,26 @@
   
 
   
-  <title>Archives: 2024 | Buyun&#39;s Blog</title>
+  <title>yunzaiBOT部署 | Buyun&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Buyun&#39;s Blog">
-<meta property="og:url" content="https://buyun14.github.io/archives/2024/index.html">
+  <meta name="description" content="Debian Docker容器安装 1bash &lt;(curl -L gitee.com&#x2F;TimeRainStarSky&#x2F;TRSS_AllBot&#x2F;raw&#x2F;main&#x2F;Install-Docker.sh)   1234# 原安装命令bash &lt;(x)# 修改后安装命令DIR&#x3D;&#x2F;Bot CMD&#x3D;trss DKNAME&#x3D;TRSS bash &lt;(x) 常用命令 123456789101112">
+<meta property="og:type" content="article">
+<meta property="og:title" content="yunzaiBOT部署">
+<meta property="og:url" content="https://buyun14.github.io/2024/06/04/yunzaiBOT%E9%83%A8%E7%BD%B2/index.html">
 <meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="Debian Docker容器安装 1bash &lt;(curl -L gitee.com&#x2F;TimeRainStarSky&#x2F;TRSS_AllBot&#x2F;raw&#x2F;main&#x2F;Install-Docker.sh)   1234# 原安装命令bash &lt;(x)# 修改后安装命令DIR&#x3D;&#x2F;Bot CMD&#x3D;trss DKNAME&#x3D;TRSS bash &lt;(x) 常用命令 123456789101112">
 <meta property="og:locale">
+<meta property="og:image" content="https://github.trss.me/assets/Docker-21a59e85.svg">
+<meta property="article:published_time" content="2024-06-03T18:18:35.000Z">
+<meta property="article:modified_time" content="2024-06-05T22:00:50.704Z">
 <meta property="article:author" content="buyun">
 <meta property="article:tag" content="blog">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.trss.me/assets/Docker-21a59e85.svg">
   
     <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
   
@@ -170,196 +176,99 @@
     <div id="content-body">
        
 
-<div class="archive-main-card">
-    <div class="archive-top">
-      <div class="main-title-bar">
-        <div class="main-title-dot"></div>
-        <h1 class="article-title">Archives</h1>
-      </div>    
+
+<article id="post-yunzaiBOT部署" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        yunzaiBOT部署
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-06-03T18:18:35.000Z" itemprop="datePublished">2024-06-04</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            457 words 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p>Debian</p>
+<p><strong>Docker</strong><br>容器安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash &lt;(curl -L gitee.com/TimeRainStarSky/TRSS_AllBot/raw/main/Install-Docker.sh)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://github.trss.me/assets/Docker-21a59e85.svg" alt="docker安装"></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原安装命令</span></span><br><span class="line">bash &lt;(x)</span><br><span class="line"><span class="comment"># 修改后安装命令</span></span><br><span class="line">DIR=/Bot CMD=trss DKNAME=TRSS bash &lt;(x)</span><br></pre></td></tr></table></figure>
+<p>常用命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">docker ps -as   <span class="comment">#查看容器</span></span><br><span class="line"></span><br><span class="line">docker start 容器名 <span class="comment"># 默认开机自启，无需手动启动</span></span><br><span class="line"></span><br><span class="line">docker restart -t0 容器名</span><br><span class="line"></span><br><span class="line">docker stop -t0 容器名</span><br><span class="line"></span><br><span class="line">docker <span class="built_in">rm</span> -f 容器名</span><br><span class="line"></span><br><span class="line">docker run -itd</span><br><span class="line">  -h 主机名</span><br><span class="line">  --name 容器名</span><br><span class="line">  -v 数据路径:/root/项目名</span><br><span class="line">  --restart always <span class="comment">#自启动</span></span><br><span class="line">  -p 主机端口:容器端口 <span class="comment">#端口映射</span></span><br><span class="line">  镜像名</span><br></pre></td></tr></table></figure>
+<p><strong>NodeJS</strong><br>使用 apt 安装 NodeJS</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install nodejs npm -y  <span class="comment">#安装 NodeJS 和 NPM</span></span><br></pre></td></tr></table></figure>
+<p><strong>Redis</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install redis-server <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+        
+      </div>
+
+         
     </div>
     
-    
-      
-      
-        
-        <div class="year-line">
-            <div class="year-num">2024</div>
-            <div class="dot-wrapper">
-                <div class="dot"></div>
-            </div>
-            <div class="article-count">9 articles</div>
-        </div>
-      
-      <a class="archive-article-link" href="/2024/06/04/yunzaiBOT%E9%83%A8%E7%BD%B2/" title="yunzaiBOT部署">
-        <div class="date">06-04</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    yunzaiBOT部署
-                
-            </div>
-        </div>
-        <div class="tags">
-            
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/06/03/mc%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="mc服务器">
-        <div class="date">06-03</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    mc服务器
-                
-            </div>
-        </div>
-        <div class="tags">
-            
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/05/26/%E8%AE%A1%E7%BB%84%E5%AE%9E%E9%AA%8C1-%E5%90%8E%E5%9B%9B%E6%AC%A1/" title="计组实验1_后四次">
-        <div class="date">05-26</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    计组实验1_后四次
-                
-            </div>
-        </div>
-        <div class="tags">
-            #单周期CPU
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/05/23/51%E5%8D%95%E7%89%87%E6%9C%BA/" title="51单片机">
-        <div class="date">05-23</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    51单片机
-                
-            </div>
-        </div>
-        <div class="tags">
-            #单片机
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/05/23/%E4%BB%8E%E5%AE%9E%E8%B7%B5%E4%BA%86%E8%A7%A3%E5%B1%80%E5%9F%9F%E7%BD%91/" title="从实践了解局域网">
-        <div class="date">05-23</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    从实践了解局域网
-                
-            </div>
-        </div>
-        <div class="tags">
-            #局域网
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/05/19/%E6%B5%8B%E8%AF%95-1/" title="搭建一台代理服务器（失败）">
-        <div class="date">05-19</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    搭建一台代理服务器（失败）
-                
-            </div>
-        </div>
-        <div class="tags">
-            #代理
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/05/17/verilog%E5%AD%A6%E4%B9%A0-personal-md/" title="verilog学习_personal.md(计组实验)">
-        <div class="date">05-17</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    verilog学习_personal.md(计组实验)
-                
-            </div>
-        </div>
-        <div class="tags">
-            
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/05/04/%E6%B5%8B%E8%AF%95/" title="测试">
-        <div class="date">05-04</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    测试
-                
-            </div>
-        </div>
-        <div class="tags">
-            
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/05/04/hello-world/" title="Hello World">
-        <div class="date">05-04</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    Hello World
-                
-            </div>
-        </div>
-        <div class="tags">
-            
-        </div>
-      </a>
-    
+     
   </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/06/03/mc%E6%9C%8D%E5%8A%A1%E5%99%A8/"
+      title="mc服务器"
+     >
+
+    <p class="title-text">
+      
+        mc服务器
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
     </div>
     <div id="footer-wrapper">
       <footer id="footer">

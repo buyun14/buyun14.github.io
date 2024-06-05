@@ -172,6 +172,166 @@
    
 
 
+<article id="post-yunzaiBOT部署" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 itemprop="name">
+        <a class="p-name article-title" href="/2024/06/04/yunzaiBOT%E9%83%A8%E7%BD%B2/">yunzaiBOT部署</a>
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-06-03T18:18:35.000Z" itemprop="datePublished">2024-06-04</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            457 words 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <div class="truncate-text">
+            
+              Debian
+Docker容器安装
+1bash &lt;(curl -L gitee.com/TimeRainStarSky/TRSS_AllBot/raw/main/Install-Docker.sh)
+
+
+1234# 原安装命令bash &lt;(x)# 修改后安装命令DIR=/Bot CMD=trss DKNAME=TRSS bash &lt;(x)
+常用命令
+1234567891011121314151617docker ps -as   #查看容器docker start 容器名 # 默认开机自启，无需手动启动docker restart -t0 容器名docker stop -t0 容器名docker rm -f 容器名docker run -itd  -h 主机名  --name 容器名  -v 数据路径:/root/项目名  --restart always #自启动  -p 主机端口:容器端口 #端口映射  镜像名
+NodeJS使用 apt 安装 NodeJS
+1sudo apt install nodejs npm -y  #安装 NodeJS 和 NPM
+R...
+            
+          </div>
+        
+      </div>
+
+         
+    </div>
+    
+     
+    <a class="right-panel  non-pic  "
+      
+      href="/2024/06/04/yunzaiBOT%E9%83%A8%E7%BD%B2/" 
+    >
+       
+      <i class="fa-solid fa-angle-right non-pic"></i>
+       
+    </a>
+     
+  </div>
+  
+</article>
+
+
+
+
+
+
+   
+
+
+<article id="post-mc服务器" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 itemprop="name">
+        <a class="p-name article-title" href="/2024/06/03/mc%E6%9C%8D%E5%8A%A1%E5%99%A8/">mc服务器</a>
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-06-03T00:58:57.000Z" itemprop="datePublished">2024-06-03</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            4.6k words 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <div class="truncate-text">
+            
+              环境：Debian 12 x64
+1安装java步骤 1. 更新系统在安装任何东西之前，您需要确保您的系统是最新的。您可以通过在终端中运行以下命令来执行此操作。
+1sudo apt update &amp;&amp; sudo apt upgrade -y
+上述命令可能需要几分钟时间，具体取决于您的 Internet 连接速度。
+步骤 2. 在 Debian 11 上安装 Java JDK 17建议检查您的系统上是否已安装 Java。为此，请在终端中运行以下命令。
+1java -version
+如果尚未安装 Java，您将获得类似于此的输出。输出显示系统上没有找到 Java 安装。否则，如果已安装，您应该获得一个版本号。
+安装 JDK 的最简单方法是使用 apt 包管理器。 Debian 11 的默认存储库包括 Java 17，如下面的屏幕截图所示。
+1sudo apt-cache search openjdk | grep 17
+运行以下命令在 Debian 11 上安装 Java 17。我们将同时安装 JDK 和 JRE 以运行 Java 应用程序和小程序。
+12sudo a...
+            
+          </div>
+        
+      </div>
+
+         
+    </div>
+    
+     
+    <a class="right-panel  non-pic  "
+      
+      href="/2024/06/03/mc%E6%9C%8D%E5%8A%A1%E5%99%A8/" 
+    >
+       
+      <i class="fa-solid fa-angle-right non-pic"></i>
+       
+    </a>
+     
+  </div>
+  
+</article>
+
+
+
+
+
+
+   
+
+
 <article id="post-计组实验1-后四次" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
    
   <div class="article-inner">

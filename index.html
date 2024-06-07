@@ -172,6 +172,84 @@
    
 
 
+<article id="post-计组实验2-后四次" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 itemprop="name">
+        <a class="p-name article-title" href="/2024/06/06/%E8%AE%A1%E7%BB%84%E5%AE%9E%E9%AA%8C2-%E5%90%8E%E5%9B%9B%E6%AC%A1/">计组实验2_后四次</a>
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-06-05T22:15:48.000Z" itemprop="datePublished">2024-06-06</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            5.2k words 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <div class="truncate-text">
+            
+              第二次实验 单周期CPU单周期CPU（I型指令）题目在单周期CPU（R型指令）设计的基础上增加下列I型指令:  addi，addiu，andi，ori，lui。分析指令格式： I型指令和R型指令的格式不同；指令功能：指令执行流程相同，取指→ 立即数扩展（读源操作数）→运算→写回运算结果。复用：取指，读GPR，ALU，写GPR。增加：立即数扩展功能；ALU增加lui指令的功能；增加立即数为ALU的操作数2 ；增加rt为GPR的写寄存器。当一个端口有多个输入时，需要在其前面增加多路选择器。多路选择器根据控制信号确定具体情况时端口接哪个输入。补充：ctrl模块
+1234module ctrl(output reg_write  ,             output[3:0] aluop,             input [5:0] op   ,             input [5:0] funct );
+
+dm模块和MEM型指令1.DM模块设计
+
+lw指令读DM→ 一个读端口
+sw指令写DM→ 一个写端口
+
+读端口是组合逻辑，在指令执行的clock周期保持不变。写端口是时...
+            
+          </div>
+        
+      </div>
+
+         
+    </div>
+    
+     
+    <a class="right-panel  non-pic  "
+      
+      href="/2024/06/06/%E8%AE%A1%E7%BB%84%E5%AE%9E%E9%AA%8C2-%E5%90%8E%E5%9B%9B%E6%AC%A1/" 
+    >
+       
+      <i class="fa-solid fa-angle-right non-pic"></i>
+       
+    </a>
+     
+  </div>
+  
+</article>
+
+
+
+
+
+
+   
+
+
 <article id="post-yunzaiBOT部署" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
    
   <div class="article-inner">
@@ -362,7 +440,7 @@ R...
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            8.6k words 
+            8.5k words 
           </div>
         </div>
         
@@ -374,7 +452,7 @@ R...
           <div class="truncate-text">
             
               前言：请勿直接COPY本教程中的代码！本篇文章只限于提供思路与常见错误的分享与交流
-PPT讲述部分实验内容（总体）设计实现单周期CPU。
+实验目的实验内容（总体）设计实现单周期CPU。
 设计实现能够执行addu指令的单周期CPU；
 增加实现以下R型指令：addu，subu，add，and，or，slt；
 增加实现以下I型指令：addi，addiu，andi，ori，lui；
@@ -386,11 +464,10 @@ PPT讲述部分实验内容（总体）设计实现单周期CPU。
 处理各种数据冒险；
 处理各种控制冒险。
 
-实验作业第一次实验PC模块
+第一次实验 单周期CPU
+1.PC模块
 1234567module pc(pc,clock,reset,npc);output [31:0] pc;input clock;input reset;input [31:0] npc;注意: 1.clock上升沿有效，reset低电平有效;    2.reset信号有效时，pc复位为0x0000 3000:采用同步复位。
-解析：(见常见问题)
-结果：
-1234567891011121314151...
+解析：PC寄存器设计存储当前执行指令的地址；对于单周期CPU，每个c...
             
           </div>
         

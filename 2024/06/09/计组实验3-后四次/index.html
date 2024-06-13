@@ -14,20 +14,26 @@
   
 
   
-  <title>Tag: 代理 | Buyun&#39;s Blog</title>
+  <title>计组实验3-后四次 | Buyun&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Buyun&#39;s Blog">
-<meta property="og:url" content="https://buyun14.github.io/tags/%E4%BB%A3%E7%90%86/index.html">
+  <meta name="description" content="流水线CPU设计第一题：在单周期CPU的基础上增加流水线寄存器，在不考虑冒险的前提下，实现一个能够执行下列指令集的流水线CPU:addu, subu, add, and,or,slt, addi, addiu, andi, ori, lui, lw, sw顶层模块接口定义如下:module pipeline cpu(clock,reset);input clock,reset;注意:1.基本模块(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计组实验3-后四次">
+<meta property="og:url" content="https://buyun14.github.io/2024/06/09/%E8%AE%A1%E7%BB%84%E5%AE%9E%E9%AA%8C3-%E5%90%8E%E5%9B%9B%E6%AC%A1/index.html">
 <meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="流水线CPU设计第一题：在单周期CPU的基础上增加流水线寄存器，在不考虑冒险的前提下，实现一个能够执行下列指令集的流水线CPU:addu, subu, add, and,or,slt, addi, addiu, andi, ori, lui, lw, sw顶层模块接口定义如下:module pipeline cpu(clock,reset);input clock,reset;注意:1.基本模块(">
 <meta property="og:locale">
+<meta property="og:image" content="https://github.com/buyun14/KokomiPhoto/blob/main/img/7df0d237906531cbcba6633fc3e2917d.png?raw=true">
+<meta property="article:published_time" content="2024-06-08T17:34:22.000Z">
+<meta property="article:modified_time" content="2024-06-08T20:08:10.164Z">
 <meta property="article:author" content="buyun">
-<meta property="article:tag" content="blog">
+<meta property="article:tag" content="流水线CPU">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/buyun14/KokomiPhoto/blob/main/img/7df0d237906531cbcba6633fc3e2917d.png?raw=true">
   
     <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
   
@@ -170,44 +176,93 @@
     <div id="content-body">
        
 
-<div class="archive-main-card">
-    <div class="archive-top">
-      <div class="main-title-bar">
-        <div class="main-title-dot"></div>
-        <h1 class="article-title">Archives</h1>
-      </div>    
+
+<article id="post-计组实验3-后四次" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        计组实验3-后四次
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-06-08T17:34:22.000Z" itemprop="datePublished">2024-06-09</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            266 words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="流水线CPU设计"><a href="#流水线CPU设计" class="headerlink" title="流水线CPU设计"></a>流水线CPU设计</h2><p><strong>第一题：</strong><br>在单周期CPU的基础上增加流水线寄存器，在不考虑冒险的前提下，实现一个能够执行下列指令集的流水线CPU:<br>addu, subu, add, and,or,slt, addi, addiu, andi, ori, lui, lw, sw<br>顶层模块接口定义如下:<br>module pipeline cpu(clock,reset);<br>input clock,reset;<br>注意:<br>1.基本模块(pc,im,gpr,alu,dm)定义和单周期CPU保持一致。实例化命名规则也和单周期CPU保持一致。<br>2.流水线CPU中reset低电平有效，同步复位。</p>
+<p><img src="https://github.com/buyun14/KokomiPhoto/blob/main/img/7df0d237906531cbcba6633fc3e2917d.png?raw=true"></p>
+<p>分析：</p>
+
+        
+      </div>
+
+         
     </div>
     
-    
-      
-      
-        
-        <div class="year-line">
-            <div class="year-num">2024</div>
-            <div class="dot-wrapper">
-                <div class="dot"></div>
-            </div>
-            <div class="article-count">1 article</div>
-        </div>
-      
-      <a class="archive-article-link" href="/2024/05/19/%E6%B5%8B%E8%AF%95-1/" title="搭建一台代理服务器（失败）">
-        <div class="date">05-19</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    搭建一台代理服务器（失败）
-                
-            </div>
-        </div>
-        <div class="tags">
-            #代理
-        </div>
-      </a>
-    
+     
   </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/06/07/linux%E8%BF%90%E7%BB%B4/"
+      title="linux运维"
+     >
+
+    <p class="title-text">
+      
+        linux运维
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
     </div>
     <div id="footer-wrapper">
       <footer id="footer">

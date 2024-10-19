@@ -14,17 +14,21 @@
   
 
   
-  <title>Archives: 2024/6 | Buyun&#39;s Blog</title>
+  <title>代理服务器搭建 | Buyun&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Buyun&#39;s Blog">
-<meta property="og:url" content="https://buyun14.github.io/archives/2024/06/index.html">
+  <meta name="description" content="在云服务器上安装代理软件：  使用 Shadowsocks 或 V2Ray。以下是 Shadowsocks 的安装示例：12sudo apt updatesudo apt install shadowsocks-libev   配置 Shadowsocks：  编辑配置文件（通常位于 &#x2F;etc&#x2F;shadowsocks-libev&#x2F;config.json），设置以下内容：12345678&amp;#123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代理服务器搭建">
+<meta property="og:url" content="https://buyun14.github.io/2024/10/18/%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="在云服务器上安装代理软件：  使用 Shadowsocks 或 V2Ray。以下是 Shadowsocks 的安装示例：12sudo apt updatesudo apt install shadowsocks-libev   配置 Shadowsocks：  编辑配置文件（通常位于 &#x2F;etc&#x2F;shadowsocks-libev&#x2F;config.json），设置以下内容：12345678&amp;#123">
 <meta property="og:locale">
+<meta property="article:published_time" content="2024-10-17T20:38:48.000Z">
+<meta property="article:modified_time" content="2024-10-18T11:01:19.942Z">
 <meta property="article:author" content="buyun">
 <meta property="article:tag" content="blog">
 <meta name="twitter:card" content="summary">
@@ -170,120 +174,123 @@
     <div id="content-body">
        
 
-<div class="archive-main-card">
-    <div class="archive-top">
-      <div class="main-title-bar">
-        <div class="main-title-dot"></div>
-        <h1 class="article-title">Archives</h1>
-      </div>    
+
+<article id="post-代理服务器搭建" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        代理服务器搭建
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-10-17T20:38:48.000Z" itemprop="datePublished">2024-10-18</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            707 words 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <ol>
+<li><p><strong>在云服务器上安装代理软件</strong>：</p>
+<ul>
+<li>使用 Shadowsocks 或 V2Ray。以下是 Shadowsocks 的安装示例：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install shadowsocks-libev</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>配置 Shadowsocks</strong>：</p>
+<ul>
+<li>编辑配置文件（通常位于 <code>/etc/shadowsocks-libev/config.json</code>），设置以下内容：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;server&quot;</span><span class="punctuation">:</span><span class="string">&quot;云服务器公网IP&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;port_password&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;8388&quot;</span><span class="punctuation">:</span><span class="string">&quot;密码&quot;</span>  <span class="comment">// 设置端口和密码</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;timeout&quot;</span><span class="punctuation">:</span><span class="number">300</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;method&quot;</span><span class="punctuation">:</span><span class="string">&quot;aes-256-gcm&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>启动 Shadowsocks 服务：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart shadowsocks-libev</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>在局域网的 Debian 12 服务器上设置隧道</strong>：</p>
+<ul>
+<li>使用 SSH 创建一个隧道，将流量从云服务器转发到 Debian 12 服务器：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -N -D 1080 user@Debian12服务器IP</span><br></pre></td></tr></table></figure></li>
+<li>这里的 <code>-D</code> 选项将创建一个 SOCKS 代理。</li>
+</ul>
+</li>
+<li><p><strong>在需要访问的设备上配置代理</strong>：</p>
+<ul>
+<li>在你想要访问 Debian 12 服务器的设备上，配置 SOCKS 代理，指向云服务器的 IP 和端口（例如，<code>云服务器IP:1080</code>）。</li>
+</ul>
+</li>
+<li><p><strong>测试连接</strong>：</p>
+<ul>
+<li>确保能通过云服务器访问 Debian 12 服务器，测试是否能成功访问局域网中的服务。</li>
+</ul>
+</li>
+</ol>
+<p>这样设置后，你就可以通过云服务器访问局域网的 Debian 12 服务器了。如果需要进一步的配置或调整，请告诉我！</p>
+
+        
+      </div>
+
+         
     </div>
     
-    
-      
-      
-        
-        <div class="year-line">
-            <div class="year-num">2024</div>
-            <div class="dot-wrapper">
-                <div class="dot"></div>
-            </div>
-            <div class="article-count">5 articles</div>
-        </div>
-      
-      <a class="archive-article-link" href="/2024/06/09/%E8%AE%A1%E7%BB%84%E5%AE%9E%E9%AA%8C3-%E5%90%8E%E5%9B%9B%E6%AC%A1/" title="计组实验3-后四次">
-        <div class="date">06-09</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    计组实验3-后四次
-                
-            </div>
-        </div>
-        <div class="tags">
-            #流水线CPU
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/06/07/linux%E8%BF%90%E7%BB%B4/" title="linux运维">
-        <div class="date">06-07</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    linux运维
-                
-            </div>
-        </div>
-        <div class="tags">
-            #linux
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/06/06/%E8%AE%A1%E7%BB%84%E5%AE%9E%E9%AA%8C2-%E5%90%8E%E5%9B%9B%E6%AC%A1/" title="计组实验2_后四次">
-        <div class="date">06-06</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    计组实验2_后四次
-                
-            </div>
-        </div>
-        <div class="tags">
-            #单周期CPU
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/06/04/yunzaiBOT%E9%83%A8%E7%BD%B2/" title="yunzaiBOT部署">
-        <div class="date">06-04</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    yunzaiBOT部署
-                
-            </div>
-        </div>
-        <div class="tags">
-            
-        </div>
-      </a>
-    
-      
-      
-      <a class="archive-article-link" href="/2024/06/03/mc%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="mc服务器">
-        <div class="date">06-03</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    mc服务器
-                
-            </div>
-        </div>
-        <div class="tags">
-            
-        </div>
-      </a>
-    
+     
   </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2024/10/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C-%E7%AC%AC%E4%BA%8C%E6%AC%A1/"
+      title="数据库原理实验-第二次"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        数据库原理实验-第二次
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/09/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C/"
+      title="数据库原理实验"
+     >
+
+    <p class="title-text">
+      
+        数据库原理实验
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
     </div>
     <div id="footer-wrapper">
       <footer id="footer">

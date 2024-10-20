@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>数据库原理理论sql练习2 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="题目要求1.列出所有姓张的导演的导演编号和姓名信息 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库原理理论sql练习2">
+<meta property="og:url" content="https://buyun14.github.io/2024/10/20/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E7%90%86%E8%AE%BAsql%E7%BB%83%E4%B9%A02/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="题目要求1.列出所有姓张的导演的导演编号和姓名信息 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-10-20T06:20:28.000Z">
+<meta property="article:modified_time" content="2024-10-20T07:10:26.072Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS 订阅">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS 订阅">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">标签</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/" rel="tag">数据库 SQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-数据库原理理论sql练习2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        数据库原理理论sql练习2
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-10-20T06:20:28.000Z" itemprop="datePublished">2024-10-20</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            11k 词 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p>题目要求<br><strong>1.列出所有姓张的导演的导演编号和姓名信息</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br></pre></td><td class="code"><pre><span class="line">数据库结构</span><br><span class="line">movies数据库</span><br><span class="line">+-------------------------+</span><br><span class="line">| Tables in this database |</span><br><span class="line">+-------------------------+</span><br><span class="line">| actor                   |</span><br><span class="line">| awards                  |</span><br><span class="line">| director                |</span><br><span class="line">| genres                  |</span><br><span class="line">| movie                   |</span><br><span class="line">| movie_awards            |</span><br><span class="line">| movie_cast              |</span><br><span class="line">| movie_direction         |</span><br><span class="line">| movie_genres            |</span><br><span class="line">| rating                  |</span><br><span class="line">| reviewer                |</span><br><span class="line">+-------------------------+</span><br><span class="line"></span><br><span class="line">actor</span><br><span class="line">+------------+-------------+</span><br><span class="line">| Field      | Type        |</span><br><span class="line">+------------+-------------+</span><br><span class="line">| act_id     | int(11)     |</span><br><span class="line">| act_name   | varchar(50) |</span><br><span class="line">| act_gender | char(1)     |</span><br><span class="line">+------------+-------------+</span><br><span class="line"></span><br><span class="line">actor</span><br><span class="line">+--------+-------------+------------+</span><br><span class="line">| act_id | act_name    | act_gender |</span><br><span class="line">+--------+-------------+------------+</span><br><span class="line">| 5001   | 唐国强      | 男         |</span><br><span class="line">| 5002   | 张国立      | 男         |</span><br><span class="line">| 5003   | 巩俐        | 女         |</span><br><span class="line">| 5004   | 葛优        | 男         |</span><br><span class="line">| 5005   | 张小斐      | 女         |</span><br><span class="line">| 5006   | 周迅        | 女         |</span><br><span class="line">| 5007   | 汤姆·克鲁斯 | 男         |</span><br><span class="line">| 5008   | 刘若英      | 女         |</span><br><span class="line">| 5009   | 鲍国安      | 男         |</span><br><span class="line">| 5010   | 张译        | 男         |</span><br><span class="line">| 5011   | 尊龙        | 男         |</span><br><span class="line">| 5012   | 邬君梅      | 女         |</span><br><span class="line">| 5013   | 马丽        | 女         |</span><br><span class="line">| 5014   | 沈腾        | 男         |</span><br><span class="line">+--------+-------------+------------+</span><br><span class="line"></span><br><span class="line">awards</span><br><span class="line">+-----------+-------------+</span><br><span class="line">| Field     | Type        |</span><br><span class="line">+-----------+-------------+</span><br><span class="line">| awd_id    | int(11)     |</span><br><span class="line">| awd_level | varchar(50) |</span><br><span class="line">| awd_name  | varchar(50) |</span><br><span class="line">| awd_loc   | varchar(50) |</span><br><span class="line">+-----------+-------------+</span><br><span class="line"></span><br><span class="line">awards</span><br><span class="line">+--------+-----------+----------------------+----------+</span><br><span class="line">| awd_id | awd_level | awd_name             | awd_loc  |</span><br><span class="line">+--------+-----------+----------------------+----------+</span><br><span class="line">| 401    | 国际      | 奥斯卡金像奖         | 美国     |</span><br><span class="line">| 402    | 国际      | 戛纳电影节金棕榈奖   | 法国     |</span><br><span class="line">| 403    | 国际      | 威尼斯电影节金狮奖   | 意大利   |</span><br><span class="line">| 404    | 国际      | 柏林国际电影节金熊奖 | 德国     |</span><br><span class="line">| 405    | 国内      | 中国电影金鸡奖       | 中国     |</span><br><span class="line">| 406    | 国内      | 大众电影百花奖       | 中国     |</span><br><span class="line">| 407    | 国内      | 香港电影金像奖       | 中国香港 |</span><br><span class="line">| 408    | 国内      | 台湾电影金马奖       | 中国台湾 |</span><br><span class="line">| 409    | 国内      | 中国电影华表奖       | 中国     |</span><br><span class="line">| 410    | 国际      | 亚太国际电影节       | 亚洲     |</span><br><span class="line">| 411    | 国内      | 华鼎奖               | 中国     |</span><br><span class="line">| 412    | 国际      | 长春国际电影节       | 中国     |</span><br><span class="line">+--------+-----------+----------------------+----------+</span><br><span class="line"></span><br><span class="line">director</span><br><span class="line">+------------+-------------+</span><br><span class="line">| Field      | Type        |</span><br><span class="line">+------------+-------------+</span><br><span class="line">| dir_id     | int(11)     |</span><br><span class="line">| dir_name   | varchar(50) |</span><br><span class="line">| dir_gender | char(1)     |</span><br><span class="line">+------------+-------------+</span><br><span class="line"></span><br><span class="line">director</span><br><span class="line">+--------+-------------------+------------+</span><br><span class="line">| dir_id | dir_name          | dir_gender |</span><br><span class="line">+--------+-------------------+------------+</span><br><span class="line">| 201    | 娄烨              | 男         |</span><br><span class="line">| 202    | 张艺谋            | 男         |</span><br><span class="line">| 203    | 贾玲              | 女         |</span><br><span class="line">| 204    | 张艾嘉            | 女         |</span><br><span class="line">| 205    | 吴宇森            | 男         |</span><br><span class="line">| 206    | 田晓鹏            | 男         |</span><br><span class="line">| 207    | 谢晋              | 男         |</span><br><span class="line">| 208    | 郭帆              | 男         |</span><br><span class="line">| 209    | 文牧野            | 男         |</span><br><span class="line">| 210    | 韩三平            | 男         |</span><br><span class="line">| 211    | 黄建新            | 男         |</span><br><span class="line">| 212    | 贝纳尔多·贝托鲁奇 | 男         |</span><br><span class="line">| 213    | 张迟昱            | 男         |</span><br><span class="line">+--------+-------------------+------------+</span><br><span class="line"></span><br><span class="line">genres</span><br><span class="line">+-----------+-------------+</span><br><span class="line">| Field     | Type        |</span><br><span class="line">+-----------+-------------+</span><br><span class="line">| gen_id    | int(11)     |</span><br><span class="line">| gen_title | varchar(50) |</span><br><span class="line">+-----------+-------------+</span><br><span class="line"></span><br><span class="line">genres</span><br><span class="line">+--------+-----------+</span><br><span class="line">| gen_id | gen_title |</span><br><span class="line">+--------+-----------+</span><br><span class="line">| 301    | 动作      |</span><br><span class="line">| 302    | 喜剧      |</span><br><span class="line">| 303    | 科幻      |</span><br><span class="line">| 304    | 恐怖      |</span><br><span class="line">| 305    | 爱情      |</span><br><span class="line">| 306    | 剧情      |</span><br><span class="line">| 307    | 动画      |</span><br><span class="line">| 308    | 冒险      |</span><br><span class="line">| 309    | 悬疑      |</span><br><span class="line">| 310    | 武打仙侠  |</span><br><span class="line">| 311    | 奇幻      |</span><br><span class="line">| 312    | 家庭      |</span><br><span class="line">| 313    | 传记      |</span><br><span class="line">| 314    | 历史      |</span><br><span class="line">| 315    | 战争      |</span><br><span class="line">| 316    | 音乐      |</span><br><span class="line">| 317    | 纪录片    |</span><br><span class="line">| 318    | 西部      |</span><br><span class="line">| 319    | 体育      |</span><br><span class="line">| 320    | 惊悚      |</span><br><span class="line">+--------+-----------+</span><br><span class="line"></span><br><span class="line">movie</span><br><span class="line">+----------------+-------------+</span><br><span class="line">| Field          | Type        |</span><br><span class="line">+----------------+-------------+</span><br><span class="line">| mov_id         | int(11)     |</span><br><span class="line">| mov_title      | varchar(50) |</span><br><span class="line">| mov_year       | int(11)     |</span><br><span class="line">| mov_time       | int(11)     |</span><br><span class="line">| mov_lang       | varchar(50) |</span><br><span class="line">| mov_dt_rel     | date        |</span><br><span class="line">| mo_rel_country | varchar(50) |</span><br><span class="line">+----------------+-------------+</span><br><span class="line"></span><br><span class="line">movie</span><br><span class="line">+--------+------------------+----------+----------+----------+------------+----------------+</span><br><span class="line">| mov_id | mov_title        | mov_year | mov_time | mov_lang | mov_dt_rel | mo_rel_country |</span><br><span class="line">+--------+------------------+----------+----------+----------+------------+----------------+</span><br><span class="line">| 101    | 建国大业         | 2009     | 140      | 普通话   | 2009-09-16 | 中国           |</span><br><span class="line">| 102    | 苏州河           | 1998     | 83       | 普通话   | 2000-09-07 | 中国           |</span><br><span class="line">| 103    | 你好李焕英       | 2020     | 128      | 普通话   | 2021-02-12 | 中国           |</span><br><span class="line">| 104    | 末代皇帝         | 1986     | 163      | 普通话   | 1987-10-23 | 意大利         |</span><br><span class="line">| 105    | 活着             | 1994     | 132      | 普通话   | 1994-06-30 | 中国           |</span><br><span class="line">| 106    | 第二十一条       | 2024     | 141      | 普通话   | 2024-02-10 | 中国           |</span><br><span class="line">| 107    | 我不是药神       | 2017     | 117      | 普通话   | 2018-07-05 | 中国           |</span><br><span class="line">| 108    | 鸦片战争         | 1996     | 153      | 普通话   | 1997-06-09 | 中国           |</span><br><span class="line">| 109    | 赤壁             | 2008     | 145      | 普通话   | 2008-07-10 | 中国           |</span><br><span class="line">| 110    | 碟中谍2          | 1999     | 123      | 英语     | 2000-05-24 | 美国           |</span><br><span class="line">| 111    | 流浪地球         | 2017     | 125      | 普通话   | 2019-02-05 | 中国           |</span><br><span class="line">| 112    | 西游记之大圣归来 | 2015     | 89       | 普通话   | 2015-07-10 | 中国           |</span><br><span class="line">| 113    | 少女小渔         | 1994     | 104      | 普通话   | 1995-04-22 | 中国台湾       |</span><br><span class="line">| 114    | 归来             | 2013     | 111      | 普通话   | 2014-05-16 | 中国           |</span><br><span class="line">| 115    | 独行月球         | 2022     | 122      | 普通话   | 2022-07-29 | 中国           |</span><br><span class="line">+--------+------------------+----------+----------+----------+------------+----------------+</span><br><span class="line"></span><br><span class="line">movie_awards</span><br><span class="line">+----------+-------------+</span><br><span class="line">| Field    | Type        |</span><br><span class="line">+----------+-------------+</span><br><span class="line">| mov_id   | int(11)     |</span><br><span class="line">| awd_id   | int(11)     |</span><br><span class="line">| awd_type | varchar(50) |</span><br><span class="line">+----------+-------------+</span><br><span class="line"></span><br><span class="line">movie_awards</span><br><span class="line">+--------+--------+------------------+</span><br><span class="line">| mov_id | awd_id | awd_type         |</span><br><span class="line">+--------+--------+------------------+</span><br><span class="line">| 101    | 405    | 最佳录音         |</span><br><span class="line">| 101    | 406    | 最佳故事片       |</span><br><span class="line">| 101    | 409    | 优秀导演         |</span><br><span class="line">| 101    | 409    | 优秀故事片       |</span><br><span class="line">| 101    | 409    | 优秀电影音乐     |</span><br><span class="line">| 101    | 412    | 最佳华语故事片奖 |</span><br><span class="line">| 103    | 405    | 最佳女主角       |</span><br><span class="line">| 103    | 405    | 最佳女配角       |</span><br><span class="line">| 103    | 405    | 最佳导演处女作   |</span><br><span class="line">| 104    | 401    | 最佳导演         |</span><br><span class="line">| 104    | 401    | 最佳影片         |</span><br><span class="line">| 104    | 401    | 最佳改编剧本     |</span><br><span class="line">| 105    | 402    | 最佳男演员       |</span><br><span class="line">| 105    | 402    | 评审团           |</span><br><span class="line">| 107    | 405    | 最佳导演处女作   |</span><br><span class="line">| 107    | 406    | 优秀影片         |</span><br><span class="line">| 107    | 406    | 最佳男配角       |</span><br><span class="line">| 107    | 407    | 最佳两岸华语电影 |</span><br><span class="line">| 107    | 411    | 中国最佳影片     |</span><br><span class="line">| 107    | 411    | 中国电影最佳导演 |</span><br><span class="line">| 108    | 405    | 最佳故事片       |</span><br><span class="line">| 111    | 405    | 最佳录音         |</span><br><span class="line">| 111    | 405    | 最佳故事片       |</span><br><span class="line">| 113    | 408    | 最佳女主角       |</span><br><span class="line">| 113    | 410    | 最佳女主角       |</span><br><span class="line">| 113    | 410    | 最佳电影         |</span><br><span class="line">+--------+--------+------------------+</span><br><span class="line"></span><br><span class="line">movie_cast</span><br><span class="line">+-----------+-------------+</span><br><span class="line">| Field     | Type        |</span><br><span class="line">+-----------+-------------+</span><br><span class="line">| act_id    | int(11)     |</span><br><span class="line">| mov_id    | int(11)     |</span><br><span class="line">| role_name | varchar(50) |</span><br><span class="line">+-----------+-------------+</span><br><span class="line"></span><br><span class="line">movie_cast</span><br><span class="line">+--------+--------+-----------+</span><br><span class="line">| act_id | mov_id | role_name |</span><br><span class="line">+--------+--------+-----------+</span><br><span class="line">| 5001   | 101    | 毛泽东    |</span><br><span class="line">| 5002   | 101    | 蒋介石    |</span><br><span class="line">| 5003   | 105    | 家珍      |</span><br><span class="line">| 5003   | 114    | 冯婉瑜    |</span><br><span class="line">| 5004   | 105    | 福贵      |</span><br><span class="line">| 5005   | 103    | 李焕英    |</span><br><span class="line">| 5006   | 102    | 牡丹      |</span><br><span class="line">| 5007   | 110    | 伊森·亨特 |</span><br><span class="line">| 5008   | 113    | 小渔      |</span><br><span class="line">| 5009   | 108    | 林则徐    |</span><br><span class="line">| 5011   | 104    | 溥仪      |</span><br><span class="line">| 5013   | 106    | 李茂娟    |</span><br><span class="line">| 5013   | 115    | 马蓝星    |</span><br><span class="line">| 5014   | 115    | 独孤月    |</span><br><span class="line">+--------+--------+-----------+</span><br><span class="line"></span><br><span class="line">movie_direction</span><br><span class="line">+--------+---------+</span><br><span class="line">| Field  | Type    |</span><br><span class="line">+--------+---------+</span><br><span class="line">| dir_id | int(11) |</span><br><span class="line">| mov_id | int(11) |</span><br><span class="line">+--------+---------+</span><br><span class="line"></span><br><span class="line">movie_direction</span><br><span class="line">+--------+--------+</span><br><span class="line">| dir_id | mov_id |</span><br><span class="line">+--------+--------+</span><br><span class="line">| 201    | 102    |</span><br><span class="line">| 202    | 105    |</span><br><span class="line">| 202    | 106    |</span><br><span class="line">| 202    | 114    |</span><br><span class="line">| 203    | 103    |</span><br><span class="line">| 204    | 113    |</span><br><span class="line">| 205    | 109    |</span><br><span class="line">| 205    | 110    |</span><br><span class="line">| 206    | 112    |</span><br><span class="line">| 207    | 108    |</span><br><span class="line">| 208    | 111    |</span><br><span class="line">| 209    | 107    |</span><br><span class="line">| 210    | 101    |</span><br><span class="line">| 211    | 101    |</span><br><span class="line">| 212    | 104    |</span><br><span class="line">| 213    | 115    |</span><br><span class="line">+--------+--------+</span><br><span class="line"></span><br><span class="line">movie_genres</span><br><span class="line">+--------+---------+</span><br><span class="line">| Field  | Type    |</span><br><span class="line">+--------+---------+</span><br><span class="line">| mov_id | int(11) |</span><br><span class="line">| gen_id | int(11) |</span><br><span class="line">+--------+---------+</span><br><span class="line"></span><br><span class="line">movie_genres</span><br><span class="line">+--------+--------+</span><br><span class="line">| mov_id | gen_id |</span><br><span class="line">+--------+--------+</span><br><span class="line">| 101    | 306    |</span><br><span class="line">| 101    | 314    |</span><br><span class="line">| 102    | 306    |</span><br><span class="line">| 103    | 302    |</span><br><span class="line">| 103    | 311    |</span><br><span class="line">| 104    | 306    |</span><br><span class="line">| 104    | 314    |</span><br><span class="line">| 105    | 306    |</span><br><span class="line">| 106    | 306    |</span><br><span class="line">| 107    | 306    |</span><br><span class="line">| 108    | 314    |</span><br><span class="line">| 109    | 314    |</span><br><span class="line">| 109    | 315    |</span><br><span class="line">| 110    | 301    |</span><br><span class="line">| 111    | 303    |</span><br><span class="line">| 112    | 307    |</span><br><span class="line">| 113    | 306    |</span><br><span class="line">| 114    | 306    |</span><br><span class="line">| 115    | 302    |</span><br><span class="line">| 115    | 303    |</span><br><span class="line">+--------+--------+</span><br><span class="line"></span><br><span class="line">rating</span><br><span class="line">+---------------+--------------+</span><br><span class="line">| Field         | Type         |</span><br><span class="line">+---------------+--------------+</span><br><span class="line">| mov_id        | int(11)      |</span><br><span class="line">| rev_id        | int(11)      |</span><br><span class="line">| rev_stars     | decimal(3,2) |</span><br><span class="line">| num_o_ratings | int(11)      |</span><br><span class="line">+---------------+--------------+</span><br><span class="line"></span><br><span class="line">rating</span><br><span class="line">+--------+--------+-----------+---------------+</span><br><span class="line">| mov_id | rev_id | rev_stars | num_o_ratings |</span><br><span class="line">+--------+--------+-----------+---------------+</span><br><span class="line">| 101    | 8001   | 7.39      | 25111         |</span><br><span class="line">| 101    | 8003   | 8.78      | 11158         |</span><br><span class="line">| 101    | 8004   | 8.56      | 88899         |</span><br><span class="line">| 101    | 8005   | 9.11      | 55557         |</span><br><span class="line">| 101    | 8006   | 9.00      | 4444          |</span><br><span class="line">| 101    | 8007   | 8.88      | 56455         |</span><br><span class="line">| 101    | 8008   | 9.40      | 5263          |</span><br><span class="line">| 101    | 8012   | 8.00      | 88649         |</span><br><span class="line">| 101    | 8013   | 7.99      | 5586          |</span><br><span class="line">| 101    | 8014   | 8.11      | 91542         |</span><br><span class="line">| 102    | 8011   | 8.56      | 16942         |</span><br><span class="line">| 103    | 8007   | 8.52      | 12561         |</span><br><span class="line">| 103    | 8008   | 8.77      | 1154          |</span><br><span class="line">| 103    | 8012   | 8.99      | 21020         |</span><br><span class="line">| 103    | 8013   | 9.22      | 2112          |</span><br><span class="line">| 103    | 8014   | 6.66      | 21211         |</span><br><span class="line">| 104    | 8004   | 7.22      | 1212          |</span><br><span class="line">| 105    | 8002   | 7.46      | 21567         |</span><br><span class="line">| 106    | 8008   | 7.98      | 4582          |</span><br><span class="line">| 107    | 8001   | 9.00      | 84478         |</span><br><span class="line">| 107    | 8006   | 6.98      | 68545         |</span><br><span class="line">| 108    | 8011   | 8.66      | 87448         |</span><br><span class="line">| 109    | 8012   | 8.46      | 7145          |</span><br><span class="line">| 110    | 8007   | 8.75      | 31555         |</span><br><span class="line">| 111    | 8008   | 8.90      | 65841         |</span><br><span class="line">| 113    | 8009   | 6.98      | 544           |</span><br><span class="line">| 114    | 8010   | 7.50      | 26923         |</span><br><span class="line">| 115    | 8010   | 7.40      | 93838         |</span><br><span class="line">+--------+--------+-----------+---------------+</span><br><span class="line"></span><br><span class="line">reviewer</span><br><span class="line">+----------+-------------+</span><br><span class="line">| Field    | Type        |</span><br><span class="line">+----------+-------------+</span><br><span class="line">| rev_id   | int(11)     |</span><br><span class="line">| rev_name | varchar(50) |</span><br><span class="line">+----------+-------------+</span><br><span class="line"></span><br><span class="line">reviewer</span><br><span class="line">+--------+----------+</span><br><span class="line">| rev_id | rev_name |</span><br><span class="line">+--------+----------+</span><br><span class="line">| 8001   | 王小小   |</span><br><span class="line">| 8002   | 青丝     |</span><br><span class="line">| 8003   | 墨染     |</span><br><span class="line">| 8004   | 谦谦君子 |</span><br><span class="line">| 8005   | 乐淘淘   |</span><br><span class="line">| 8006   | 张思睿   |</span><br><span class="line">| 8007   | 吴赛文   |</span><br><span class="line">| 8008   | 蒋艾特   |</span><br><span class="line">| 8009   | 格物阳明 |</span><br><span class="line">| 8010   | 东坡居士 |</span><br><span class="line">| 8011   | 流云     |</span><br><span class="line">| 8012   | 扬帆     |</span><br><span class="line">| 8013   | 李欢笑   |</span><br><span class="line">| 8014   | 宋礼     |</span><br><span class="line">+--------+----------+</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> dir_id, dir_name</span><br><span class="line"><span class="keyword">FROM</span> director</span><br><span class="line"><span class="keyword">WHERE</span> dir_name <span class="keyword">LIKE</span> <span class="string">&#x27;张%&#x27;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.查找在2010-2020年期间拍摄的电影信息，包括电影编号，电影名称和电影发行年份，查询结果按电影年份升序排序。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>3.找出那些没有参演任何影片的演员，输出这些演员的ID信息。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> act_id</span><br><span class="line"><span class="keyword">FROM</span> actor</span><br><span class="line"><span class="keyword">WHERE</span> act_id <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> act_id <span class="keyword">FROM</span> movie_cast);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>4.编写一个SQL查询，查找所有评分为8星或8星以上的评论者的昵称。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> r.rev_name</span><br><span class="line"><span class="keyword">FROM</span> reviewer r</span><br><span class="line"><span class="keyword">JOIN</span> rating rt <span class="keyword">ON</span> r.rev_id <span class="operator">=</span> rt.rev_id</span><br><span class="line"><span class="keyword">WHERE</span> rt.rev_stars <span class="operator">&gt;=</span> <span class="number">8</span>;</span><br><span class="line"># 这个查询通过连接reviewer表和rating表，选择所有评分大于或等于<span class="number">8</span>的评论者的昵称，并确保结果中没有重复的昵称。</span><br></pre></td></tr></table></figure>
+
+<p><strong>5.查询电影《活着》的所有演员信息，返回演员表的所有字段。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> a.<span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> actor a</span><br><span class="line"><span class="keyword">JOIN</span> movie_cast mc <span class="keyword">ON</span> a.act_id <span class="operator">=</span> mc.act_id</span><br><span class="line"><span class="keyword">JOIN</span> movie m <span class="keyword">ON</span> mc.mov_id <span class="operator">=</span> m.mov_id</span><br><span class="line"><span class="keyword">WHERE</span> m.mov_title <span class="operator">=</span> <span class="string">&#x27;活着&#x27;</span>;</span><br><span class="line"># 这个查询通过连接actor、movie_cast和movie表，选择电影《活着》的所有演员信息。</span><br></pre></td></tr></table></figure>
+
+<p><strong>6.查询平均评分最高的电影ID和名称，平均评分，参评人数.</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">### 参考答案</span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    m.mov_id,</span><br><span class="line">    m.mov_title,</span><br><span class="line">    <span class="built_in">AVG</span>(r.rev_stars) <span class="keyword">AS</span> average_rating,</span><br><span class="line">    <span class="built_in">SUM</span>(r.num_o_ratings) <span class="keyword">AS</span> total_ratings</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    movie m</span><br><span class="line"><span class="keyword">JOIN</span> </span><br><span class="line">    rating r <span class="keyword">ON</span> m.mov_id <span class="operator">=</span> r.mov_id</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> </span><br><span class="line">    m.mov_id, m.mov_title</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> </span><br><span class="line">    average_rating <span class="keyword">DESC</span>, total_ratings <span class="keyword">DESC</span></span><br><span class="line">LIMIT <span class="number">1</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">### 可能（错误）的答案</span><br><span class="line"><span class="keyword">SELECT</span> m.mov_id, m.mov_title, <span class="built_in">AVG</span>(r.rev_stars) <span class="keyword">AS</span> avg_rating, <span class="built_in">COUNT</span>(r.rev_id) <span class="keyword">AS</span> num_of_ratings</span><br><span class="line"><span class="keyword">FROM</span> rating r</span><br><span class="line"><span class="keyword">JOIN</span> movie m <span class="keyword">ON</span> r.mov_id <span class="operator">=</span> m.mov_id</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> m.mov_id, m.mov_title</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> avg_rating <span class="keyword">DESC</span></span><br><span class="line">LIMIT <span class="number">1</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>分析：</strong><br>你提到的查询与之前的查询有几个关键区别：</p>
+<ol>
+<li><p><strong>聚合函数的使用</strong>：</p>
+<ul>
+<li>你提供的查询使用了 <code>SUM(r.num_o_ratings)</code>，这是计算每部电影的总评分人数，而我之前的查询是使用 <code>COUNT(r.rev_id)</code>，计算的是评论数量。</li>
+</ul>
+</li>
+<li><p><strong>排序依据</strong>：</p>
+<ul>
+<li>你的查询首先按 <code>average_rating</code> 排序，然后按 <code>total_ratings</code> 排序，以确保在平均评分相同的情况下，评论人数更多的电影排在前面。而我之前的查询只按 <code>average_rating</code> 排序。</li>
+</ul>
+</li>
+<li><p><strong>别名命名</strong>：</p>
+<ul>
+<li>在你的查询中，平均评分使用了 <code>average_rating</code> 作为别名，而之前的查询使用了 <code>avg_rating</code>。</li>
+</ul>
+</li>
+</ol>
+<p>总体来说，你的查询更全面，能够提供更精准的结果，尤其是在处理评分相同的电影时。</p>
+<p><strong>7.列出所有获奖项目超过3项（不包含3项）的电影ID和获奖类型以及奖项编号信息。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">## 参考答案</span><br><span class="line"><span class="comment">-- 首先，找出获奖项目超过3项的电影ID</span></span><br><span class="line"><span class="keyword">WITH</span> movie_award_counts <span class="keyword">AS</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> </span><br><span class="line">        mov_id,</span><br><span class="line">        <span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> awd_id) <span class="keyword">AS</span> award_count</span><br><span class="line">    <span class="keyword">FROM</span> </span><br><span class="line">        movie_awards</span><br><span class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> </span><br><span class="line">        mov_id</span><br><span class="line">    <span class="keyword">HAVING</span> </span><br><span class="line">        <span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> awd_id) <span class="operator">&gt;</span> <span class="number">3</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 然后，获取这些电影的具体获奖信息</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    ma.mov_id,</span><br><span class="line">    ma.awd_type,</span><br><span class="line">    ma.awd_id</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    movie_awards ma</span><br><span class="line"><span class="keyword">JOIN</span> </span><br><span class="line">    movie_award_counts mac <span class="keyword">ON</span> ma.mov_id <span class="operator">=</span> mac.mov_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> </span><br><span class="line">    ma.mov_id, ma.awd_id;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 可能错误的答案</span><br><span class="line"><span class="keyword">SELECT</span> ma.mov_id, aw.awd_level, ma.awd_id</span><br><span class="line"><span class="keyword">FROM</span> movie_awards ma</span><br><span class="line"><span class="keyword">JOIN</span> awards aw <span class="keyword">ON</span> ma.awd_id <span class="operator">=</span> aw.awd_id</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> ma.mov_id, aw.awd_level, ma.awd_id</span><br><span class="line"><span class="keyword">HAVING</span> <span class="built_in">COUNT</span>(ma.awd_id) <span class="operator">&gt;</span> <span class="number">3</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>分析：<br>参考答案与之前的查询有几个主要区别：</p>
+<ol>
+<li><p><strong>使用了CTE（公共表表达式）</strong>：</p>
+<ul>
+<li>参考答案首先通过CTE <code>movie_award_counts</code> 找出获奖项目超过3项的电影ID。这样可以分步处理，提高可读性。</li>
+</ul>
+</li>
+<li><p><strong>DISTINCT关键字</strong>：</p>
+<ul>
+<li>参考答案中的 <code>COUNT(DISTINCT awd_id)</code> 确保计算唯一的获奖项目，而我之前的查询没有使用 <code>DISTINCT</code>，可能会导致计数重复的获奖项目。</li>
+</ul>
+</li>
+<li><p><strong>分开查询逻辑</strong>：</p>
+<ul>
+<li>参考答案将获取获奖信息的步骤与计数分开，首先筛选出符合条件的电影ID，然后在第二步中查询这些电影的具体获奖信息。这种方法更清晰，容易理解。</li>
+</ul>
+</li>
+<li><p><strong>排序</strong>：</p>
+<ul>
+<li>参考答案在结果中添加了 <code>ORDER BY ma.mov_id, ma.awd_id</code>，这使得结果按照电影ID和奖项编号进行排序，增强了结果的可读性。</li>
+</ul>
+</li>
+</ol>
+<p>总结来说，参考答案通过分步处理和使用 <code>DISTINCT</code> 来确保准确性和可读性，是一种更为精确和清晰的查询方法。</p>
+<p><strong>8.查询有不少于3位评论者进行打分的电影片名和最高评分分数。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">## 正确答案一</span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    m.mov_title,</span><br><span class="line">    <span class="built_in">MAX</span>(r.rev_stars) <span class="keyword">AS</span> highest_rating</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    movie m</span><br><span class="line"><span class="keyword">JOIN</span> </span><br><span class="line">    rating r <span class="keyword">ON</span> m.mov_id <span class="operator">=</span> r.mov_id</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> </span><br><span class="line">    m.mov_id, m.mov_title</span><br><span class="line"><span class="keyword">HAVING</span> </span><br><span class="line">    <span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> r.rev_id) <span class="operator">&gt;=</span> <span class="number">3</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">## 正确答案<span class="number">2</span></span><br><span class="line"><span class="comment">-- 首先，找出评论者数量不少于3的电影ID</span></span><br><span class="line"><span class="keyword">WITH</span> movie_reviewer_counts <span class="keyword">AS</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> </span><br><span class="line">        mov_id,</span><br><span class="line">        <span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> rev_id) <span class="keyword">AS</span> reviewer_count</span><br><span class="line">    <span class="keyword">FROM</span> </span><br><span class="line">        rating</span><br><span class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> </span><br><span class="line">        mov_id</span><br><span class="line">    <span class="keyword">HAVING</span> </span><br><span class="line">        <span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> rev_id) <span class="operator">&gt;=</span> <span class="number">3</span></span><br><span class="line">),</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 然后，找到这些电影的最高评分</span></span><br><span class="line">max_ratings <span class="keyword">AS</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> </span><br><span class="line">        mov_id,</span><br><span class="line">        <span class="built_in">MAX</span>(rev_stars) <span class="keyword">AS</span> max_rating</span><br><span class="line">    <span class="keyword">FROM</span> </span><br><span class="line">        rating</span><br><span class="line">    <span class="keyword">WHERE</span> </span><br><span class="line">        mov_id <span class="keyword">IN</span> (<span class="keyword">SELECT</span> mov_id <span class="keyword">FROM</span> movie_reviewer_counts)</span><br><span class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> </span><br><span class="line">        mov_id</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 最后，获取这些电影的片名和最高评分</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    m.mov_title,</span><br><span class="line">    mr.max_rating</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    movie m</span><br><span class="line"><span class="keyword">JOIN</span> </span><br><span class="line">    max_ratings mr <span class="keyword">ON</span> m.mov_id <span class="operator">=</span> mr.mov_id;</span><br></pre></td></tr></table></figure>
+
+<p><strong>9.找出所有参演了电影“建国大业”的演员姓名和ID</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 选择参演了电影“建国大业”的演员姓名和ID</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    a.act_name,</span><br><span class="line">    a.act_id</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    actor a</span><br><span class="line"><span class="keyword">JOIN</span> </span><br><span class="line">    movie_cast mc <span class="keyword">ON</span> a.act_id <span class="operator">=</span> mc.act_id</span><br><span class="line"><span class="keyword">JOIN</span> </span><br><span class="line">    movie m <span class="keyword">ON</span> mc.mov_id <span class="operator">=</span> m.mov_id</span><br><span class="line"><span class="keyword">WHERE</span> </span><br><span class="line">    m.mov_title <span class="operator">=</span> <span class="string">&#x27;建国大业&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> a.act_id, a.act_name</span><br><span class="line"><span class="keyword">FROM</span> actor a</span><br><span class="line"><span class="keyword">JOIN</span> movie_cast mc <span class="keyword">ON</span> a.act_id <span class="operator">=</span> mc.act_id</span><br><span class="line"><span class="keyword">WHERE</span> mc.mov_id <span class="operator">=</span> <span class="number">101</span>;  <span class="comment">-- 电影《建国大业》的ID为101</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/10/20/Docker/"
+      title="Docker"
+     >
+
+    <p class="title-text">
+      
+        Docker
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

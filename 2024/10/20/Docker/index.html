@@ -14,17 +14,21 @@
   
 
   
-  <title>标签: 数据库 SQL | Buyun&#39;s Blog</title>
+  <title>Docker | Buyun&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Buyun&#39;s Blog">
-<meta property="og:url" content="https://buyun14.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/index.html">
+  <meta name="description" content="前言docker的安装不再赘述。本人使用Debian12系统进行Docker部署及相关应用 Docker 包括三个基本概念  镜像（Image） 容器（Container） 仓库（Repository）理解了这三个概念，就理解了 Docker 的整个生命周期。  镜像Docker 镜像（Image），就相当于是一个 root 文件系统。 容器容器（Container）的实质是进程，但与直接在宿主执">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker">
+<meta property="og:url" content="https://buyun14.github.io/2024/10/20/Docker/index.html">
 <meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="前言docker的安装不再赘述。本人使用Debian12系统进行Docker部署及相关应用 Docker 包括三个基本概念  镜像（Image） 容器（Container） 仓库（Repository）理解了这三个概念，就理解了 Docker 的整个生命周期。  镜像Docker 镜像（Image），就相当于是一个 root 文件系统。 容器容器（Container）的实质是进程，但与直接在宿主执">
 <meta property="og:locale">
+<meta property="article:published_time" content="2024-10-19T16:07:26.000Z">
+<meta property="article:modified_time" content="2024-10-19T16:34:46.158Z">
 <meta property="article:author" content="buyun">
 <meta property="article:tag" content="blog">
 <meta name="twitter:card" content="summary">
@@ -170,44 +174,117 @@
     <div id="content-body">
        
 
-<div class="archive-main-card">
-    <div class="archive-top">
-      <div class="main-title-bar">
-        <div class="main-title-dot"></div>
-        <h1 class="article-title">归档</h1>
-      </div>    
+
+<article id="post-Docker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        Docker
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-10-19T16:07:26.000Z" itemprop="datePublished">2024-10-20</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            2.5k 词 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>docker的安装不再赘述。<br>本人使用Debian12系统进行Docker部署及相关应用</p>
+<p>Docker 包括三个基本概念</p>
+<ul>
+<li>镜像（Image）</li>
+<li>容器（Container）</li>
+<li>仓库（Repository）<br>理解了这三个概念，就理解了 Docker 的整个生命周期。</li>
+</ul>
+<h4 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h4><p>Docker 镜像（Image），就相当于是一个 root 文件系统。</p>
+<h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>容器（Container）的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、自己的进程空间，甚至自己的用户 ID 空间。容器内的进程是运行在一个隔离的环境里，使用起来，就好像是在一个独立于宿主的系统下操作一样。</p>
+<p>按照 Docker 最佳实践的要求，容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume）、或者 绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高。</p>
+<p>数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器删除或者重新运行之后，数据却不会丢失。</p>
+<h4 id="仓库"><a href="#仓库" class="headerlink" title="仓库"></a>仓库</h4><p>镜像构建完成后，可以很容易的在当前宿主机上运行，但是，如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务，Docker Registry 就是这样的服务。</p>
+<p>一个 Docker Registry 中可以包含多个 仓库（Repository）；每个仓库可以包含多个 标签（Tag）；每个标签对应一个镜像。</p>
+<p>通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 <code>&lt;仓库名&gt;:&lt;标签&gt;</code> 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签。</p>
+<p>以 Ubuntu 镜像 为例，ubuntu 是仓库的名字，其内包含有不同的版本标签，如，16.04, 18.04。我们可以通过 ubuntu:16.04，或者 <code>ubuntu:18.04</code> 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 ubuntu，那将视为 <code>ubuntu:latest</code>。</p>
+<p>仓库名经常以 两段式路径 形式出现，比如 <code>jwilder/nginx-proxy</code>，前者往往意味着 Docker Registry 多用户环境下的用户名，后者则往往是对应的软件名。但这并非绝对，取决于所使用的具体 Docker Registry 的软件或服务。</p>
+<h4 id="获取镜像并运行"><a href="#获取镜像并运行" class="headerlink" title="获取镜像并运行"></a>获取镜像并运行</h4><p>获取镜像<br>从 Docker 镜像仓库获取镜像的命令是 docker pull<br><code>$ docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]</code><br>比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull ubuntu:18.04</span><br><span class="line">18.04: Pulling from library/ubuntu</span><br><span class="line">92dc2a97ff99: Pull complete</span><br><span class="line">be13a9d27eb8: Pull complete</span><br><span class="line">c8299583700a: Pull complete</span><br><span class="line">Digest: sha256:4bc3ae6596938cb0d9e5ac51a1152ec9dcac2a1c50829c74abd9c4361e321b26</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> ubuntu:18.04</span><br><span class="line">docker.io/library/ubuntu:18.04</span><br></pre></td></tr></table></figure>
+<p>有了镜像后，我们就能够以这个镜像为基础启动并运行一个容器。以上面的 ubuntu:18.04 为例，如果我们打算启动里面的 bash 并且进行交互式操作的话，可以执行下面的命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --<span class="built_in">rm</span> ubuntu:18.04 bash</span><br><span class="line"></span><br><span class="line">root@e7009c6ce357:/<span class="comment"># cat /etc/os-release</span></span><br><span class="line">NAME=<span class="string">&quot;Ubuntu&quot;</span></span><br><span class="line">VERSION=<span class="string">&quot;18.04.1 LTS (Bionic Beaver)&quot;</span></span><br><span class="line">ID=ubuntu</span><br><span class="line">ID_LIKE=debian</span><br><span class="line">PRETTY_NAME=<span class="string">&quot;Ubuntu 18.04.1 LTS&quot;</span></span><br><span class="line">VERSION_ID=<span class="string">&quot;18.04&quot;</span></span><br><span class="line">HOME_URL=<span class="string">&quot;https://www.ubuntu.com/&quot;</span></span><br><span class="line">SUPPORT_URL=<span class="string">&quot;https://help.ubuntu.com/&quot;</span></span><br><span class="line">BUG_REPORT_URL=<span class="string">&quot;https://bugs.launchpad.net/ubuntu/&quot;</span></span><br><span class="line">PRIVACY_POLICY_URL=<span class="string">&quot;https://www.ubuntu.com/legal/terms-and-policies/privacy-policy&quot;</span></span><br><span class="line">VERSION_CODENAME=bionic</span><br><span class="line">UBUNTU_CODENAME=bionic</span><br></pre></td></tr></table></figure>
+
+<p><code>docker run</code> 就是运行容器的命令，具体格式我们会在 容器 一节进行详细讲解，我们这里简要的说明一下上面用到的参数。</p>
+<p><code>-it</code>：这是两个参数，一个是 <code>-i</code>：交互式操作，一个是 <code>-t</code> 终端。我们这里打算进入 bash 执行一些命令并查看返回结果，因此我们需要交互式终端。<br><code>--rm</code>：这个参数是说容器退出后随之将其删除。默认情况下，为了排障需求，退出的容器并不会立即删除，除非手动 <code>docker rm</code>。我们这里只是随便执行个命令，看看结果，不需要排障和保留结果，因此使用 <code>--rm</code> 可以避免浪费空间。<br><code>ubuntu:18.04</code>：这是指用 <code>ubuntu:18.04</code> 镜像为基础来启动容器。<br><code>bash</code>：放在镜像名后的是 命令，这里我们希望有个交互式 Shell，因此用的是 <code>bash</code>。<br>进入容器后，我们可以在 Shell 下操作，执行任何所需的命令。这里，我们执行了 <code>cat /etc/os-release</code>，这是 Linux 常用的查看当前系统版本的命令，从返回的结果可以看到容器内是 <code>Ubuntu 18.04.1 LTS</code> 系统。</p>
+<p>最后我们通过 <code>exit</code> 退出了这个容器。</p>
+
+        
+      </div>
+
+         
     </div>
     
-    
-      
-      
-        
-        <div class="year-line">
-            <div class="year-num">2024</div>
-            <div class="dot-wrapper">
-                <div class="dot"></div>
-            </div>
-            <div class="article-count">1 篇文章</div>
-        </div>
-      
-      <a class="archive-article-link" href="/2024/09/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C/" title="数据库原理实验">
-        <div class="date">09-28</div>
-        <div class="line">
-            <div class="dot"></div>
-        </div>
-        <div class="title">
-            <div class="title-inner">
-                
-                    数据库原理实验
-                
-            </div>
-        </div>
-        <div class="tags">
-            #数据库 SQL
-        </div>
-      </a>
-    
+     
   </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2024/10/20/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E7%90%86%E8%AE%BAsql%E7%BB%83%E4%B9%A02/"
+      title="数据库原理理论sql练习2"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        数据库原理理论sql练习2
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/10/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C-%E7%AC%AC%E4%BA%8C%E6%AC%A1/"
+      title="数据库原理实验-第二次"
+     >
+
+    <p class="title-text">
+      
+        数据库原理实验-第二次
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
     </div>
     <div id="footer-wrapper">
       <footer id="footer">

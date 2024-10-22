@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>迁移学习 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="Canny 边缘检测参考：Canny 边缘检测 目标Canny 边缘检测的概念用于该函数的 OpenCV 函数 ： cv.Canny（） 理论Canny Edge Detection 是一种流行的边缘检测算法。 1.这是一个多阶段算法，我们将介绍每个阶段。2.Noise Reduction由于边缘检测容易受到图像中杂色的影响，因此第一步是使用 5x5 高斯滤波器去除图像中的杂色。我们在前面的章节中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="迁移学习">
+<meta property="og:url" content="https://buyun14.github.io/2024/10/23/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="Canny 边缘检测参考：Canny 边缘检测 目标Canny 边缘检测的概念用于该函数的 OpenCV 函数 ： cv.Canny（） 理论Canny Edge Detection 是一种流行的边缘检测算法。 1.这是一个多阶段算法，我们将介绍每个阶段。2.Noise Reduction由于边缘检测容易受到图像中杂色的影响，因此第一步是使用 5x5 高斯滤波器去除图像中的杂色。我们在前面的章节中">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202410230336863.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202410230355367.png">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/f3aff31184131c1dc323e826cc849827.png">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/3819bd92419fa38d072747117da4de84.png">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/bfcb495eebecaf4cf6423312089c2678.png">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/7f546fc4fab0832bfea4a714e5a2291f.png#pic_center">
+<meta property="article:published_time" content="2024-10-22T18:57:46.000Z">
+<meta property="article:modified_time" content="2024-10-22T21:56:07.875Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="迁移学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202410230336863.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/" rel="tag">数据库 SQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-迁移学习" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        迁移学习
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-10-22T18:57:46.000Z" itemprop="datePublished">2024-10-23</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            7.3k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="Canny-边缘检测"><a href="#Canny-边缘检测" class="headerlink" title="Canny 边缘检测"></a>Canny 边缘检测</h2><p>参考：<a target="_blank" rel="noopener" href="https://docs.opencv.org/3.4/da/d22/tutorial_py_canny.html">Canny 边缘检测</a></p>
+<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>Canny 边缘检测的概念<br>用于该函数的 OpenCV 函数 ： cv.Canny（）</p>
+<h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><p>Canny Edge Detection 是一种流行的边缘检测算法。</p>
+<h4 id="1-这是一个多阶段算法，我们将介绍每个阶段。"><a href="#1-这是一个多阶段算法，我们将介绍每个阶段。" class="headerlink" title="1.这是一个多阶段算法，我们将介绍每个阶段。"></a>1.这是一个多阶段算法，我们将介绍每个阶段。</h4><h4 id="2-Noise-Reduction"><a href="#2-Noise-Reduction" class="headerlink" title="2.Noise Reduction"></a>2.Noise Reduction</h4><p>由于边缘检测容易受到图像中杂色的影响，因此第一步是使用 5x5 高斯滤波器去除图像中的杂色。我们在前面的章节中已经看到了这一点。</p>
+<h4 id="3-求图像的强度梯度"><a href="#3-求图像的强度梯度" class="headerlink" title="3.求图像的强度梯度"></a>3.求图像的强度梯度</h4><p>然后，使用 Sobel 核在水平和垂直方向上过滤平滑后的图像，以获得水平方向的一阶导数 （Gx） 和垂直方向 （Gy).从这两张图片中，我们可以找到每个像素的边缘渐变和方向，如下所示：</p>
+<p>$$Edge_Gradient ; (G) &#x3D; \sqrt{G_x^2 + G_y^2} \ Angle ; (\theta) &#x3D; \tan^{-1} \bigg(\frac{G_y}{G_x}\bigg)$$</p>
+<p>渐变方向始终垂直于边缘。它四舍五入为代表垂直、水平和两个对角线方向的四个角之一。</p>
+<h4 id="4-Non-maximum-Suppression"><a href="#4-Non-maximum-Suppression" class="headerlink" title="4.Non-maximum Suppression"></a>4.Non-maximum Suppression</h4><p>在获得梯度大小和方向后，对图像进行全面扫描以<strong>去除任何可能不构成边缘的不需要的像素</strong>。为此，在每个像素处，检查像素是否是其邻域中渐变方向的局部最大值。请看下面的图片：</p>
+<p><img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202410230336863.jpg" alt="nms.jpg" title="图像"></p>
+<p>点 A 位于边缘（垂直方向）。渐变方向垂直于边缘。点 B 和 C 位于梯度方向。因此，将点 A 与点 B 和 C 一起检查，以查看它是否形成局部最大值。如果是这样，则考虑将其用于下一阶段，否则，它将被抑制（ 放零）。</p>
+<p>简而言之，您得到的结果是具有 “thin edges” 的二进制图像。</p>
+<h4 id="5-磁滞阈值-Hysteresis-Thresholding"><a href="#5-磁滞阈值-Hysteresis-Thresholding" class="headerlink" title="5.磁滞阈值(Hysteresis Thresholding)"></a>5.磁滞阈值(Hysteresis Thresholding)</h4><p>此阶段决定哪些 Edge 都是真正的 Edge，哪些不是。为此，我们需要两个阈值 minVal 和 maxVal。<strong>强度梯度大于 maxVal 的任何边都肯定是边，而低于 minVal 的边肯定是非边</strong>，因此被丢弃。位于这两个阈值之间的区域根据其连通性分类为边或非边。如果它们连接到“确定边缘”像素，则它们被视为边缘的一部分。否则，它们也会被丢弃。见下图：</p>
+<p><img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202410230355367.png" alt="hysteresis.jpg"></p>
+<p>边 A 高于 maxVal，因此被视为 “sure-edge”。虽然边 C 低于 maxVal，但它连接到边 A，所以这也被认为是有效的边，我们得到了完整的曲线。但是边 B 虽然高于 minVal 并且与边 C 位于同一区域，但它没有连接到任何“确定边”，因此被丢弃。因此，我们必须相应地选择 minVal 和 maxVal 以获得正确的结果，这一点非常重要。</p>
+<p>此阶段还根据边缘是长线的假设来删除小像素杂色。</p>
+<p>因此，我们最终得到的是图像中的强边缘。</p>
+<h3 id="OpenCV-中的-Canny-Edge-Detection"><a href="#OpenCV-中的-Canny-Edge-Detection" class="headerlink" title="OpenCV 中的 Canny Edge Detection"></a>OpenCV 中的 Canny Edge Detection</h3><p>OpenCV 将上述所有内容放在单个函数 cv.Canny（） 中。我们将了解如何使用它。<strong>第一个参数是我们的输入图像。第二个和第三个参数分别是我们的<code>minVal</code> 和 <code>maxVal</code><strong>。</strong>第四个参数是 <code>aperture_size</code><strong>。</strong>它是用于查找图像梯度的 Sobel 核的大小</strong>。默认情况下，它是 3。<strong>最后一个参数是 L2gradient</strong>，它指定了<strong>求梯度幅度的方程</strong>。如果为 True，则使用上面提到的更准确的方程，否则使用此函数：$Edge_Gradient ; (G) &#x3D; |G_x| + |G_y|$.默认情况下，它是 False。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取图像</span></span><br><span class="line">img = cv.imread(<span class="string">&#x27;messi5.jpg&#x27;</span>, cv.IMREAD_GRAYSCALE)</span><br><span class="line"><span class="keyword">assert</span> img <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>, <span class="string">&quot;文件无法读取，请检查文件路径&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 Canny 边缘检测</span></span><br><span class="line">edges = cv.Canny(img, <span class="number">100</span>, <span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示原始图像和边缘检测后的图像</span></span><br><span class="line">plt.subplot(<span class="number">121</span>), plt.imshow(img, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;原始图像&#x27;</span>), plt.xticks([]), plt.yticks([])</span><br><span class="line">plt.subplot(<span class="number">122</span>), plt.imshow(edges, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;边缘图像&#x27;</span>), plt.xticks([]), plt.yticks([])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示图像</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h2 id="代码介绍"><a href="#代码介绍" class="headerlink" title="代码介绍"></a>代码介绍</h2><p>当然，我可以帮助你理解这个模型在做什么。让我们逐步解析代码，并解释每个部分的作用。</p>
+<h3 id="1-导入必要的库"><a href="#1-导入必要的库" class="headerlink" title="1. 导入必要的库"></a>1. 导入必要的库</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torchvision.models <span class="keyword">as</span> models</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> Dataset, DataLoader</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn  <span class="comment"># 导入nn模块</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>os</code>：用于文件路径操作。</li>
+<li><code>torch</code> 和 <code>torchvision</code>：PyTorch 的核心库和计算机视觉工具包。</li>
+<li><code>Dataset</code> 和 <code>DataLoader</code>：用于创建自定义数据集和加载数据。</li>
+<li><code>PIL.Image</code>：用于图像处理。</li>
+<li><code>torch.nn</code>：包含神经网络层和其他相关组件。</li>
+</ul>
+<h3 id="2-自定义数据集类"><a href="#2-自定义数据集类" class="headerlink" title="2. 自定义数据集类"></a>2. 自定义数据集类</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">QuickDrawDataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, data, transform=<span class="literal">None</span></span>):</span><br><span class="line">        self.data = data</span><br><span class="line">        self.transform = transform</span><br><span class="line">        self.classes = [<span class="string">&#x27;cat&#x27;</span>, <span class="string">&#x27;other&#x27;</span>]  <span class="comment"># 假设我们有两个类别：猫和其他</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.data)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, idx</span>):</span><br><span class="line">        image_path = self.data[idx][<span class="string">&#x27;image_path&#x27;</span>]</span><br><span class="line">        label = self.data[idx][<span class="string">&#x27;label&#x27;</span>]</span><br><span class="line">        image = Image.<span class="built_in">open</span>(image_path).convert(<span class="string">&#x27;RGB&#x27;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> self.transform:</span><br><span class="line">            image = self.transform(image)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> image, label</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>QuickDrawDataset</code> 类继承自 <code>torch.utils.data.Dataset</code>。</li>
+<li><code>__init__</code> 方法初始化数据集，包括数据列表、数据转换和类别信息。</li>
+<li><code>__len__</code> 方法返回数据集的大小。</li>
+<li><code>__getitem__</code> 方法根据索引获取单个样本，包括图像和标签，并应用数据转换。</li>
+</ul>
+<h3 id="3-定义数据转换"><a href="#3-定义数据转换" class="headerlink" title="3. 定义数据转换"></a>3. 定义数据转换</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">transform = transforms.Compose([</span><br><span class="line">    transforms.Resize((<span class="number">224</span>, <span class="number">224</span>)),  <span class="comment"># 调整图片大小</span></span><br><span class="line">    transforms.RandomHorizontalFlip(),  <span class="comment"># 随机水平翻转</span></span><br><span class="line">    transforms.RandomRotation(<span class="number">10</span>),  <span class="comment"># 随机旋转</span></span><br><span class="line">    transforms.ColorJitter(brightness=<span class="number">0.2</span>, contrast=<span class="number">0.2</span>, saturation=<span class="number">0.2</span>, hue=<span class="number">0.2</span>),  <span class="comment"># 随机颜色变换</span></span><br><span class="line">    transforms.ToTensor(),  <span class="comment"># 将图片转换为张量</span></span><br><span class="line">    transforms.Normalize(mean=[<span class="number">0.485</span>, <span class="number">0.456</span>, <span class="number">0.406</span>], std=[<span class="number">0.229</span>, <span class="number">0.224</span>, <span class="number">0.225</span>])  <span class="comment"># 标准化张量</span></span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>transforms.Compose</code> 创建一个转换链，依次应用多个转换步骤。</li>
+<li><code>Resize</code>：调整图像大小到 224x224。</li>
+<li><code>RandomHorizontalFlip</code>：随机水平翻转图像以增加数据多样性。</li>
+<li><code>RandomRotation</code>：随机旋转图像（最多 10 度）。</li>
+<li><code>ColorJitter</code>：随机改变图像的颜色属性（亮度、对比度、饱和度、色调）。</li>
+<li><code>ToTensor</code>：将图像转换为 PyTorch 张量。</li>
+<li><code>Normalize</code>：标准化张量，使其具有零均值和单位标准差。</li>
+</ul>
+<h3 id="4-创建数据集和数据加载器"><a href="#4-创建数据集和数据加载器" class="headerlink" title="4. 创建数据集和数据加载器"></a>4. 创建数据集和数据加载器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">drawings = [<span class="string">f&#x27;data/images/cat_<span class="subst">&#123;i&#125;</span>.png&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>)]  <span class="comment"># 示例数据</span></span><br><span class="line">train_data = [&#123;<span class="string">&#x27;image_path&#x27;</span>: <span class="string">f&#x27;data/images/cat_<span class="subst">&#123;i&#125;</span>.png&#x27;</span>, <span class="string">&#x27;label&#x27;</span>: <span class="number">1</span>&#125; <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(drawings))]</span><br><span class="line">train_dataset = QuickDrawDataset(train_data, transform=transform)  <span class="comment"># 创建数据集对象</span></span><br><span class="line">train_loader = DataLoader(train_dataset, batch_size=<span class="number">32</span>, shuffle=<span class="literal">True</span>)  <span class="comment"># 创建数据加载器</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>drawings</code> 是一个包含图像路径的列表。</li>
+<li><code>train_data</code> 是一个字典列表，每个字典包含图像路径和标签。</li>
+<li><code>QuickDrawDataset</code> 实例化为 <code>train_dataset</code>。</li>
+<li><code>DataLoader</code> 用于批量加载数据，并在训练时打乱数据。</li>
+</ul>
+<h3 id="5-加载预训练的-ResNet-18-模型并修改最后一层"><a href="#5-加载预训练的-ResNet-18-模型并修改最后一层" class="headerlink" title="5. 加载预训练的 ResNet-18 模型并修改最后一层"></a>5. 加载预训练的 ResNet-18 模型并修改最后一层</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model = models.resnet18(weights=<span class="literal">None</span>)  <span class="comment"># 使用本地预训练权重</span></span><br><span class="line">num_features = model.fc.in_features</span><br><span class="line">num_classes = <span class="built_in">len</span>(train_dataset.classes)  <span class="comment"># 获取类别数量</span></span><br><span class="line">model.fc = nn.Linear(num_features, num_classes)  <span class="comment"># 修改最后一层以适应新的分类任务</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>models.resnet18</code> 初始化一个 ResNet-18 模型。</li>
+<li><code>model.fc.in_features</code> 获取原始全连接层的输入特征数。</li>
+<li><code>num_classes</code> 是数据集中的类别数量。</li>
+<li><code>nn.Linear</code> 创建一个新的全连接层，输出维度为 <code>num_classes</code>，替换掉原来的全连接层。</li>
+</ul>
+<h3 id="6-加载预训练权重"><a href="#6-加载预训练权重" class="headerlink" title="6. 加载预训练权重"></a>6. 加载预训练权重</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pretrained_model_path = <span class="string">&quot;resnet18-5c106cde.pth&quot;</span></span><br><span class="line"><span class="keyword">if</span> os.path.exists(pretrained_model_path):</span><br><span class="line">    pretrained_dict = torch.load(pretrained_model_path)</span><br><span class="line">    model_dict = model.state_dict()</span><br><span class="line">    pretrained_dict = &#123;k: v <span class="keyword">for</span> k, v <span class="keyword">in</span> pretrained_dict.items() <span class="keyword">if</span> k <span class="keyword">in</span> model_dict <span class="keyword">and</span> <span class="string">&#x27;fc&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> k&#125;</span><br><span class="line">    model_dict.update(pretrained_dict)</span><br><span class="line">    model.load_state_dict(model_dict)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Loaded pretrained weights (excluding the fc layer).&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Pretrained weights not found. Starting from scratch.&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>检查预训练权重文件是否存在。</li>
+<li>加载预训练权重。</li>
+<li>创建一个新的状态字典，只包含除了 <code>fc</code> 层以外的所有键值对。</li>
+<li>更新现有的状态字典。</li>
+<li>加载更新后的状态字典到模型中。</li>
+</ul>
+<h3 id="7-冻结所有参数并解冻最后一层"><a href="#7-冻结所有参数并解冻最后一层" class="headerlink" title="7. 冻结所有参数并解冻最后一层"></a>7. 冻结所有参数并解冻最后一层</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> param <span class="keyword">in</span> model.parameters():</span><br><span class="line">    param.requires_grad = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> param <span class="keyword">in</span> model.fc.parameters():</span><br><span class="line">    param.requires_grad = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>冻结所有参数，使它们在训练过程中不被更新。</li>
+<li>解冻最后一层（新的全连接层），使其可以被训练。</li>
+</ul>
+<h3 id="8-定义损失函数和优化器"><a href="#8-定义损失函数和优化器" class="headerlink" title="8. 定义损失函数和优化器"></a>8. 定义损失函数和优化器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">criterion = torch.nn.CrossEntropyLoss()</span><br><span class="line">optimizer = torch.optim.Adam(model.fc.parameters(), lr=<span class="number">0.001</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>CrossEntropyLoss</code> 用于多分类问题。</li>
+<li><code>Adam</code> 优化器用于优化模型的最后一层参数。</li>
+</ul>
+<h3 id="9-训练循环"><a href="#9-训练循环" class="headerlink" title="9. 训练循环"></a>9. 训练循环</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">device = torch.device(<span class="string">&quot;cuda:0&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line">model.to(device)</span><br><span class="line"></span><br><span class="line">num_epochs = <span class="number">10</span>  <span class="comment"># 假设训练10个epoch</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">    model.train()</span><br><span class="line">    running_loss = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> images, labels <span class="keyword">in</span> train_loader:</span><br><span class="line">        images, labels = images.to(device), labels.to(device)</span><br><span class="line">        </span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        outputs = model(images)</span><br><span class="line">        loss = criterion(outputs, labels)</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        </span><br><span class="line">        running_loss += loss.item()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;Epoch <span class="subst">&#123;epoch+<span class="number">1</span>&#125;</span>/<span class="subst">&#123;num_epochs&#125;</span>, Loss: <span class="subst">&#123;running_loss/<span class="built_in">len</span>(train_loader)&#125;</span>&#x27;</span>)  <span class="comment"># 打印平均损失</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>选择设备（GPU 或 CPU）并将模型移动到该设备上。</li>
+<li>设置训练轮数。</li>
+<li>在每个 epoch 中：<ul>
+<li>将模型设置为训练模式。</li>
+<li>遍历数据加载器，获取批量数据。</li>
+<li>将数据移动到设备上。</li>
+<li>清零梯度。</li>
+<li>前向传播，计算损失。</li>
+<li>反向传播，更新参数。</li>
+<li>累加损失。</li>
+<li>打印每个 epoch 的平均损失。</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-保存模型"><a href="#10-保存模型" class="headerlink" title="10. 保存模型"></a>10. 保存模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.save(model.state_dict(), <span class="string">&#x27;resnet18_finetuned.pth&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>保存模型的状态字典到文件 <code>resnet18_finetuned.pth</code>。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这个模型的主要工作流程如下：</p>
+<ol>
+<li><strong>数据准备</strong>：定义数据集和数据转换，创建数据加载器。</li>
+<li><strong>模型准备</strong>：加载预训练的 ResNet-18 模型，并修改最后一层以适应新的分类任务。</li>
+<li><strong>加载预训练权重</strong>：加载预训练权重，但排除 <code>fc</code> 层。</li>
+<li><strong>冻结参数</strong>：冻结所有参数，只解冻最后一层。</li>
+<li><strong>定义损失函数和优化器</strong>：使用交叉熵损失和 Adam 优化器。</li>
+<li><strong>训练模型</strong>：进行多个 epoch 的训练，打印每个 epoch 的平均损失。</li>
+<li><strong>保存模型</strong>：训练完成后，保存模型的状态字典。</li>
+</ol>
+<p>通过这些步骤，你可以利用预训练的 ResNet-18 模型进行迁移学习，训练它来识别你的特定数据集中的类别。</p>
+<h2 id="迁移学习"><a href="#迁移学习" class="headerlink" title="迁移学习"></a>迁移学习</h2><p>参考资料：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_49272172/article/details/115791703">基于PaddlePaddle的李宏毅机器学习——迁移学习</a></p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><strong>什么是迁移学习呢？</strong><br>1.假设现在要做猫和狗的分类器，我们需要一样标签数据告诉机器哪些是猫，哪些是狗。<br><img src="https://i-blog.csdnimg.cn/blog_migrate/f3aff31184131c1dc323e826cc849827.png"><br>2.同时，假设现在有一些与猫和狗没有直接关系的数据，这里说是没有直接关系，并不是说是完全没有关系。就是说有一些关系，但又不是直接相关的。<br>3.假设现在有自然界真实存在的老虎和大象的图片，那老虎和大象对分辨猫和狗会有帮助吗。<br><img src="https://i-blog.csdnimg.cn/blog_migrate/3819bd92419fa38d072747117da4de84.png"><br>4.或者说我们有一些卡通动画中的猫和狗图像，但不是真实存在的，有没有帮助呢。<br><img src="https://i-blog.csdnimg.cn/blog_migrate/bfcb495eebecaf4cf6423312089c2678.png"><br><strong>迁移学习把任务A开发的模型作为初始点，重新使用在为任务B开发模型的过程中。迁移学习是通过从已学习的相关任务中转移知识来改进学习的新任务。</strong></p>
+<h3 id="迁移学习的概述"><a href="#迁移学习的概述" class="headerlink" title="迁移学习的概述"></a>迁移学习的概述</h3><p><img src="https://i-blog.csdnimg.cn/blog_migrate/7f546fc4fab0832bfea4a714e5a2291f.png#pic_center"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th><strong>源数据（与任务没有直接关系）</strong></th>
+<th><strong>源数据（与任务没有直接关系）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+<td>标记</td>
+<td>未标记</td>
+</tr>
+<tr>
+<td><strong>目标数据</strong></td>
+<td>标记</td>
+<td>微调、多任务学习</td>
+<td>自学式学习</td>
+</tr>
+<tr>
+<td><strong>目标数据</strong></td>
+<td>未标记</td>
+<td>域对抗训练、零次学习</td>
+<td>自学式聚类</td>
+</tr>
+</tbody></table>
+<p><strong>简单介绍</strong>：</p>
+<ul>
+<li><p><strong>微调（Fine-tuning）</strong>：微调是指在一个预训练模型的基础上，使用特定任务的数据进一步训练模型的过程。这个过程通常包括调整模型参数以适应新的任务或数据集。</p>
+</li>
+<li><p><strong>多任务学习（Multitask Learning）</strong>：多任务学习是一种机器学习方法，它同时学习多个相关任务，并期望通过共享表示来提高所有任务的表现。这种方法假设不同任务之间存在某种形式的相关性，可以通过共同学习这些任务来改进每个单独任务的学习效果。</p>
+</li>
+<li><p><strong>Domain-adversarial training（域对抗训练）</strong>：这是一种迁移学习技术，通过训练一个模型来最小化源域和目标域之间的差异。它通常包括一个领域分类器，试图区分数据来自哪个领域，而特征提取器则尝试生成无法被该分类器区分开来的特征表示，以此来提高模型在目标领域的泛化能力。</p>
+</li>
+<li><p><strong>Zero-shot learning（零次学习）</strong>：零次学习是指模型能够对未见过的类别进行识别或分类的能力。这种情况下，模型没有直接接触过新类别的任何样本，但可以通过其他信息（如类别描述、属性等）来进行推断。</p>
+</li>
+<li><p><strong>Self-taught learning（自学式学习）</strong>：这是一种迁移学习的形式，其中使用大量未标记的数据来帮助提升目标任务的表现，即使这些数据与目标任务可能不是完全相关的。Rajat Raina, Alexis Battle, Honglak Lee, Benjamin Packer, Andrew Y. Ng 在2007年的ICML会议上发表的文章《Self-taught learning: transfer learning from unlabeled data》介绍了这种方法。</p>
+</li>
+<li><p><strong>Self-taught Clustering（自学式聚类）</strong>：这是Wenyuan Dai, Qiang Yang, Gui-Rong Xue, Yong Yu 在2008年ICML会议上提出的一种方法，它利用大量的未标记数据来进行聚类分析，并将学到的知识迁移到新的任务上。</p>
+</li>
+</ul>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/10/20/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E7%90%86%E8%AE%BAsql%E7%BB%83%E4%B9%A02/"
+      title="数据库原理理论sql练习2"
+     >
+
+    <p class="title-text">
+      
+        数据库原理理论sql练习2
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

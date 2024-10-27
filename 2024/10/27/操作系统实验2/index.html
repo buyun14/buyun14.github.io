@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>操作系统实验2 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="实验二：ELF可执行文件加载注意！！！！首先，确保修改makefile中的177，178行推荐点击桌面的linktowork，将makefile——boshsrc中的project1中的文件，替换你的实验目录中的两个文件（makefile和boshsrc） 12GENERAL_OPTS :&#x3D; -O -Wall $(EXTRA_C_OPTS)CC_GENERAL_OPTS :&#x3D; $(GENERAL_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统实验2">
+<meta property="og:url" content="https://buyun14.github.io/2024/10/27/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C2/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="实验二：ELF可执行文件加载注意！！！！首先，确保修改makefile中的177，178行推荐点击桌面的linktowork，将makefile——boshsrc中的project1中的文件，替换你的实验目录中的两个文件（makefile和boshsrc） 12GENERAL_OPTS :&#x3D; -O -Wall $(EXTRA_C_OPTS)CC_GENERAL_OPTS :&#x3D; $(GENERAL_">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-10-27T07:06:24.000Z">
+<meta property="article:modified_time" content="2024-10-27T07:08:16.497Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS 订阅">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS 订阅">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">标签</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/" rel="tag">数据库 SQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-操作系统实验2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        操作系统实验2
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-10-27T07:06:24.000Z" itemprop="datePublished">2024-10-27</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            9.2k 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="实验二：ELF可执行文件加载"><a href="#实验二：ELF可执行文件加载" class="headerlink" title="实验二：ELF可执行文件加载"></a>实验二：ELF可执行文件加载</h2><p><strong>注意！！！！</strong><br>首先，确保修改makefile中的177，178行<br><strong>推荐</strong>点击桌面的linktowork，将makefile——boshsrc中的project1中的文件，<br>替换你的实验目录中的两个文件（makefile和boshsrc）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GENERAL_OPTS := -O -Wall $(EXTRA_C_OPTS)</span><br><span class="line">CC_GENERAL_OPTS := $(GENERAL_OPTS) -fno-stack-protector</span><br></pre></td></tr></table></figure>
+<h3 id="任务一"><a href="#任务一" class="headerlink" title="任务一"></a>任务一</h3><p> 1.修改Project1项目中的&#x2F;GeekOS&#x2F;elf.c文件：在函数Parse_ELF_Executable()中添加代码，<br>分析ELF格式的可执行文件（包括分析得出ELF文件头、程序头），获取可执行文件长度、代码段、数据段等信息，并打印输出。并且，填充Exe_Format数据结构中的值域。</p>
+<p><strong>解析</strong>：该任务我们只需要修改&#x2F;GeekOS&#x2F;elf.c文件中的Parse_ELF_Executable()函数，该函数的作用是解析ELF格式的可执行文件，获取可执行文件长度、代码段、数据段等信息，并打印输出。</p>
+<p>首先，我们需要定义ELF头的结构体，并将其指针指向ELF文件头。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * ELF executable loading</span></span><br><span class="line"><span class="comment"> * Copyright (c) 2003, Jeffrey K. Hollingsworth &lt;hollings@cs.umd.edu&gt;</span></span><br><span class="line"><span class="comment"> * Copyright (c) 2003, David H. Hovemeyer &lt;daveho@cs.umd.edu&gt;</span></span><br><span class="line"><span class="comment"> * $Revision: 1.29 $</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * This is free software.  You are permitted to use,</span></span><br><span class="line"><span class="comment"> * redistribute, and modify it as specified in the file &quot;COPYING&quot;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;geekos/errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;geekos/kassert.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;geekos/ktypes.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;geekos/screen.h&gt;</span>  <span class="comment">/* for debug Print() statements */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;geekos/pfat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;geekos/malloc.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;geekos/string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;geekos/elf.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * From the data of an ELF executable, determine how its segments</span></span><br><span class="line"><span class="comment"> * need to be loaded into memory.</span></span><br><span class="line"><span class="comment"> * @param exeFileData buffer containing the executable file</span></span><br><span class="line"><span class="comment"> * @param exeFileLength length of the executable file in bytes</span></span><br><span class="line"><span class="comment"> * @param exeFormat structure describing the executable&#x27;s segments</span></span><br><span class="line"><span class="comment"> *   and entry address; to be filled in</span></span><br><span class="line"><span class="comment"> * @return 0 if successful, &lt; 0 on error</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Parse_ELF_Executable</span><span class="params">(<span class="type">char</span> *exeFileData, <span class="type">ulong_t</span> exeFileLength, <span class="keyword">struct</span> Exe_Format *exeFormat)</span></span><br><span class="line"><span class="comment">//zh:解析ELF格式的可执行文件，获取可执行文件长度，代码段，数据段等信息，并打印输出</span></span><br><span class="line">&#123;</span><br><span class="line">    elfHeader* elf_head = (elfHeader*) exeFileData; <span class="comment">//zh:定义一个指向ELF文件头的指针</span></span><br><span class="line">    programHeader* program_head = (programHeader*)(exeFileData + elf_head-&gt;phoff); <span class="comment">//zh:定义一个指向程序头的指针</span></span><br><span class="line">    </span><br><span class="line">    KASSERT(exeFileData); <span class="comment">//zh:确保exeFileData不为空</span></span><br><span class="line">    </span><br><span class="line">    exeFormat-&gt;numSegments = elf_head-&gt;phnum; <span class="comment">//zh:填充Exe_Format数据结构中的numSegments值域</span></span><br><span class="line">    exeFormat-&gt;entryAddr = elf_head-&gt;entry; <span class="comment">//zh:填充Exe_Format数据结构中的entryAddr值域</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 打印ELF文件头信息</span></span><br><span class="line">    Print(<span class="string">&quot;ELF Header:\n&quot;</span>);</span><br><span class="line">    Print(<span class="string">&quot;  Type: %u\n&quot;</span>, elf_head-&gt;type);</span><br><span class="line">    Print(<span class="string">&quot;  Machine: %u\n&quot;</span>, elf_head-&gt;machine);</span><br><span class="line">    Print(<span class="string">&quot;  Version: %u\n&quot;</span>, elf_head-&gt;version);</span><br><span class="line">    Print(<span class="string">&quot;  Program Header Offset: %u\n&quot;</span>, elf_head-&gt;phoff);</span><br><span class="line">    Print(<span class="string">&quot;  Number of Program Headers: %u\n&quot;</span>, elf_head-&gt;phnum);</span><br><span class="line">    Print(<span class="string">&quot;  Number of Section Headers: %u\n&quot;</span>, elf_head-&gt;shnum);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    Print(&quot;ELF 头信息:\n&quot;);</span></span><br><span class="line"><span class="comment">    Print(&quot;  类型: %u\n&quot;, elf_head-&gt;type);</span></span><br><span class="line"><span class="comment">    Print(&quot;  机器: %u\n&quot;, elf_head-&gt;machine);</span></span><br><span class="line"><span class="comment">    Print(&quot;  版本: %u\n&quot;, elf_head-&gt;version);</span></span><br><span class="line"><span class="comment">    Print(&quot;  程序头偏移: %u\n&quot;, elf_head-&gt;phoff);</span></span><br><span class="line"><span class="comment">    Print(&quot;  程序头数量: %u\n&quot;, elf_head-&gt;phnum);</span></span><br><span class="line"><span class="comment">    Print(&quot;  节头数量: %u\n&quot;, elf_head-&gt;shnum);</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; elf_head-&gt;phnum; ++i) <span class="comment">//zh:遍历所有的程序头</span></span><br><span class="line">    &#123;</span><br><span class="line">        Print(<span class="string">&quot;Program Header %d:\n&quot;</span>, i);</span><br><span class="line">        Print(<span class="string">&quot;  Offset in File: %u\n&quot;</span>, program_head-&gt;offset);</span><br><span class="line">        Print(<span class="string">&quot;  Length in File: %u\n&quot;</span>, program_head-&gt;fileSize);</span><br><span class="line">        Print(<span class="string">&quot;  Start Address: 0x%lx\n&quot;</span>, program_head-&gt;vaddr);</span><br><span class="line">        Print(<span class="string">&quot;  Size in Memory: %u\n&quot;</span>, program_head-&gt;memSize);</span><br><span class="line">        Print(<span class="string">&quot;  Protection Flags: %u\n&quot;</span>, program_head-&gt;flags);</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        Print(&quot;程序头 %d:\n&quot;, i);</span></span><br><span class="line"><span class="comment">        Print(&quot;  文件偏移: %u\n&quot;, program_head-&gt;offset);</span></span><br><span class="line"><span class="comment">        Print(&quot;  文件长度: %u\n&quot;, program_head-&gt;fileSize);</span></span><br><span class="line"><span class="comment">        Print(&quot;  起始地址: 0x%lx\n&quot;, program_head-&gt;vaddr);</span></span><br><span class="line"><span class="comment">        Print(&quot;  内存大小: %u\n&quot;, program_head-&gt;memSize);</span></span><br><span class="line"><span class="comment">        Print(&quot;  权限标志: %u\n&quot;, program_head-&gt;flags);</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line"></span><br><span class="line">        exeFormat-&gt;segmentList[i].offsetInFile = program_head-&gt;offset; <span class="comment">//zh:填充Exe_Format数据结构中的offsetInFile值域</span></span><br><span class="line">        exeFormat-&gt;segmentList[i].lengthInFile = program_head-&gt;fileSize; <span class="comment">//zh:填充Exe_Format数据结构中的lengthInFile值域</span></span><br><span class="line">        exeFormat-&gt;segmentList[i].startAddress = program_head-&gt;vaddr; <span class="comment">//zh:填充Exe_Format数据结构中的startAddress值域</span></span><br><span class="line">        exeFormat-&gt;segmentList[i].sizeInMemory = program_head-&gt;memSize; <span class="comment">//zh:填充Exe_Format数据结构中的sizeInMemory值域</span></span><br><span class="line">        exeFormat-&gt;segmentList[i].protFlags = program_head-&gt;flags; <span class="comment">//zh:填充Exe_Format数据结构中的protFlags值域</span></span><br><span class="line">        ++program_head;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在GeekOS中，核心态运行可执行程序的流程主要包括以下几个关键步骤和函数调用关系。<br>以下是一个简化的流程图描述，展示了可执行程序在内核中加载和运行的过程：</p>
+<h3 id="可执行程序在内核中加载和运行的流程"><a href="#可执行程序在内核中加载和运行的流程" class="headerlink" title="可执行程序在内核中加载和运行的流程"></a>可执行程序在内核中加载和运行的流程</h3><ol>
+<li><p><strong>系统调用</strong>：用户程序通过系统调用请求加载可执行文件。</p>
+<ul>
+<li>相关函数：<code>Sys_Exec()</code></li>
+</ul>
+</li>
+<li><p><strong>解析可执行文件</strong>：</p>
+<ul>
+<li>调用 <code>Parse_ELF_Executable()</code> 函数解析ELF文件，获取文件头和程序头信息。</li>
+</ul>
+</li>
+<li><p><strong>内存分配</strong>：</p>
+<ul>
+<li>根据程序头信息分配内存，调用 <code>AllocateMemory()</code> 或类似函数为程序的代码段和数据段分配内存。</li>
+</ul>
+</li>
+<li><p><strong>加载段到内存</strong>：</p>
+<ul>
+<li>将可执行文件中的各个段（如代码段、数据段）加载到分配的内存空间中。</li>
+<li>可能使用的函数：<code>LoadSegment()</code> 或 <code>CopyToMemory()</code>。</li>
+</ul>
+</li>
+<li><p><strong>设置进程控制块（PCB）</strong>：</p>
+<ul>
+<li>初始化进程控制块，包括设置程序计数器、栈指针等。</li>
+</ul>
+</li>
+<li><p><strong>调度进程</strong>：</p>
+<ul>
+<li>调用调度器，将新的进程添加到就绪队列中，准备运行。</li>
+</ul>
+</li>
+<li><p><strong>运行进程</strong>：</p>
+<ul>
+<li>切换到用户态，开始执行新的进程。</li>
+</ul>
+</li>
+</ol>
+<h3 id="流程图示例"><a href="#流程图示例" class="headerlink" title="流程图示例"></a>流程图示例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">用户程序发起请求</span><br><span class="line">      |</span><br><span class="line">      v</span><br><span class="line">  Sys_Exec()  &lt;--------------------- 用户程序调用</span><br><span class="line">      |</span><br><span class="line">      v</span><br><span class="line">Parse_ELF_Executable()</span><br><span class="line">      |</span><br><span class="line">      v</span><br><span class="line">AllocateMemory()</span><br><span class="line">      |</span><br><span class="line">      v</span><br><span class="line">LoadSegment()  &lt;----- 读取段信息</span><br><span class="line">      |</span><br><span class="line">      v</span><br><span class="line">设置PCB信息</span><br><span class="line">      |</span><br><span class="line">      v</span><br><span class="line">调度器</span><br><span class="line">      |</span><br><span class="line">      v</span><br><span class="line">切换到用户态</span><br><span class="line">      |</span><br><span class="line">      v</span><br><span class="line">执行用户程序</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>系统调用</strong>：用户程序通过系统调用进入内核态，发起加载请求。</li>
+<li><strong>解析和加载</strong>：内核解析可执行文件，分配内存并加载段信息到内存中。</li>
+<li><strong>PCB初始化</strong>：在加载完成后，初始化进程控制块以准备调度。</li>
+<li><strong>调度和运行</strong>：调度器管理进程的调度，并切换到用户态执行程序。</li>
+</ul>
+<h3 id="习题一"><a href="#习题一" class="headerlink" title="习题一"></a>习题一</h3><h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>1.在程序中输出字符串为什么要通过中断实现？ 直接调用 Print 函数是否可行？ </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">ELF_Print</span><span class="params">(<span class="type">char</span>*msg)</span>&#123;</span><br><span class="line">    __asm__ __volatile__(</span><br><span class="line">        <span class="string">&quot;int $0x90&quot;</span></span><br><span class="line">        :<span class="comment">/*no return */</span></span><br><span class="line">        :<span class="string">&quot;a&quot;</span>(msg)<span class="comment">//goes in eax</span></span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用了0x90号中断，这个中断是用来输出字符串的，msg是要输出的字符串的地址，这个地址是在用户程序的地址空间中的，所以这个地址是虚拟地址，需要通过中断转换为物理地址，然后再输出到屏幕上。<font color='red'>这个中断的实现是在内核中的，所以用户程序要输出字符串必须通过中断来实现。</font>直接调用Print函数是不可行的，因为Print函数是在内核中的，用户程序不能直接调用内核中的函数，必顋通过中断来实现。</p>
+<p>在程序中输出字符串时，使用中断实现的原因主要与操作系统的结构和硬件交互有关。</p>
+<p>ai回答：</p>
+<h3 id="1-中断实现的原因"><a href="#1-中断实现的原因" class="headerlink" title="1. 中断实现的原因"></a>1. 中断实现的原因</h3><ul>
+<li><p><strong>用户态与内核态的切换</strong>：在现代操作系统中，用户程序运行在用户态，而打印输出通常需要访问硬件（如显示器、串口等），这需要在内核态下进行。通过中断，可以安全地进行用户态到内核态的切换，确保系统的安全性和稳定性。</p>
+</li>
+<li><p><strong>资源管理</strong>：输出设备通常是共享资源，使用中断可以让操作系统更好地管理这些资源，避免多个进程同时访问同一个设备而导致冲突。</p>
+</li>
+<li><p><strong>异步操作</strong>：中断允许操作系统在处理输出时，可以同时处理其他任务。例如，打印操作可能会涉及等待设备准备好，使用中断可以避免阻塞程序执行。</p>
+</li>
+</ul>
+<h3 id="2-直接调用-Print-函数的可行性"><a href="#2-直接调用-Print-函数的可行性" class="headerlink" title="2. 直接调用 Print 函数的可行性"></a>2. 直接调用 Print 函数的可行性</h3><ul>
+<li><p><strong>在内核态可行</strong>：如果你在内核态中直接调用 <code>Print</code> 函数，通常是可行的，因为此时已经在内核的上下文中，不需要通过中断进行切换。</p>
+</li>
+<li><p><strong>在用户态不可行</strong>：如果在用户态直接调用 <code>Print</code> 函数，通常会导致访问被禁止的内存区域或触发保护错误，因为用户态程序没有权限直接访问硬件资源。</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在程序中输出字符串时，使用中断是为了实现安全和高效的用户态与内核态之间的切换，以及对共享资源的管理。虽然在内核态下直接调用 <code>Print</code> 函数是可行的，但在用户态中则必须通过系统调用和中断来完成。这种设计增强了系统的安全性和稳定性。</p>
+<h3 id="习题二"><a href="#习题二" class="headerlink" title="习题二"></a>习题二</h3><p>2.在当前配置环境下，第2句并不能正常显示，分析其原因并使用GDB或ddd验证。<br>参考答案：这个变量是带有初始值的局部变量，根据编译程序对不同存储类型变量的空间分配规则，局部变量被存储在栈上，并利用可执行代码中的立即数进行初始化。使用反汇编工具可以验证这段程序对应的汇编代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1029:c744241848692021 movl $0x21206948,0x18(8esp)</span><br><span class="line">1031: c744241c 20546869 movl $0x69685420,0x1c(8esp)</span><br><span class="line">1039:c744242073206973 movl $0x73692073,0x20(8esp)</span><br><span class="line">1041: c744242420746865 movl $0x65687420,0x24(8esp)</span><br><span class="line">1049:c744242820736563 movl $0x63657320,0x28(8esp)</span><br><span class="line">1051:c744242c 6f 6e 6420 movl $0x20646e6f,0x2c(8esp)</span><br><span class="line">1059: c744243073747269 movl $0x69727473,0x30(8esp)</span><br><span class="line">1061:c74424346e 670a 00 movl $0xa676e,0x34(%esp)</span><br><span class="line">1069: c744243800000000 movl $0x0,0x38(8esp)</span><br><span class="line">1071: c744243c 00000000 movl $0x0,0x3c(8esp)</span><br></pre></td></tr></table></figure>
+<p>可见，这个字符串被存放到内存中的esp+0x18到esp+0x40区间。而在加载过程中虽然为该程序分配了栈页，但却没有切换，这个程序仍然使用内核栈。<br>打印程序中是通过该线程分配的内存起始地址加上偏移量来查找字符串的，而第二个字符串根本就不在线程的内存空间内，因此是无法输出这个字符串的。</p>
+<p>反编译kernel.exe</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d geekos/kernel.exe &gt; a.asm</span><br></pre></td></tr></table></figure>
+<p>此处为a.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> *  A simple program for testing ELF parsing and loading</span></span><br><span class="line"><span class="comment"> *  </span></span><br><span class="line"><span class="comment"> * Copyright (c) 2004, David H. Hovemeyer &lt;daveho@cs.umd.edu&gt;</span></span><br><span class="line"><span class="comment"> * Copyright (c) 2004, Iulian Neamtiu &lt;neamtiu@cs.umd.edu&gt;</span></span><br><span class="line"><span class="comment"> * $Revision: 1.24 $</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This is free software.  You are permitted to use,</span></span><br><span class="line"><span class="comment"> * redistribute, and modify it as specified in the file &quot;COPYING&quot;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* ELF_Print only prints NULL-terminated strings; </span></span><br><span class="line"><span class="comment"> * no formatting or other fancy features */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">ELF_Print</span><span class="params">(<span class="type">char</span>* msg)</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">char</span>  s1[<span class="number">40</span>] = <span class="string">&quot;Hi ! This is the first string\n&quot;</span>;</span><br><span class="line"><span class="comment">//需要打印出s2，就在这定义成全局变量</span></span><br><span class="line"><span class="comment">//char  s2[40] = &quot;Hi ! This is the second string\n&quot;;</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="type">char</span>  s2[<span class="number">40</span>] = <span class="string">&quot;Hi ! This is the second string\n&quot;</span>; </span><br><span class="line">   <span class="comment">//记得注释掉这的s2[40]</span></span><br><span class="line"></span><br><span class="line">   ELF_Print(s1);</span><br><span class="line">   ELF_Print(s2); </span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>此处为kernel.exe的部分反汇编代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">10266:	89 54 24 34          	mov    %edx,0x34(%esp)</span><br><span class="line">1026a:	89 44 24 30          	mov    %eax,0x30(%esp)</span><br><span class="line">1026e:	8b 43 2c             	mov    0x2c(%ebx),%eax</span><br><span class="line">10271:	89 44 24 2c          	mov    %eax,0x2c(%esp)</span><br><span class="line">10275:	8b 43 3c             	mov    0x3c(%ebx),%eax</span><br><span class="line">10278:	89 44 24 28          	mov    %eax,0x28(%esp)</span><br><span class="line">1027c:	8b 43 38             	mov    0x38(%ebx),%eax</span><br><span class="line">1027f:	89 44 24 24          	mov    %eax,0x24(%esp)</span><br><span class="line">10283:	8b 43 34             	mov    0x34(%ebx),%eax</span><br><span class="line">10286:	89 44 24 20          	mov    %eax,0x20(%esp)</span><br><span class="line">1028a:	8b 43 10             	mov    0x10(%ebx),%eax</span><br><span class="line">1028d:	89 44 24 1c          	mov    %eax,0x1c(%esp)</span><br><span class="line">10291:	8b 43 14             	mov    0x14(%ebx),%eax</span><br><span class="line">10294:	89 44 24 18          	mov    %eax,0x18(%esp)</span><br><span class="line">10298:	8b 43 18             	mov    0x18(%ebx),%eax</span><br><span class="line">1029b:	89 44 24 14          	mov    %eax,0x14(%esp)</span><br><span class="line">1029f:	8b 43 1c             	mov    0x1c(%ebx),%eax</span><br><span class="line">102a2:	89 44 24 10          	mov    %eax,0x10(%esp)</span><br><span class="line">102a6:	8b 43 20             	mov    0x20(%ebx),%eax</span><br><span class="line">102a9:	89 44 24 0c          	mov    %eax,0xc(%esp)</span><br><span class="line">102ad:	8b 43 24             	mov    0x24(%ebx),%eax</span><br><span class="line">102b0:	89 44 24 08          	mov    %eax,0x8(%esp)</span><br><span class="line">102b4:	8b 43 28             	mov    0x28(%ebx),%eax</span><br><span class="line">102b7:	89 44 24 04          	mov    %eax,0x4(%esp)</span><br><span class="line">102bb:	c7 04 24 74 cd 01 00 	movl   $0x1cd74,(%esp)</span><br><span class="line">102c2:	e8 f5 0c 00 00       	call   10fbc &lt;Print&gt;</span><br><span class="line">102c7:	8b 43 38             	mov    0x38(%ebx),%eax</span><br><span class="line">102ca:	83 e0 03             	and    $0x3,%eax</span><br><span class="line">102cd:	83 f8 03             	cmp    $0x3,%eax</span><br></pre></td></tr></table></figure>
+
+<p>在汇编代码片段中，可以分析以下几个关键点：</p>
+<h3 id="汇编代码分析"><a href="#汇编代码分析" class="headerlink" title="汇编代码分析"></a>汇编代码分析</h3><ol>
+<li><p><strong><code>mov</code> 指令</strong>：<br>代码中大量使用了 <code>mov</code> 指令，这些指令将寄存器或内存中的值移动到栈上的特定位置。这是将数据准备好，以便随后调用 <code>Print</code> 函数。</p>
+<ul>
+<li>例如：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov    %edx,0x34(%esp)</span><br></pre></td></tr></table></figure>
+这条指令将寄存器 <code>%edx</code> 的值存储到栈顶偏移量为 <code>0x34</code> 的位置。</li>
+</ul>
+</li>
+<li><p><strong>准备参数</strong>：<br>这些 <code>mov</code> 指令的目的显然是将多个参数传递给 <code>Print</code> 函数。函数的参数通常通过栈传递，因此这里在栈上预留了空间并放入要打印的数据。</p>
+</li>
+<li><p><strong>调用 <code>Print</code> 函数</strong>：<br>在代码中，出现了对 <code>Print</code> 函数的调用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call   10fbc &lt;Print&gt;</span><br></pre></td></tr></table></figure>
+<p>这行代码表明即将调用 <code>Print</code> 函数，函数的参数已经通过栈准备好。</p>
+</li>
+<li><p><strong>字符串的内存地址</strong>：<br>在 <code>mov</code> 指令的最后几条中，有一条指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">movl   $0x1cd74,(%esp)</span><br></pre></td></tr></table></figure>
+<p>这里将一个立即数（可能是字符串的地址）移动到栈顶。这个地址对应于待打印字符串的内存位置。</p>
+</li>
+<li><p><strong>条件判断</strong>：<br>最后，代码使用了 <code>cmp</code> 和 <code>jne</code> 指令进行条件判断，以决定下一步的操作。这可能用于检查 <code>Print</code> 函数调用后的状态。</p>
+</li>
+</ol>
+<h3 id="潜在问题分析"><a href="#潜在问题分析" class="headerlink" title="潜在问题分析"></a>潜在问题分析</h3><p>第二句字符串不能正常显示的原因可能是：</p>
+<ul>
+<li><p><strong>字符串地址问题</strong>：如果 <code>0x1cd74</code> 指向的地址不在当前线程的栈空间内，打印操作将无法访问到该字符串，导致输出异常或错误。</p>
+</li>
+<li><p><strong>栈使用问题</strong>：如果在程序执行中没有正确切换到用户栈，可能会导致尝试访问的地址无效，从而引发访问错误。</p>
+</li>
+<li><p><strong>参数数量不匹配</strong>：如果 <code>Print</code> 函数期望的参数数量与实际提供的不匹配，也可能导致未定义的行为。</p>
+</li>
+</ul>
+<h3 id="验证步骤"><a href="#验证步骤" class="headerlink" title="验证步骤"></a>验证步骤</h3><p>为了进一步验证这些问题，你可以：</p>
+<ol>
+<li><p><strong>检查 <code>0x1cd74</code> 地址</strong>：确保该地址确实存储了有效字符串。可以使用 GDB 或 <code>ddd</code> 查看该地址内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x/s 0x1cd74</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>验证栈空间</strong>：确保在调用 <code>Print</code> 前，程序已经正确切换到用户栈，并且栈空间已分配。</p>
+</li>
+<li><p><strong>调试打印</strong>：在调用 <code>Print</code> 之前，打印出相关变量和寄存器的值，确保它们的内容都是预期的。</p>
+</li>
+</ol>
+<p>通过这些步骤，可以帮助确认第二句字符串无法正常显示的根本原因，并进行相应的修正。<br>&#x2F;&#x2F;如何验证栈空间是否已经切换到用户栈，以及栈空间是否已分配？<br>：在调用Print函数之前，可以通过打印栈指针esp的值来验证栈空间是否已经切换到用户栈，并且栈空间是否已分配。在用户程序中，esp指向的地址应该在用户栈的范围内，而不是内核栈的范围内。如果esp指向的地址在用户栈的范围内，说明栈空间已经切换到用户栈，并且栈空间已分配。如果esp指向的地址在内核栈的范围内，说明栈空间没有切换到用户栈，或者栈空间没有分配。通过这种方式，可以验证栈空间是否已经切换到用户栈，以及栈空间是否已分配。</p>
+<p><del>ddd不会用，摆</del></p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/10/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C1/"
+      title="操作系统实验1"
+     >
+
+    <p class="title-text">
+      
+        操作系统实验1
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

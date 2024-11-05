@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>数据库原理实验-第三次 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="针对 SPJ_MNG 数据库，创建并执行存储过程第1关：创建一个无参数的存储过程—jsearch1123456789101112131415-- 使用指定的数据库USE SPJ_MNG;-- 更改语句结束符为 &#x2F;&#x2F;DELIMITER &#x2F;&#x2F;-- 创建存储过程 jsearch1CREATE PROCEDURE jsearch1()BEGIN    -- 查询 S 表中城市为北京的所有记录    SEL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库原理实验-第三次">
+<meta property="og:url" content="https://buyun14.github.io/2024/11/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C-%E7%AC%AC%E4%B8%89%E6%AC%A1/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="针对 SPJ_MNG 数据库，创建并执行存储过程第1关：创建一个无参数的存储过程—jsearch1123456789101112131415-- 使用指定的数据库USE SPJ_MNG;-- 更改语句结束符为 &#x2F;&#x2F;DELIMITER &#x2F;&#x2F;-- 创建存储过程 jsearch1CREATE PROCEDURE jsearch1()BEGIN    -- 查询 S 表中城市为北京的所有记录    SEL">
+<meta property="og:locale">
+<meta property="og:image" content="https://buyun14.github.io/imagesql3.png">
+<meta property="article:published_time" content="2024-11-02T00:41:05.000Z">
+<meta property="article:modified_time" content="2024-11-02T15:45:00.611Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://buyun14.github.io/imagesql3.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS 订阅">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS 订阅">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">标签</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/" rel="tag">数据库 SQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-数据库原理实验-第三次" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        数据库原理实验-第三次
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-11-02T00:41:05.000Z" itemprop="datePublished">2024-11-02</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            5.3k 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="针对-SPJ-MNG-数据库，创建并执行存储过程"><a href="#针对-SPJ-MNG-数据库，创建并执行存储过程" class="headerlink" title="针对 SPJ_MNG 数据库，创建并执行存储过程"></a>针对 SPJ_MNG 数据库，创建并执行存储过程</h2><h3 id="第1关：创建一个无参数的存储过程—jsearch1"><a href="#第1关：创建一个无参数的存储过程—jsearch1" class="headerlink" title="第1关：创建一个无参数的存储过程—jsearch1"></a>第1关：创建一个无参数的存储过程—jsearch1</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用指定的数据库</span></span><br><span class="line">USE SPJ_MNG;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 更改语句结束符为 //</span></span><br><span class="line">DELIMITER <span class="operator">/</span><span class="operator">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建存储过程 jsearch1</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> jsearch1()</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="comment">-- 查询 S 表中城市为北京的所有记录</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> s <span class="keyword">WHERE</span> CITY <span class="operator">=</span> <span class="string">&#x27;北京&#x27;</span>;</span><br><span class="line"><span class="keyword">END</span> <span class="operator">/</span><span class="operator">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 恢复默认的语句结束符为 ;</span></span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第2关：创建带输入参数的存储过程—jsearch2"><a href="#第2关：创建带输入参数的存储过程—jsearch2" class="headerlink" title="第2关：创建带输入参数的存储过程—jsearch2"></a>第2关：创建带输入参数的存储过程—jsearch2</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用指定的数据库</span></span><br><span class="line">USE SPJ_MNG;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 更改语句结束符为 //</span></span><br><span class="line">DELIMITER <span class="operator">/</span><span class="operator">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建存储过程 jsearch2</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> jsearch2(<span class="keyword">IN</span> city_name <span class="type">VARCHAR</span>(<span class="number">10</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="comment">-- 查询 S 表中城市为 city_name 的所有记录</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> s <span class="keyword">WHERE</span> CITY <span class="operator">=</span> city_name;</span><br><span class="line"><span class="keyword">END</span> <span class="operator">/</span><span class="operator">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 恢复默认的语句结束符为 ;</span></span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第3关：创建带输入参数和输出参数的存储过程—jsearch3"><a href="#第3关：创建带输入参数和输出参数的存储过程—jsearch3" class="headerlink" title="第3关：创建带输入参数和输出参数的存储过程—jsearch3"></a>第3关：创建带输入参数和输出参数的存储过程—jsearch3</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用指定的数据库</span></span><br><span class="line">USE SPJ_MNG;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 更改语句结束符为 //</span></span><br><span class="line">DELIMITER <span class="operator">/</span><span class="operator">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建存储过程 jsearch3</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> jsearch3(<span class="keyword">IN</span> supplier_no <span class="type">VARCHAR</span>(<span class="number">5</span>), <span class="keyword">OUT</span> supplier_name <span class="type">VARCHAR</span>(<span class="number">20</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="comment">-- 查询 S 表中供应商编号为 supplier_no 的供应商名称</span></span><br><span class="line">    <span class="keyword">SELECT</span> SNAME <span class="keyword">INTO</span> supplier_name <span class="keyword">FROM</span> s <span class="keyword">WHERE</span> SNO <span class="operator">=</span> supplier_no;</span><br><span class="line"><span class="keyword">END</span> <span class="operator">/</span><span class="operator">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 恢复默认的语句结束符为 ;</span></span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+<p>命令行中测试：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 声明一个变量来接收输出参数</span></span><br><span class="line"><span class="keyword">SET</span> <span class="variable">@supplier_name</span> <span class="operator">=</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用存储过程</span></span><br><span class="line"><span class="keyword">CALL</span> jsearch3(<span class="string">&#x27;S1&#x27;</span>, <span class="variable">@supplier_name</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看输出参数的值</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@supplier_name</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第4关：创建一个使用游标的存储过程—jsearch4"><a href="#第4关：创建一个使用游标的存储过程—jsearch4" class="headerlink" title="第4关：创建一个使用游标的存储过程—jsearch4"></a>第4关：创建一个使用游标的存储过程—jsearch4</h3><h3 id="创建存储过程"><a href="#创建存储过程" class="headerlink" title="创建存储过程"></a>创建存储过程</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用指定的数据库</span></span><br><span class="line">USE SPJ_MNG;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 更改语句结束符为 //</span></span><br><span class="line">DELIMITER <span class="operator">/</span><span class="operator">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建存储过程 jsearch4</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> jsearch4(<span class="keyword">IN</span> job_no <span class="type">VARCHAR</span>(<span class="number">5</span>), <span class="keyword">OUT</span> supplier_names <span class="type">VARCHAR</span>(<span class="number">255</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="comment">-- 声明变量</span></span><br><span class="line">    <span class="keyword">DECLARE</span> done <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="literal">FALSE</span>;</span><br><span class="line">    <span class="keyword">DECLARE</span> supplier_name <span class="type">VARCHAR</span>(<span class="number">20</span>);</span><br><span class="line">    <span class="keyword">DECLARE</span> temp_names <span class="type">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 声明游标</span></span><br><span class="line">    <span class="keyword">DECLARE</span> cur <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> </span><br><span class="line">        <span class="keyword">SELECT</span> s.SNAME </span><br><span class="line">        <span class="keyword">FROM</span> spj sp, s </span><br><span class="line">        <span class="keyword">WHERE</span> sp.JNO <span class="operator">=</span> job_no <span class="keyword">AND</span> sp.SNO <span class="operator">=</span> s.SNO;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 声明继续处理程序</span></span><br><span class="line">    <span class="keyword">DECLARE</span> CONTINUE HANDLER <span class="keyword">FOR</span> <span class="keyword">SQLSTATE</span> <span class="string">&#x27;02000&#x27;</span> <span class="keyword">SET</span> done <span class="operator">=</span> <span class="literal">TRUE</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 创建临时表来存储唯一的供应商名称</span></span><br><span class="line">    <span class="keyword">CREATE</span> TEMPORARY <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> temp_suppliers (</span><br><span class="line">        SNAME <span class="type">VARCHAR</span>(<span class="number">20</span>),</span><br><span class="line">        <span class="keyword">UNIQUE</span> (SNAME)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 开启游标</span></span><br><span class="line">    <span class="keyword">OPEN</span> cur;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 循环处理游标</span></span><br><span class="line">    read_loop: LOOP</span><br><span class="line">        <span class="keyword">FETCH</span> cur <span class="keyword">INTO</span> supplier_name;</span><br><span class="line">        IF done <span class="keyword">THEN</span></span><br><span class="line">            LEAVE read_loop;</span><br><span class="line">        <span class="keyword">END</span> IF;</span><br><span class="line">        <span class="comment">-- 插入供应商名称到临时表，自动去重</span></span><br><span class="line">        <span class="keyword">INSERT</span> IGNORE <span class="keyword">INTO</span> temp_suppliers (SNAME) <span class="keyword">VALUES</span> (supplier_name);</span><br><span class="line">    <span class="keyword">END</span> LOOP;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 关闭游标</span></span><br><span class="line">    <span class="keyword">CLOSE</span> cur;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 从临时表中读取供应商名称并拼接</span></span><br><span class="line">    <span class="keyword">SELECT</span> GROUP_CONCAT(SNAME SEPARATOR <span class="string">&#x27;, &#x27;</span>) <span class="keyword">INTO</span> supplier_names <span class="keyword">FROM</span> temp_suppliers;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 删除临时表</span></span><br><span class="line">    <span class="keyword">DROP</span> TEMPORARY <span class="keyword">TABLE</span> temp_suppliers;</span><br><span class="line"><span class="keyword">END</span> <span class="operator">/</span><span class="operator">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 恢复默认的语句结束符为 ;</span></span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+
+<h3 id="调用存储过程"><a href="#调用存储过程" class="headerlink" title="调用存储过程"></a>调用存储过程</h3><p>在 MySQL 命令行工具中调用存储过程 <code>jsearch4</code> 并验证结果：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用指定的数据库</span></span><br><span class="line">USE SPJ_MNG;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 声明一个变量来接收输出参数</span></span><br><span class="line"><span class="keyword">SET</span> <span class="variable">@supplier_names</span> <span class="operator">=</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用存储过程</span></span><br><span class="line"><span class="keyword">CALL</span> jsearch4(<span class="string">&#x27;J2&#x27;</span>, <span class="variable">@supplier_names</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看输出参数的值</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@supplier_names</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h3><ol>
+<li><p><strong>使用指定的数据库</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">USE SPJ_MNG;</span><br></pre></td></tr></table></figure>
+<p>确保我们正在使用 <code>SPJ_MNG</code> 数据库。</p>
+</li>
+<li><p><strong>更改语句结束符</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELIMITER <span class="operator">/</span><span class="operator">/</span></span><br></pre></td></tr></table></figure>
+<p>将语句结束符从默认的分号 <code>;</code> 改为 <code>//</code>，以避免在存储过程中使用分号时引起的问题。</p>
+</li>
+<li><p><strong>创建存储过程</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> jsearch4(<span class="keyword">IN</span> job_no <span class="type">VARCHAR</span>(<span class="number">5</span>), <span class="keyword">OUT</span> supplier_names <span class="type">VARCHAR</span>(<span class="number">255</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="comment">-- 声明变量</span></span><br><span class="line">    <span class="keyword">DECLARE</span> done <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="literal">FALSE</span>;</span><br><span class="line">    <span class="keyword">DECLARE</span> supplier_name <span class="type">VARCHAR</span>(<span class="number">20</span>);</span><br><span class="line">    <span class="keyword">DECLARE</span> temp_names <span class="type">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 声明游标</span></span><br><span class="line">    <span class="keyword">DECLARE</span> cur <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> </span><br><span class="line">        <span class="keyword">SELECT</span> s.SNAME </span><br><span class="line">        <span class="keyword">FROM</span> spj sp, s </span><br><span class="line">        <span class="keyword">WHERE</span> sp.JNO <span class="operator">=</span> job_no <span class="keyword">AND</span> sp.SNO <span class="operator">=</span> s.SNO;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 声明继续处理程序</span></span><br><span class="line">    <span class="keyword">DECLARE</span> CONTINUE HANDLER <span class="keyword">FOR</span> <span class="keyword">SQLSTATE</span> <span class="string">&#x27;02000&#x27;</span> <span class="keyword">SET</span> done <span class="operator">=</span> <span class="literal">TRUE</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 创建临时表来存储唯一的供应商名称</span></span><br><span class="line">    <span class="keyword">CREATE</span> TEMPORARY <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> temp_suppliers (</span><br><span class="line">        SNAME <span class="type">VARCHAR</span>(<span class="number">20</span>),</span><br><span class="line">        <span class="keyword">UNIQUE</span> (SNAME)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 开启游标</span></span><br><span class="line">    <span class="keyword">OPEN</span> cur;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 循环处理游标</span></span><br><span class="line">    read_loop: LOOP</span><br><span class="line">        <span class="keyword">FETCH</span> cur <span class="keyword">INTO</span> supplier_name;</span><br><span class="line">        IF done <span class="keyword">THEN</span></span><br><span class="line">            LEAVE read_loop;</span><br><span class="line">        <span class="keyword">END</span> IF;</span><br><span class="line">        <span class="comment">-- 插入供应商名称到临时表，自动去重</span></span><br><span class="line">        <span class="keyword">INSERT</span> IGNORE <span class="keyword">INTO</span> temp_suppliers (SNAME) <span class="keyword">VALUES</span> (supplier_name);</span><br><span class="line">    <span class="keyword">END</span> LOOP;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 关闭游标</span></span><br><span class="line">    <span class="keyword">CLOSE</span> cur;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 从临时表中读取供应商名称并拼接</span></span><br><span class="line">    <span class="keyword">SELECT</span> GROUP_CONCAT(SNAME SEPARATOR <span class="string">&#x27;, &#x27;</span>) <span class="keyword">INTO</span> supplier_names <span class="keyword">FROM</span> temp_suppliers;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 删除临时表</span></span><br><span class="line">    <span class="keyword">DROP</span> TEMPORARY <span class="keyword">TABLE</span> temp_suppliers;</span><br><span class="line"><span class="keyword">END</span> <span class="operator">/</span><span class="operator">/</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>声明变量</strong>：声明必要的变量。</li>
+<li><strong>声明游标</strong>：声明游标 <code>cur</code>，用于查询供应该工程号 <code>job_no</code> 零件的所有供应商的名称。</li>
+<li><strong>声明继续处理程序</strong>：当游标到达末尾时，设置 <code>done</code> 为 <code>TRUE</code>。</li>
+<li><strong>创建临时表</strong>：创建一个临时表 <code>temp_suppliers</code>，用于存储唯一的供应商名称。</li>
+<li><strong>开启游标</strong>：打开游标。</li>
+<li><strong>循环处理游标</strong>：使用 <code>LOOP</code> 循环从游标中获取数据，并将供应商名称插入到临时表中，自动去重。</li>
+<li><strong>关闭游标</strong>：关闭游标。</li>
+<li><strong>从临时表中读取供应商名称并拼接</strong>：使用 <code>GROUP_CONCAT</code> 函数将临时表中的供应商名称拼接成一个字符串，并用逗号和空格分隔。</li>
+<li><strong>删除临时表</strong>：删除临时表，释放资源。</li>
+</ul>
+</li>
+<li><p><strong>调用存储过程</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="variable">@supplier_names</span> <span class="operator">=</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="keyword">CALL</span> jsearch4(<span class="string">&#x27;J2&#x27;</span>, <span class="variable">@supplier_names</span>);</span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@supplier_names</span>;</span><br></pre></td></tr></table></figure>
+<p>调用存储过程并查看输出参数的值。<br><img src="/imagesql3.png" alt="wegd"><br>?我tm都调用出来了，你个b头哥过不了</p>
+</li>
+</ol>
+<h3 id="第5关：查看存储过程的文本信息"><a href="#第5关：查看存储过程的文本信息" class="headerlink" title="第5关：查看存储过程的文本信息"></a>第5关：查看存储过程的文本信息</h3><p>记得 \G<br>这里重新创建应该能过</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用指定的数据库</span></span><br><span class="line">USE SPJ_MNG;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看存储过程 jsearch1 的文本信息</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> jsearch1;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看存储过程 jsearch2 的文本信息</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> jsearch2;</span><br></pre></td></tr></table></figure>
+
+<p>…..改文件大法！修改step5的sh文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">export MYSQL_PWD=123123</span><br><span class="line"></span><br><span class="line">sleep 5</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">mysql -h127.0.0.1 -uroot  &lt; /data/workspace/myshixun/SPJ_MNG.sql &gt;test1.log 2&gt;&amp;1</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">mysql -h127.0.0.1 -uroot  &lt; /data/workspace/myshixun/step5/test1.sql &gt;test1.log 2&gt;&amp;1</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">mysql -h127.0.0.1 -uroot &lt; /data/workspace/myshixun/step5/test.sql</span> </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查文件是否存在</span></span><br><span class="line">if [ ! -f procedures.txt ]; then</span><br><span class="line">  echo &quot;文件 procedures.txt 不存在&quot;</span><br><span class="line">  exit 1</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">逐行读取文件并打印</span></span><br><span class="line">while IFS= read -r line</span><br><span class="line">do</span><br><span class="line">  echo &quot;$line&quot;</span><br><span class="line">done &lt; procedures.txt</span><br></pre></td></tr></table></figure>
+<p>procedures.txt记得保存到上一级目录，myshiyun下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">*************************** 1. row ***************************</span><br><span class="line">           Procedure: jsearch1</span><br><span class="line">            sql_mode: ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</span><br><span class="line">    Create Procedure: CREATE DEFINER=`root`@`%` PROCEDURE `jsearch1`()</span><br><span class="line">begin</span><br><span class="line">select * from s where city=&#x27;北京&#x27;;</span><br><span class="line">end</span><br><span class="line">character_set_client: utf8mb3</span><br><span class="line">collation_connection: utf8_general_ci</span><br><span class="line">  Database Collation: utf8_general_ci</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           Procedure: jsearch2</span><br><span class="line">            sql_mode: ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</span><br><span class="line">    Create Procedure: CREATE DEFINER=`root`@`%` PROCEDURE `jsearch2`(in p_city char(20))</span><br><span class="line">begin</span><br><span class="line">select * from s where city= p_city;</span><br><span class="line">end</span><br><span class="line">character_set_client: utf8mb3</span><br><span class="line">collation_connection: utf8_general_ci</span><br><span class="line">  Database Collation: utf8_general_ci</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="第6关：查看存储过程的基本状态信息"><a href="#第6关：查看存储过程的基本状态信息" class="headerlink" title="第6关：查看存储过程的基本状态信息"></a>第6关：查看存储过程的基本状态信息</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用指定的数据库</span></span><br><span class="line">USE SPJ_MNG;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看存储过程 jsearch1 的基本状态信息</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">PROCEDURE</span> STATUS <span class="keyword">LIKE</span> <span class="string">&#x27;jsearch1&#x27;</span> \G</span><br></pre></td></tr></table></figure>
+
+<h3 id="第7关：删除存储过程"><a href="#第7关：删除存储过程" class="headerlink" title="第7关：删除存储过程"></a>第7关：删除存储过程</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用指定的数据库</span></span><br><span class="line">USE SPJ_MNG;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除存储过程 jsearch1</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> IF <span class="keyword">EXISTS</span> jsearch1;</span><br></pre></td></tr></table></figure>
+
+<h2 id="针对员工表，综合运用存储函数与存储过程"><a href="#针对员工表，综合运用存储函数与存储过程" class="headerlink" title="针对员工表，综合运用存储函数与存储过程"></a>针对员工表，综合运用存储函数与存储过程</h2><h3 id="第1关：创建一个用户自定义函数-generateEID"><a href="#第1关：创建一个用户自定义函数-generateEID" class="headerlink" title="第1关：创建一个用户自定义函数 generateEID"></a>第1关：创建一个用户自定义函数 generateEID</h3><pre><code class="sql">
+</code></pre>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2024/11/02/B-%E6%A0%91%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/"
+      title="B+树功能的实现"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        B+树功能的实现
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/10/27/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C3/"
+      title="操作系统实验3"
+     >
+
+    <p class="title-text">
+      
+        操作系统实验3
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title">留言 </div>
+    </div>
+    <div id="vcomments"></div>
+  </div>
+  <script>
+      new Valine({"enable":true,"appId":"AVo4oPTEvfsleHngLc8BZ535-gzGzoHsz","appKey":"gSa0juG3A4yPHmR3nL5ENl3i","placeholder":"Just go go","pageSize":10,"highlight":true,"serverURLs":null,"el":"#vcomments"});
+  </script>
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

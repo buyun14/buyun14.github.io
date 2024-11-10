@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>操作系统实验4 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="project3（基于project2的） 参数state是一个结构体，其中，state-&gt;ebx成员用于指定调度策略，值为0代表系统采用时间片轮转调度策略，值为1则代表系统采用四级反馈队列调度策略，若取其他值则出错。state-&gt;ecx成员用于记录相应调度策略下的时间片长度。 概览(1)实现src&#x2F;geekos&#x2F;syscall.c文件中的Sys_SetSchedulingPolicy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统实验4">
+<meta property="og:url" content="https://buyun14.github.io/2024/11/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C4/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="project3（基于project2的） 参数state是一个结构体，其中，state-&gt;ebx成员用于指定调度策略，值为0代表系统采用时间片轮转调度策略，值为1则代表系统采用四级反馈队列调度策略，若取其他值则出错。state-&gt;ecx成员用于记录相应调度策略下的时间片长度。 概览(1)实现src&#x2F;geekos&#x2F;syscall.c文件中的Sys_SetSchedulingPolicy">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-11-10T00:44:48.000Z">
+<meta property="article:modified_time" content="2024-11-10T10:37:42.006Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/" rel="tag">数据库 SQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-操作系统实验4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        操作系统实验4
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-11-10T00:44:48.000Z" itemprop="datePublished">2024-11-10</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            9.2k words 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p>project3<br>（基于project2的）</p>
+<p><del>参数state是一个结构体，其中，state-&gt;ebx成员用于指定调度策略，值为0代表系统采用时间片轮转调度策略，值为1则代表系统采用四级反馈队列调度策略，若取其他值则出错。state-&gt;ecx成员用于记录相应调度策略下的时间片长度。</del></p>
+<h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>(1)实现<code>src/geekos/syscall.c</code>文件中的<code>Sys_SetSchedulingPolicy</code>系统调用，它的功能是设置系统采用的何种进程调度策略；<br>(2)实现<code>geekos/syscall.c</code>文件中的<code>Sys_GetTimeOfDaysrc/</code>系统调用，它的功能是获取全局变量<code>g_numTicks</code>的值；<br>(3)实现函数<code>Change_Scheduling_Policy()</code>，具体实现不同调度算法的转换。<br>(4)实现<code>syscall.c</code>中信号量有关的四个系统调用：<code>sys_createsemaphore( )</code>、<code>sys_P( )</code>、<code>sys_V( )</code>和<code>sys_destroysemaphore( )</code>。</p>
+<p>前三个要求都是关于多级反馈调度策略的，第一个是<strong>设置</strong>，第三个是<strong>转换</strong>，第二个用来<strong>评估</strong>；第四个要求是有关<strong>信号量操作</strong>。</p>
+<h2 id="以下几点前言，不用管（可以了解一下）"><a href="#以下几点前言，不用管（可以了解一下）" class="headerlink" title="以下几点前言，不用管（可以了解一下）"></a>以下几点前言，不用管（可以了解一下）</h2><h3 id="1、内核进程控制块"><a href="#1、内核进程控制块" class="headerlink" title="1、内核进程控制块"></a>1、内核进程控制块</h3><p>系统中每个内核进程有且只有一个进程控制块，进程控制块是用于记录进程状态及有关信息的数据结构。GeekOS操作系统中用数据结构Kernel_Thread作为内核进程控制块，对系统中的进程信息、执行情况、控制信息等加以维护，这个结构在<code>include/kthread.h</code>中定义。</p>
+<h3 id="2、GeekOS系统中最早的内核进程"><a href="#2、GeekOS系统中最早的内核进程" class="headerlink" title="2、GeekOS系统中最早的内核进程"></a>2、GeekOS系统中最早的内核进程</h3><p>GeekOS系统最早创建的内核进程有Idle、Peaper和Main3个进程。在系统初始化时，Main函数调用了一系列初始化函数，其中Init_Scheduler函数（<code>\src\geekos\kthread.c</code>）的作用：</p>
+<p>初始化一个内核进程mainThread，并将该进程作为当前运行进程；<br>创建两个系统进程Idle和Reaper；<br><strong>Idle进程</strong>类似于Windows中的系统闲置进程，什么也不做，创建后就一直存在于系统中，它<strong>存在的唯一目的是保证准备运行队列中有可调度的进程</strong>（占个位，有进程要用的时候就把资源让给他）。当系统没有可运行的进程时，CPU就运行Idle，一旦有其他准备运行的进程进入，Idle就会立即放弃CPU。<br><strong>Reaper</strong>负责消亡进程的善后工作，如释放消亡进程占用的资源，内存、堆栈等。</p>
+<h3 id="3、内核进程对象"><a href="#3、内核进程对象" class="headerlink" title="3、内核进程对象"></a>3、内核进程对象</h3><p>创建一个GeekOS内核进程需要调用<code>Start_Kernel_Thread</code>函数，而Start_Kernel_Thread内部调用<code>Creat_Thread</code>函数 ，该函数主要是创建内核进程对象，并调用Alloc_Page函数为进程对象、进程内核堆栈各分配一页内存（若失败，返回0，同时释放内核控制块空间）。</p>
+<h3 id="4、进程调度"><a href="#4、进程调度" class="headerlink" title="4、进程调度"></a>4、进程调度</h3><p>GeekOS在一下几种情况会发生进程切换：<br>1）时间片用完；<br>2）执行内核进程Idle；<br>3）进程退出调用Exit函数；<br>4）进程进入等待调用Wait函数。</p>
+<ul>
+<li>第一种情况下，当时间片用完，进程切换在中断处理函数Handle_Interrupt（在lowlevel.asm中定义）中完成。</li>
+<li>后三种情况，函数内部都有调用Schedule()函数，其中又调用Switch_To_Thread函数（在lowlevel.asm中定义）</li>
+</ul>
+<h3 id="5、GeekOS进程调度策略"><a href="#5、GeekOS进程调度策略" class="headerlink" title="5、GeekOS进程调度策略"></a>5、GeekOS进程调度策略</h3><p>GeekOS的初始系统提供的进程调度是时间片轮转调度，所有准备运行进程（即Kernel_Thread）都放在一个FIFO队列里面，进程调度时找优先级最高的进程投入运行。</p>
+<p>在GeekOS中，Get_Next_Runnable函数就是进程调度算法实现的地方，由\src\geekos\kthread.c文件中的Find_Best函数在准备运行进程的队列（s_runQueue指针指向）中查找，找优先级最高的。</p>
+<h3 id="6、GeekOS进程调度处理过程"><a href="#6、GeekOS进程调度处理过程" class="headerlink" title="6、GeekOS进程调度处理过程"></a>6、GeekOS进程调度处理过程</h3><p>进程调度是在时钟中断处理函数<code>Time_Interrupt_Handle</code>(&#x2F;src&#x2F;geekos&#x2F;timer.c)内实现的。进程的Kernel_Thread结构中有一个numTicks变量，在进程对象初始化时被初始化为零，之后每次时钟中断处理，进程的该变量都会加1，然后系统会检查进程执行的时间是否超过了系统规定的时间片g_Quantum，如果超过，说明当前进程时间片已用完，系统应调度新的进程运行，于是将变量<code>g_needReschedule</code>置为true，用以标志需要重新调度新进程运行。</p>
+<p>在时钟中断处理函数返回到Handle_Interrupt后检查g_needReschedule变量，如果为true，就调用Make_Runnable函数（kthread.c），将当前运行进程放入准备运行进程队列s_runQueue；之后再调用Get_Next_Runnable函数（kthread.c）找到优先级最高的进程；最后返回Handle_Interrupt将g_needReschedule返回为false，并切换到新进程运行。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>workload 10&lt;&gt;<br>schedtest rr 1<br>semtest</p>
+<h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><p>在之前的项目中，GeekOS 使用的系统调度算法均为轮询调度算法，因此在此项目中，我们需要实现 MLF 调度算法的相关操作以及 RR 与 MLF 两种算法之间的队列转换 算法。<br><strong>GeekOS 中，MLF 算法的规则描述为</strong>：<br>进程就绪队列共分为 4 级，按照优先级从高到低排列分别为 Q0、Q1、Q2 和 Q3 队列；<br>新创建的进程会被置入最高优先级的就绪队列（此处为 Q0）；每当一个进程运行完一个时间片长度之后，它就会被置入比之前低一级的就绪队列，直到到达优先级最低的队列（Q3）， 因此，CPU 密集型的进程最终会 被放到最低优先级的队列中；如果一个进程被阻塞（blocked），它的队列优先级就会提 升一个等级，直到被阻塞三次后达到最高优先级队列（Q0）。</p>
+<p>在 MLF 策略与 RR 策略的进程队列转换时，GeekOS 给出的规则如下：<br>MLF-&gt;RR 时，将 Q1-Q3 队列中所有进程转移至 Q0 队列，然后按照优先级从高到低的顺序重新排序；<br>RR-&gt;MLF 时，只需将原本位于 Q0 队列中的 Idle（空闲）进程转移至 Q3 队列，其他进程无需再做修改。</p>
+<ul>
+<li>在实际编写代码的时候，由于 GeekOS 提前实现了从队列中获取最高优先级进程的函数 Find_Best()，因此在 MLF-&gt;RR 时只需要将所有队列中进程移至 Q0 队列中即可。</li>
+<li>为实现四级队列，设计中首先要修改s_runQueue（src&#x2F;geekos&#x2F;kthreas.c）的定义，从原来一个结构体改为一个4元素的结构体数组，每一个结构体元素用于存放一个优先级队列的队首指针。</li>
+<li>GeekOS系统将Idle进程始终放在优先级为3的进程队列末尾，且不允许移动到其它队列，以保证进程调度时一定能找到进程投入运行。</li>
+</ul>
+<h3 id="六、信号量和PV操作"><a href="#六、信号量和PV操作" class="headerlink" title="六、信号量和PV操作"></a>六、信号量和PV操作</h3><p>信号量操作：<br>Semaphore_Create( )<br>Semaphore_Acquire（P操作）<br>Semaphore_Release（V操作）<br>Semaphore_Destroy( )</p>
+<p><code>Create_Semaphore（）</code>函数首先检查请求创建的这个信号量的名字是否存在.</p>
+<ul>
+<li>如果存在，那么就把这个线程加入到这个信号量所注册的线程链表上；</li>
+<li>如果不存在，则分配内存给新的信号量，清空它的线程队列，把当前的这个线程加入到它的线程队列中，设置注册线程数量为1，初始化信号量的名字，值和信号量的ID，并把这个信号量添加到信号量链表上，最后返回信号量的ID。</li>
+</ul>
+<p>P操作<code>Semaphore_Acquire（）</code>中，首先检查传入的信号量ID是否存在</p>
+<ul>
+<li>如果存在，接着检查当前线程是否注册使用了这个信号量，</li>
+<li>如果这两项检查任意一项失败了，那么就返回-1。</li>
+<li>如果成功了，就把信号量的值减去1，</li>
+<li>如果减去1后信号量的值小于0，那么就把当前线程放入这个信号量的等待队列上。</li>
+</ul>
+<p>V操作<code>Semaphore_Release（）</code>中，首先也是检查传入的信号量ID是否存在，如果存在，接着检查当前线程是否注册使用了这个信号量，如果这两项检查任意一项失败了，那么就返回-1。如果成功了，那就把信号量的值加上1，如果加上1后信号量的值小于或等于0，则要把该信号量里等待队列上的一个线程唤醒。</p>
+<p><code>Semaphore_Destroy（）</code>中，首先也是检查传入的信号量ID是否存在，如果存在，接着检查当前线程是否注册使用了这个信号量。</p>
+<ul>
+<li>如果这两项检查任意一项失败了，那么就返回-1。</li>
+<li>如果成功了，就把该线程从这个信号量的注册的线程数组中删除，并把注册的线程数量减去1。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;conio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;process.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sched.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sema.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">( <span class="type">int</span> argc, <span class="type">char</span> ** argv )</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> semkey, result;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Unauthorized call */</span></span><br><span class="line"><span class="comment">// bug: 未检查权限</span></span><br><span class="line">  result = P(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (result&lt;<span class="number">0</span>)</span><br><span class="line">    Print(<span class="string">&quot;+ Identified unauthorized call\n&quot;</span>);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    Print(<span class="string">&quot;- Not checking for authority\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Invalid SID*/</span></span><br><span class="line"><span class="comment">// bug: 未检查信号量ID</span></span><br><span class="line">  result = P(<span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (result&lt;<span class="number">0</span>)</span><br><span class="line">    Print(<span class="string">&quot;+ Identified invalid SID\n&quot;</span>);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    Print(<span class="string">&quot;- Not checking for invalid SID\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">  Print(<span class="string">&quot;Create_Semaphore() called\n&quot;</span>);</span><br><span class="line">  semkey = Create_Semaphore(<span class="string">&quot;test&quot;</span>, <span class="number">1</span>);<span class="comment">// 创建一个信号量</span></span><br><span class="line">  Print(<span class="string">&quot;Create_Semaphore() returned %d\n&quot;</span>, semkey);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (semkey &lt; <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">// 出错返回</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  Print(<span class="string">&quot;P() called\n&quot;</span>);</span><br><span class="line">  result = P(semkey);<span class="comment">// 申请信号量</span></span><br><span class="line">  Print(<span class="string">&quot;P() returned %d\n&quot;</span>, result);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  Print(<span class="string">&quot;V() called\n&quot;</span>);</span><br><span class="line">  result = V(semkey);<span class="comment">// 释放信号量</span></span><br><span class="line">  Print(<span class="string">&quot;V() returned %d\n&quot;</span>, result);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  Print(<span class="string">&quot;Destroy_Semaphore() called\n&quot;</span>);</span><br><span class="line">  result = Destroy_Semaphore(semkey);<span class="comment">// 销毁信号量</span></span><br><span class="line">  Print(<span class="string">&quot;Destroy_Semaphore() returned %d\n&quot;</span>, result);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  result = V(semkey);<span class="comment">// 再次释放信号量</span></span><br><span class="line">  <span class="keyword">if</span> (result&lt;<span class="number">0</span>)</span><br><span class="line">    Print(<span class="string">&quot;+ Removed authority after finish\n&quot;</span>);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    Print(<span class="string">&quot;- Not removed authority after finish\n&quot;</span>);</span><br><span class="line"><span class="comment">// bug: 未释放信号量内存</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>如果这个信号量的注册线程为0了，则把这个信号量从信号量链表中删除，并释放它的内存。</p>
+<p>实现的信号量相关操作（创建、获取、释放和销毁） 都能够正确的在系统中执行，而且在 semtest2.exe 的测试中对于不正确的信号量操作（线 程对未授权信号量进行操作、无效信号量 ID 和销毁信号量后再对其进行获取操作）系统也能够进行相应的处理和反馈</p>
+<h3 id="系统调用的作用"><a href="#系统调用的作用" class="headerlink" title="系统调用的作用"></a>系统调用的作用</h3><p>系统调用是用户程序与操作系统内核之间的一个重要接口，主要用于以下目的：</p>
+<ol>
+<li><strong>资源请求</strong>：用户程序通过系统调用请求操作系统提供资源，如文件操作、内存管理、网络通信等。</li>
+<li><strong>权限提升</strong>：用户程序在用户态下运行，权限有限，通过系统调用可以临时提升权限，执行一些需要更高权限的操作。</li>
+<li><strong>硬件访问</strong>：用户程序不能直接访问硬件设备，必须通过系统调用请求操作系统代为执行。</li>
+<li><strong>状态查询</strong>：用户程序可以通过系统调用查询系统的当前状态，如时间、进程信息等。</li>
+</ol>
+<h3 id="系统调用的执行过程"><a href="#系统调用的执行过程" class="headerlink" title="系统调用的执行过程"></a>系统调用的执行过程</h3><p>系统调用的执行过程大致如下：</p>
+<ol>
+<li><p><strong>用户程序发起调用</strong>：</p>
+<ul>
+<li>用户程序调用一个库函数，该库函数内部包含了一个系统调用指令。</li>
+<li>例如，在GeekOS中，用户程序调用<code>Set_Scheduling_Policy(policy, quantum)</code>来设置调度策略。</li>
+</ul>
+</li>
+<li><p><strong>参数准备</strong>：</p>
+<ul>
+<li>库函数将系统调用的参数（如<code>policy</code>和<code>quantum</code>）准备好，并将它们放入特定的寄存器中。</li>
+<li>例如，<code>policy</code>放入寄存器<code>EBX</code>，<code>quantum</code>放入寄存器<code>ECX</code>。</li>
+</ul>
+</li>
+<li><p><strong>中断指令</strong>：</p>
+<ul>
+<li>库函数执行一条中断指令（如<code>int $0x90</code>），触发一个中断。</li>
+<li>中断指令将控制权从用户态转移到内核态，进入中断处理程序。</li>
+</ul>
+</li>
+<li><p><strong>中断处理</strong>：</p>
+<ul>
+<li>操作系统内核的中断处理程序捕获中断，保存当前的中断现场（包括寄存器状态）。</li>
+<li>中断处理程序根据中断号（如<code>0x90</code>）找到对应的系统调用处理函数。</li>
+</ul>
+</li>
+<li><p><strong>系统调用处理</strong>：</p>
+<ul>
+<li>系统调用处理函数（如<code>Sys_SetSchedulingPolicy</code>）从保存的中断现场中提取参数（<code>EBX</code>和<code>ECX</code>）。</li>
+<li>处理函数执行具体的系统调用逻辑，如更改调度策略、获取系统时间等。</li>
+</ul>
+</li>
+<li><p><strong>返回用户程序</strong>：</p>
+<ul>
+<li>系统调用处理完成后，中断处理程序恢复中断现场，将控制权交还给用户程序。</li>
+<li>用户程序继续执行，可以获取系统调用的返回值（如成功或失败的状态码）。</li>
+</ul>
+</li>
+</ol>
+<h3 id="示例：GeekOS中的系统调用"><a href="#示例：GeekOS中的系统调用" class="headerlink" title="示例：GeekOS中的系统调用"></a>示例：GeekOS中的系统调用</h3><p>在GeekOS中，系统调用的具体实现如下：</p>
+<ol>
+<li><p><strong>用户程序调用</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set_Scheduling_Policy(policy, quantum);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>库函数定义</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> DEF_SYSCALL(name,num,retType,params,argDefs,regs) \</span></span><br><span class="line"><span class="meta">retType name params&#123; \</span></span><br><span class="line"><span class="meta">    int sysNum=(num), rc; \</span></span><br><span class="line"><span class="meta">    argDefs \</span></span><br><span class="line"><span class="meta">    __asm____volatile__(SYSCALL:<span class="string">&quot;=a&quot;</span>(rc):<span class="string">&quot;a&quot;</span>(sysNum) regs);\</span></span><br><span class="line"><span class="meta">    return(retType) rc; \</span></span><br><span class="line"><span class="meta">&#125;</span></span><br><span class="line"></span><br><span class="line">DEF_SYSCALL(Set_Scheduling_Policy, SYS_SETSCHEDULINGPOLICY, <span class="type">int</span>, (<span class="type">int</span> policy, <span class="type">int</span> quantum), <span class="type">int</span> arg0 = policy; <span class="type">int</span> arg1 = quantum;, SYSCALL_REGS_2)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>系统调用处理函数</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">Sys_SetSchedulingPolicy</span><span class="params">(<span class="keyword">struct</span> Interrupt_State* state)</span> &#123;</span><br><span class="line">    <span class="type">int</span> n, quantum;</span><br><span class="line">    n = state-&gt;ebx;</span><br><span class="line">    quantum = state-&gt;ecx;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">        Change_Scheduling_Policy(<span class="number">0</span>, quantum);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (n == <span class="number">1</span>) &#123;</span><br><span class="line">        Change_Scheduling_Policy(<span class="number">1</span>, quantum);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>参数state是一个结构体，其中，state-&gt;ebx成员用于指定调度策略，值为0代表系统采用时间片轮转调度策略，值为1则代表系统采用四级反馈队列调度策略，若取其他值则出错。state-&gt;ecx成员用于记录相应调度策略下的时间片长度。</p>
+<p>五、多级反馈策略测试运行流程</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (argc == <span class="number">3</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">1</span>], <span class="string">&quot;rr&quot;</span>)) &#123;</span><br><span class="line">      policy = <span class="number">0</span>;<span class="comment">//选择时间片轮转调度</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(argv[<span class="number">1</span>], <span class="string">&quot;mlf&quot;</span>)) &#123;</span><br><span class="line">      policy = <span class="number">1</span>;<span class="comment">//选择多级反馈调度</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      Print(<span class="string">&quot;usage: %s [rr|mlf] &lt;quantum&gt;\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">      Exit(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    Print(<span class="string">&quot;usage: %s [rr|mlf] &lt;quantum&gt;\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">    Exit(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  quantum = atoi(argv[<span class="number">2</span>]);<span class="comment">//设置时间片长度</span></span><br><span class="line">  Set_Scheduling_Policy(policy, quantum);</span><br></pre></td></tr></table></figure>
+<p>接着调用Sys_SetSchedulingPolicy（）（\src\geekos\syscall.c）设置调度策略：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>到Chang_Scheduling_Policy（）（\src\geekos\kthread.c）修改线程队列及系统相关变量，主要是 g_curSchedulingPolicy 为当前调度策略， g_Quantum 为时间片长度：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">Chang_Scheduling_Policy</span><span class="params">(<span class="type">int</span> policy, <span class="type">int</span> quantum)</span> </span><br><span class="line">&#123;</span><br><span class="line">     <span class="comment">/* 如果调度策略不同，则修改线程队列 */</span></span><br><span class="line">     <span class="keyword">if</span> (policy != g_curSchedulingPolicy)</span><br><span class="line">     &#123;</span><br><span class="line">         <span class="comment">/* MLF -&gt; RR */</span></span><br><span class="line">         <span class="keyword">if</span> (policy == ROUND_ROBIN)</span><br><span class="line">         &#123;</span><br><span class="line">             <span class="comment">/* 从最后一个线程队列(此处为 Q3)开始将其中的所有线程依次移动到前一个队列，</span></span><br><span class="line"><span class="comment">                               直到所有线程都移动到 Q0 队列 */</span></span><br><span class="line">             <span class="type">int</span> i;</span><br><span class="line">             <span class="keyword">for</span> (i = MAX_QUEUE_LEVEL - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--)</span><br><span class="line">                 Append_Thread_Queue(&amp;s_runQueue[i - <span class="number">1</span>], &amp;s_runQueue[i]);</span><br><span class="line">         &#125; </span><br><span class="line">        <span class="comment">/* RR -&gt; MLF */</span></span><br><span class="line">         <span class="keyword">else</span></span><br><span class="line">         &#123;</span><br><span class="line">             <span class="comment">/* 判断 Idle(空闲)线程是否在 Q0 队列 */</span></span><br><span class="line">             <span class="keyword">if</span> (Is_Member_Of_Thread_Queue(&amp;s_runQueue[<span class="number">0</span>], IdleThread))</span><br><span class="line">             &#123;</span><br><span class="line">                 <span class="comment">/* 将 Idle 线程从 Q0 队列移出 */</span></span><br><span class="line">                 Remove_Thread(&amp;s_runQueue[<span class="number">0</span>], IdleThread);</span><br><span class="line">                 <span class="comment">/* 将 Idle 线程加入到最后一个队列(此处为 Q3) */</span></span><br><span class="line">                 Enqueue_Thread(&amp;s_runQueue[MAX_QUEUE_LEVEL - <span class="number">1</span>], IdleThread);</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">/* 保存原来的调度策略 */</span></span><br><span class="line">         g_preSchedulingPolicy = g_curSchedulingPolicy;</span><br><span class="line">         <span class="comment">/* 将全局变量设置为对应的输入值 */</span></span><br><span class="line">         g_curSchedulingPolicy = policy;</span><br><span class="line">         Print(<span class="string">&quot;g_schedulingPolicy = %d\n&quot;</span>, g_curSchedulingPolicy);</span><br><span class="line">     &#125;</span><br><span class="line">     g_Quantum = quantum;</span><br><span class="line">     Print(<span class="string">&quot;g_Quantum = %d\n&quot;</span>, g_Quantum); </span><br><span class="line"></span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br><span class="line">```  </span><br><span class="line">系统创建进程并运行后，每次时钟中断，进程的numTicks变量加<span class="number">1</span>，这就用到了上面的Time_Interrupt_Handle(/src/geekos/timer.c)，通过进程所用时间片与用户输入时间片长度比较，设置g_needReschedule变量，再调用Handle_Interrupt进行进程调度。倘若超过时间片，g_needReschedule为<span class="literal">true</span>，Handle_Interrupt就会调用Get_Next_Runnable（\src\geekos\kthread.c），Get_Next_Runnable函数就是进程调度算法实现的地方：</span><br><span class="line">```c</span><br><span class="line"><span class="keyword">struct</span> Kernel_Thread* <span class="title function_">Get_Next_Runnable</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* Find the best thread from the highest-priority run queue */</span></span><br><span class="line">     KASSERT(g_curSchedulingPolicy == ROUND_ROBIN ||          </span><br><span class="line">g_curSchedulingPolicy == MULTILEVEL_FEEDBACK); </span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 查找下一个被调度的线程 */</span></span><br><span class="line">     <span class="class"><span class="keyword">struct</span> <span class="title">Kernel_Thread</span>* <span class="title">best</span> =</span> <span class="literal">NULL</span>; </span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> (g_curSchedulingPolicy == ROUND_ROBIN)</span><br><span class="line">     &#123;</span><br><span class="line">         <span class="comment">/* 轮询调度策略：只需要从 Q0 队列找优先级最高的线程取出 */</span></span><br><span class="line">         best = Find_Best(&amp;s_runQueue[<span class="number">0</span>]);</span><br><span class="line">         <span class="comment">/* 如果找到了符合条件的线程则将其从队列中移出 */</span></span><br><span class="line">         <span class="keyword">if</span> (best != <span class="literal">NULL</span>)</span><br><span class="line">             Remove_Thread(&amp;s_runQueue[<span class="number">0</span>], best);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">else</span></span><br><span class="line">     &#123;</span><br><span class="line">         <span class="type">int</span> i;</span><br><span class="line">         <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; MAX_QUEUE_LEVEL; i++) </span><br><span class="line">         &#123;</span><br><span class="line">             <span class="comment">/* 从最高层队列依次向下查找本层队列中最靠近队首的线程，</span></span><br><span class="line"><span class="comment">                               如果找到则不再向下继续查找 */</span></span><br><span class="line">             best = Get_Front_Of_Thread_Queue(&amp;s_runQueue[i]);</span><br><span class="line">             <span class="keyword">if</span> (best != <span class="literal">NULL</span>)</span><br><span class="line">             &#123;</span><br><span class="line">                 Remove_Thread(&amp;s_runQueue[i], best);</span><br><span class="line">                 <span class="keyword">break</span>;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125; </span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 如果当前没有可执行进程，则至少应该找到 Idle 线程 */</span></span><br><span class="line">     KASSERT(best != <span class="literal">NULL</span>); </span><br><span class="line"></span><br><span class="line">     <span class="keyword">return</span> best; </span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> *    Print(&quot;Scheduling %x\n&quot;, best);</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2024/11/10/Untitled-1/"
+      title=""
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        (No Title)
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/11/02/B-%E6%A0%91%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/"
+      title="B+树功能的实现"
+     >
+
+    <p class="title-text">
+      
+        B+树功能的实现
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title">Comments </div>
+    </div>
+    <div id="vcomments"></div>
+  </div>
+  <script>
+      new Valine({"enable":true,"appId":"AVo4oPTEvfsleHngLc8BZ535-gzGzoHsz","appKey":"gSa0juG3A4yPHmR3nL5ENl3i","placeholder":"Just go go","pageSize":10,"highlight":true,"serverURLs":null,"el":"#vcomments"});
+  </script>
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

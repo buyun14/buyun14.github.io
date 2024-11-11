@@ -20,15 +20,15 @@
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta name="description" content="实验二：ELF可执行文件加载注意！！！！首先，确保修改makefile中的177，178行推荐点击桌面的linktowork，将makefile——boshsrc中的project1中的文件，替换你的实验目录中的两个文件（makefile和boshsrc） 12GENERAL_OPTS :&#x3D; -O -Wall $(EXTRA_C_OPTS)CC_GENERAL_OPTS :&#x3D; $(GENERAL_">
+  <meta name="description" content="前言：操作系统系列实验的blog比较抽象，如有需要可以直接去搬我上传的项目直接用毕竟这几篇都是汇报检查是我打的草稿，内容很乱链接如下：可运行项目文件直达 实验二：ELF可执行文件加载注意！！！！首先，确保修改makefile中的177，178行推荐点击桌面的linktowork，将makefile——boshsrc中的project1中的文件，替换你的实验目录中的两个文件（makefile和bos">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统实验2">
 <meta property="og:url" content="https://buyun14.github.io/2024/10/27/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C2/index.html">
 <meta property="og:site_name" content="Buyun&#39;s Blog">
-<meta property="og:description" content="实验二：ELF可执行文件加载注意！！！！首先，确保修改makefile中的177，178行推荐点击桌面的linktowork，将makefile——boshsrc中的project1中的文件，替换你的实验目录中的两个文件（makefile和boshsrc） 12GENERAL_OPTS :&#x3D; -O -Wall $(EXTRA_C_OPTS)CC_GENERAL_OPTS :&#x3D; $(GENERAL_">
+<meta property="og:description" content="前言：操作系统系列实验的blog比较抽象，如有需要可以直接去搬我上传的项目直接用毕竟这几篇都是汇报检查是我打的草稿，内容很乱链接如下：可运行项目文件直达 实验二：ELF可执行文件加载注意！！！！首先，确保修改makefile中的177，178行推荐点击桌面的linktowork，将makefile——boshsrc中的project1中的文件，替换你的实验目录中的两个文件（makefile和bos">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-10-27T07:06:24.000Z">
-<meta property="article:modified_time" content="2024-10-30T06:41:47.862Z">
+<meta property="article:modified_time" content="2024-11-11T08:39:10.893Z">
 <meta property="article:author" content="buyun">
 <meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
@@ -161,7 +161,7 @@
       
   <div class="widget-wrap">
     <div class="widget">
-      <h3 class="widget-title">Tags</h3>
+      <h3 class="widget-title">標籤</h3>
       <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/" rel="tag">数据库 SQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
     </div>
   </div>
@@ -201,13 +201,13 @@
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    Uncategorized 
+    未分類 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            9.5k words 
+            9.6k 詞 
           </div>
         </div>
         
@@ -216,7 +216,8 @@
       </header>
       <div class="e-content article-entry" itemprop="articleBody">
         
-          <h2 id="实验二：ELF可执行文件加载"><a href="#实验二：ELF可执行文件加载" class="headerlink" title="实验二：ELF可执行文件加载"></a>实验二：ELF可执行文件加载</h2><p><strong>注意！！！！</strong><br>首先，确保修改makefile中的177，178行<br><strong>推荐</strong>点击桌面的linktowork，将makefile——boshsrc中的project1中的文件，<br>替换你的实验目录中的两个文件（makefile和boshsrc）</p>
+          <p><font color="red">前言：操作系统系列实验的blog比较抽象，如有需要可以直接去搬我上传的项目直接用</font><br>毕竟这几篇都是汇报检查是我打的草稿，内容很乱<br>链接如下：<br><a target="_blank" rel="noopener" href="https://github.com/buyun14/geekosProject">可运行项目文件直达</a></p>
+<h2 id="实验二：ELF可执行文件加载"><a href="#实验二：ELF可执行文件加载" class="headerlink" title="实验二：ELF可执行文件加载"></a>实验二：ELF可执行文件加载</h2><p><strong>注意！！！！</strong><br>首先，确保修改makefile中的177，178行<br><strong>推荐</strong>点击桌面的linktowork，将makefile——boshsrc中的project1中的文件，<br>替换你的实验目录中的两个文件（makefile和boshsrc）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GENERAL_OPTS := -O -Wall $(EXTRA_C_OPTS)</span><br><span class="line">CC_GENERAL_OPTS := $(GENERAL_OPTS) -fno-stack-protector</span><br></pre></td></tr></table></figure>
 <h3 id="任务一"><a href="#任务一" class="headerlink" title="任务一"></a>任务一</h3><p> 1.修改Project1项目中的&#x2F;GeekOS&#x2F;elf.c文件：在函数Parse_ELF_Executable()中添加代码，<br>分析ELF格式的可执行文件（包括分析得出ELF文件头、程序头），获取可执行文件长度、代码段、数据段等信息，并打印输出。并且，填充Exe_Format数据结构中的值域。</p>
 <p><strong>解析</strong>：该任务我们只需要修改&#x2F;GeekOS&#x2F;elf.c文件中的Parse_ELF_Executable()函数，该函数的作用是解析ELF格式的可执行文件，获取可执行文件长度、代码段、数据段等信息，并打印输出。</p>
@@ -392,7 +393,7 @@
   <div id="comment-card" class="comment-card">
     <div class="main-title-bar">
       <div class="main-title-dot"></div>
-      <div class="main-title">Comments </div>
+      <div class="main-title">留言 </div>
     </div>
     <div id="vcomments"></div>
   </div>

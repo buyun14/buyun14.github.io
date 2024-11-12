@@ -157,8 +157,8 @@
       
   <div class="widget-wrap">
     <div class="widget">
-      <h3 class="widget-title">標籤</h3>
-      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/" rel="tag">数据库 SQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
     </div>
   </div>
 
@@ -196,13 +196,13 @@
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分類 
+    Uncategorized 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            9.3k 詞 
+            14k words 
           </div>
         </div>
         
@@ -215,8 +215,12 @@
             
               前言：操作系统系列实验的blog比较抽象，如有需要可以直接去搬我上传的项目直接用毕竟这几篇都是汇报检查是我打的草稿，内容很乱链接如下：可运行项目文件直达
 project3（基于project2的）
-参数state是一个结构体，其中，state-&gt;ebx成员用于指定调度策略，值为0代表系统采用时间片轮转调度策略，值为1则代表系统采用四级反馈队列调度策略，若取其他值则出错。state-&gt;ecx成员用于记录相应调度策略下的时间片长度。
-概览(1)实现src/geekos/syscall.c文件中的Sys_SetSchedulingPolicy系统调用，它的功能是设置系统采用的何种进程调度策略；(2)实现geekos/syscall.c文件中的Sys_GetTimeOfDaysrc/系统调用，它的功能是获取全局变量g_numTicks的值；(3)实现函数Change_Scheduling_Policy()，具体实现不同调度算法的转换。(4)实现syscall.c中信号量有关的四个系统调用：sys_createsemaphore( )、sys_P( )、sys_V( )和sys...
+概览(1)实现src/geekos/syscall.c文件中的Sys_SetSchedulingPolicy系统调用，它的功能是设置系统采用的何种进程调度策略；(2)实现geekos/syscall.c文件中的Sys_GetTimeOfDaysrc/系统调用，它的功能是获取全局变量g_numTicks的值；(3)实现函数Change_Scheduling_Policy()，具体实现不同调度算法的转换。(4)实现syscall.c中信号量有关的四个系统调用：sys_createsemaphore( )、sys_P( )、sys_V( )和sys_destroysemaphore( )。
+前三个要求都是关于多级反馈调度策略的，第一个是设置，第三个是转换，第二个用来评估；第四个要求是有关信号量操作。
+逐步实现线程调度的优化
+1. 实现Sys_SetSchedulingPolicy函数：
+
+该...
             
           </div>
         
@@ -271,13 +275,13 @@ project3（基于project2的）
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分類 
+    Uncategorized 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            9k 詞 
+            21k words 
           </div>
         </div>
         
@@ -286,7 +290,8 @@ project3（基于project2的）
         
           <div class="truncate-text">
             
-              12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210310410510610710810911011111211311411511611711811912012112212312412512612712812913013113213313413513613713813914014114214314414514614714814915015115215315415515615715815916016116216316416516616716816917017117217317417517617717817918018118218318418518618718818919019119219319419519619719819920020120...
+              B+树的功能实现补全后的delFromNode函数，其中包括详细的注释：
+1. 在insertToNode函数中，完成if语句中的两个TODO。此时你的代码应该可以完成简单的数据插入、判断重复的key，能够通过测试样例1。123456789101112131415161718192021222324252627282930313233343536long insertToNode(Node *node, long key, long value) &#123;    if (node-&gt;n &gt; MAX_KEY) &#123;        return -1; // 已经超过MAX_KEY了，说明split功能没有写好，要检查splitNode函数    &#125;    long current_idx = searchKeyInNode(node, key);    if (node-&gt;isLeaf) &#123;        // 如果已存在相同的键，返回-1        if (current_idx &gt; -1 &amp;&amp; node...
             
           </div>
         
@@ -341,13 +346,13 @@ project3（基于project2的）
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分類 
+    Uncategorized 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            31k 詞 
+            31k words 
           </div>
         </div>
         
@@ -415,13 +420,13 @@ project3（基于project2的）
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分類 
+    Uncategorized 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            20k 詞 
+            20k words 
           </div>
         </div>
         
@@ -511,13 +516,13 @@ Spawn 函数是创建用户态进程的入口点。
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分類 
+    Uncategorized 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            9.6k 詞 
+            9.6k words 
           </div>
         </div>
         
@@ -587,13 +592,13 @@ Spawn 函数是创建用户态进程的入口点。
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分類 
+    Uncategorized 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            29k 詞 
+            29k words 
           </div>
         </div>
         
@@ -661,13 +666,13 @@ geekos键盘驱动12345678910111213141516171819202122232425262728293031323334353
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分類 
+    Uncategorized 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            10k 詞 
+            10k words 
           </div>
         </div>
         
@@ -740,13 +745,13 @@ $$Edge_Gradient ; (G) &#x3D; \sqrt{G_x^2 + G_y^2} \ Angle ; (\theta) &#x3D; \tan
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分類 
+    Uncategorized 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            16k 詞 
+            16k words 
           </div>
         </div>
         
@@ -812,13 +817,13 @@ $$Edge_Gradient ; (G) &#x3D; \sqrt{G_x^2 + G_y^2} \ Angle ; (\theta) &#x3D; \tan
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分類 
+    Uncategorized 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            3.5k 詞 
+            3.5k words 
           </div>
         </div>
         
@@ -894,17 +899,17 @@ Docker 包括三个基本概念
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    未分類 
+    Uncategorized 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            12k 詞 
+            12k words 
           </div>
         </div>
         
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MYSQL/" rel="tag">MYSQL</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
 
       </header>
       <div class="e-content article-entry" itemprop="articleBody">

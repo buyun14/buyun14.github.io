@@ -27,8 +27,8 @@
     <div id="controls">
         <label for="difficulty">选择难度:</label>
         <select id="difficulty">
-            <option value="100">简单</option>
-            <option value="75">中等</option>
+            <option value="200">简单</option>
+            <option value="100">中等</option>
             <option value="50">困难</option>
         </select>
         <button id="restartBtn">重新开始</button>
@@ -94,17 +94,18 @@
 
             const newHead = { x: snakeX, y: snakeY };
 
-            if (snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake)) {
+            if (snakeX < -1 || snakeX > canvas.width || snakeY < -1 || snakeY > canvas.height || collision(newHead, snake)) {// 撞墙或撞到自己
+            //这三个条件分别指什么：
                 clearInterval(gameInterval);
                 alert("游戏结束");
             }
 
-            snake.unshift(newHead);
+            snake.unshift(newHead);// 添加新头部
         }
 
-        function collision(head, array) {
+        function collision(head, array) {// 撞到自己
             for (let i = 0; i < array.length; i++) {
-                if (head.x === array[i].x && head.y === array[i].y) {
+                if (head.x === array[i].x && head.y === array[i].y) {// 撞到自己
                     return true;
                 }
             }

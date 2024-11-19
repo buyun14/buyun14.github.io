@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>计网实验二 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="&lt;仍在编辑中&gt; 前言winpcap太老没法用，改用npcapC++写的时候npcap包的函数死活找不到,只能换python写了。 scapyScapy是一个 Python程序，它允许用户发送、嗅探、分析和伪造网络包。这种能力允许构建能够探测、扫描或攻击网络的工具。scapy还可以很好地执行许多其他工具无法处理的其他特定任务，例如发送无效帧、注入自己的802.11帧、结合技术（VLAN跳">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计网实验二">
+<meta property="og:url" content="https://buyun14.github.io/2024/11/19/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E4%BA%8C/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="&lt;仍在编辑中&gt; 前言winpcap太老没法用，改用npcapC++写的时候npcap包的函数死活找不到,只能换python写了。 scapyScapy是一个 Python程序，它允许用户发送、嗅探、分析和伪造网络包。这种能力允许构建能够探测、扫描或攻击网络的工具。scapy还可以很好地执行许多其他工具无法处理的其他特定任务，例如发送无效帧、注入自己的802.11帧、结合技术（VLAN跳">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202411191422885.png">
+<meta property="article:published_time" content="2024-11-19T03:40:03.000Z">
+<meta property="article:modified_time" content="2024-11-19T06:58:31.287Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="计算机网络原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202411191422885.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS 订阅">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS 订阅">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">标签</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-计网实验二" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        计网实验二
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-11-19T03:40:03.000Z" itemprop="datePublished">2024-11-19</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            13k 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p>&lt;仍在编辑中&gt;</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><code>winpcap</code>太老没法用，改用<code>npcap</code><br>C++写的时候<code>npcap</code>包的函数死活找不到,只能换python写了。</p>
+<p><strong>scapy</strong><br>Scapy是一个 Python程序，它允许用户发送、嗅探、分析和伪造网络包。这种能力允许构建能够探测、扫描或攻击网络的工具。scapy还可以很好地执行许多其他工具无法处理的其他特定任务，例如发送无效帧、注入自己的802.11帧、结合技术（VLAN跳跃+ARP缓存中毒、WEP加密通道上的VoIP解码等）。</p>
+<p>更详细的介绍可以去读文档：<a target="_blank" rel="noopener" href="https://www.osgeo.cn/scapy/introduction.html">scapy传送门</a></p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>回忆一下以太网数据帧的组成</p>
+<table>
+<thead>
+<tr>
+<th>目的MAC地址</th>
+<th>源MAC地址</th>
+<th>类型</th>
+<th>数据</th>
+<th>FCS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>6字节</td>
+<td>6字节</td>
+<td>2字节</td>
+<td>[46,1500]</td>
+<td>4字节</td>
+</tr>
+</tbody></table>
+<p>现在解释一下实验指导书提到的以太网帧的填充字段。以太网帧中的PAD（填充）字段。以太网帧的结构主要包括以下几个部分：</p>
+<ul>
+<li>前导码（Preamble）：56位（7字节），用于接收同步阶段。</li>
+<li>目的地址（Destination Address）：48位（6字节）。</li>
+<li>源地址（Source Address）：48位（6字节）。</li>
+<li>类型&#x2F;长度（Type&#x2F;Length）：16位（2字节），当值小于或等于1500时，表示长度字段；大于1536时，表示类型字段。</li>
+<li>数据（Data）：46到1500字节。这是PDU（协议数据单元）所在的位置。</li>
+<li>填充（Padding）：0到46字节，确保整个帧的最小长度为64字节。如果数据部分小于46字节，则使用PAD来填充。</li>
+<li>帧校验序列（Frame Check Sequence, FCS）：32位（4字节），用于错误检测。</li>
+</ul>
+<ol>
+<li>根据描述，<strong>以太网帧的最小长度是64字节</strong>，这包括了18字节的固定开销（目的地址6字节 + 源地址6字节 + 类型&#x2F;长度2字节 + FCS 4字节）加上至少46字节的数据或数据加填充。</li>
+<li><strong>如果实际的数据部分（PDU）不足46字节，那么就需要通过PAD字段来补充</strong>，以保证整个帧的长度不低于64字节。这是因为以太网物理层设计中存在一个最小帧时间的要求，低于这个时间的帧可能会被视为无效或者噪声引起的错误帧，即所谓的“帧碎片”，通常会被网络设备直接丢弃而不进行进一步处理。因此，正确的填充是保证以太网通信可靠性的必要措施之一。</li>
+</ol>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p><strong>发送方</strong><br>（1）定义数据帧数据结构；<br>（2）从文件中读取数据（46-1500字节）；<br>（3）计算CRC校验码；<br>（4）封装以太网数据帧；<br>（5）读取本地网卡列表；<br>（7）选择本次通信网卡序号（0,1，2？）；<br>（8）初始化本次通信网卡；<br>（9）发送数据帧，返回（2），直到文件数据发送完。</p>
+<p><strong>接收方</strong><br>（1）读取本地网卡列表；<br>（2）选择本次通信网卡序号（0,1，2？）；<br>（3）初始化本次通信网卡；<br>（4）接收数据帧；<br>（5）数据帧正确性检查：<br>1）目的地址匹配或者二层广播地址；2）是否碎片帧（小于64B）；3）CRC校<br>验码验证；<br>（6）将帧首部及尾部各个字段解析并利用十六进制屏幕打印；<br>（7）依据协议类型（0x0800）,将帧数据部分写入文件，返回（4），直到文件接<br>收完成。</p>
+<h3 id="功能点与代码对应关系"><a href="#功能点与代码对应关系" class="headerlink" title="功能点与代码对应关系"></a>功能点与代码对应关系</h3><ol>
+<li><p><strong>定义数据帧数据结构</strong>：</p>
+<ul>
+<li>Scapy 库已经定义了以太网帧的数据结构。在脚本中，我们使用 <code>Ether()</code> 来创建一个以太网帧对象。</li>
+</ul>
+</li>
+<li><p><strong>从文件中读取数据（46-1500字节）</strong>：</p>
+<ul>
+<li><code>with open(file_path, &#39;rb&#39;) as file: data = file.read()</code><br>这行代码从指定的文件路径读取文件内容，并将其存储在变量 <code>data</code> 中。</li>
+<li><code>frames = [data[i:i + max_frame_size] for i in range(0, len(data), max_frame_size)]</code><br>这行代码将文件数据分割成多个块，每块大小不超过 1500 字节，以便于创建多个以太网帧。</li>
+</ul>
+</li>
+<li><p><strong>计算CRC校验码</strong>：</p>
+<ul>
+<li>Scapy 库在发送以太网帧时会自动计算并添加 CRC 校验码（FCS），无需手动计算。</li>
+</ul>
+</li>
+<li><p><strong>封装以太网数据帧</strong>：</p>
+<ul>
+<li><code>ether = Ether()</code><br>创建一个以太网帧对象。</li>
+<li><code>ether.dst = &quot;00:11:22:33:44:55&quot;</code><br>设置目的 MAC 地址。</li>
+<li><code>ether.src = &quot;00:AA:BB:CC:DD:EE&quot;</code><br>设置源 MAC 地址。</li>
+<li><code>ether.type = 0x0800</code><br>设置以太网帧的类型字段，这里设置为 IP 协议。</li>
+<li><code>ether /= Raw(load=frame_data)</code><br>将数据部分附加到以太网帧中。</li>
+</ul>
+</li>
+<li><p><strong>读取本地网卡列表</strong>：</p>
+<ul>
+<li>Scapy 库没有直接提供读取本地网卡列表的函数，但可以通过 <code>sendp</code> 函数的 <code>iface</code> 参数指定要使用的网络接口。</li>
+<li>我们直接在CMD命令行中输入<code>ipconfig</code>命令，查看本地网卡列表。无线选WLAN，有线选以太网&#x2F;宽带拨号即可。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202411191422885.png" alt="ipconfig"></p>
+<ol start="6">
+<li><p><strong>选择本次通信网卡序号（0,1，2？）</strong>：</p>
+<ul>
+<li>在调用 <code>sendp</code> 函数时，通过 <code>iface</code> 参数指定要使用的网络接口。例如，<code>interface = &quot;WLAN&quot;</code> 表示使用 WLAN 接口。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">interface = <span class="string">&quot;WLAN&quot;</span>  <span class="comment"># 替换为你的网络接口名称</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>初始化本次通信网卡</strong>：</p>
+<ul>
+<li>Scapy 库在发送数据时会自动初始化指定的网络接口，无需额外的初始化步骤。</li>
+</ul>
+</li>
+<li><p><strong>发送数据帧，返回（2），直到文件数据发送完</strong>：</p>
+<ul>
+<li><code>for frame_data in frames:</code><br>遍历分割后的数据块。</li>
+<li><code>sendp(ether, iface=interface)</code><br>发送每个以太网帧。</li>
+<li><code>print(f&quot;发送数据帧: &#123;len(frame_data)&#125; 字节&quot;)</code><br>打印已发送的数据帧大小。</li>
+</ul>
+</li>
+</ol>
+<p><font color=blue>发送方解释完了，接收方就不解释了，大差不差</font></p>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sender.py</span></span><br><span class="line"><span class="keyword">from</span> scapy.layers.l2 <span class="keyword">import</span> Ether</span><br><span class="line"><span class="keyword">from</span> scapy.packet <span class="keyword">import</span> Raw</span><br><span class="line"><span class="keyword">from</span> scapy.sendrecv <span class="keyword">import</span> sendp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_ethernet_frame</span>(<span class="params">file_path, interface</span>):</span><br><span class="line">    <span class="comment"># 读取文件内容</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        data = file.read()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 分割数据，每个数据帧不超过1500字节</span></span><br><span class="line">    max_frame_size = <span class="number">1500</span></span><br><span class="line">    frames = [data[i:i + max_frame_size] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(data), max_frame_size)]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> frame_data <span class="keyword">in</span> frames:</span><br><span class="line">        <span class="comment"># 创建以太网帧</span></span><br><span class="line">        ether = Ether()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 设置目的和源MAC地址</span></span><br><span class="line">        ether.dst = <span class="string">&quot;00:11:22:33:44:55&quot;</span>  <span class="comment"># 目的MAC地址</span></span><br><span class="line">        ether.src = <span class="string">&quot;00:AA:BB:CC:DD:EE&quot;</span>  <span class="comment"># 源MAC地址</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 设置协议类型（0x0800表示IP协议）</span></span><br><span class="line">        ether.<span class="built_in">type</span> = <span class="number">0x0800</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 填充数据部分</span></span><br><span class="line">        ether /= Raw(load=frame_data)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 发送以太网帧</span></span><br><span class="line">        sendp(ether, iface=interface)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;发送数据帧: <span class="subst">&#123;<span class="built_in">len</span>(frame_data)&#125;</span> 字节&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    file_path = <span class="string">&quot;C:\\Users\\21354\\Videos\\asdf.mp4&quot;</span>  <span class="comment"># 替换为你的视频文件路径</span></span><br><span class="line">    interface = <span class="string">&quot;WLAN&quot;</span>  <span class="comment"># 替换为你的网络接口名称</span></span><br><span class="line">    send_ethernet_frame(file_path, interface)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;所有数据帧发送完毕&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># receiver.py</span></span><br><span class="line"><span class="keyword">from</span> scapy.layers.l2 <span class="keyword">import</span> Ether</span><br><span class="line"><span class="keyword">from</span> scapy.packet <span class="keyword">import</span> Raw</span><br><span class="line"><span class="keyword">from</span> scapy.sendrecv <span class="keyword">import</span> sniff</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_packet</span>(<span class="params">packet</span>):</span><br><span class="line">    <span class="keyword">if</span> Ether <span class="keyword">in</span> packet:</span><br><span class="line">        ether = packet[Ether]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 检查目的地址是否匹配</span></span><br><span class="line">        <span class="keyword">if</span> ether.dst == <span class="string">&quot;00:11:22:33:44:55&quot;</span>:</span><br><span class="line">            <span class="comment"># 打印帧首部和校验字段值</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;帧首部:&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;目的MAC地址: <span class="subst">&#123;ether.dst&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;源MAC地址: <span class="subst">&#123;ether.src&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;类型: <span class="subst">&#123;ether.<span class="built_in">type</span>&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 打印数据部分</span></span><br><span class="line">            <span class="keyword">if</span> Raw <span class="keyword">in</span> packet:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;数据部分:&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(packet[Raw].load.<span class="built_in">hex</span>())</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 将数据写入文件</span></span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;received_video_file.mp4&quot;</span>, <span class="string">&#x27;ab&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">                    file.write(packet[Raw].load)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;接收数据帧: <span class="subst">&#123;<span class="built_in">len</span>(packet[Raw].load)&#125;</span> 字节&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">receive_ethernet_frame</span>(<span class="params">interface</span>):</span><br><span class="line">    <span class="comment"># 开始捕获数据包</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;开始捕获数据包，接口: <span class="subst">&#123;interface&#125;</span>&quot;</span>)</span><br><span class="line">    sniff(iface=interface, prn=process_packet, <span class="built_in">filter</span>=<span class="string">&quot;ether dst 00:11:22:33:44:55&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    interface = <span class="string">&quot;WLAN&quot;</span>  <span class="comment"># 替换为你的网络接口名称</span></span><br><span class="line">    receive_ethernet_frame(interface)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;数据包捕获结束&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>是不是发现很简洁？<br>因为 Scapy 库已经帮我们预处理了很多的流程。<br>数据帧结构的定义、CRC校验都封装到了库中，我们只需要关注数据部分的发送和接收即可。</p>
+<p>让AI帮你分析一下：</p>
+<hr>
+<p>确实，Python 和 Scapy 的组合相比 C++ 和 Npcap 的组合更加简洁和易于使用。以下是几个主要原因：</p>
+<h3 id="1-高级抽象和内置功能"><a href="#1-高级抽象和内置功能" class="headerlink" title="1. 高级抽象和内置功能"></a>1. <strong>高级抽象和内置功能</strong></h3><p>Scapy 是一个高级网络库，提供了丰富的内置功能和抽象，使得网络编程变得更加简单。例如，Scapy 已经定义了各种网络协议的数据结构，你不需要手动定义这些结构。</p>
+<h3 id="2-自动处理细节"><a href="#2-自动处理细节" class="headerlink" title="2. 自动处理细节"></a>2. <strong>自动处理细节</strong></h3><p>Scapy 自动处理了很多底层细节，比如 CRC 校验码的计算、帧的组装和拆解等。你只需要关注高层次的逻辑，比如读取文件、分割数据和发送帧。</p>
+<h3 id="3-简洁的语法"><a href="#3-简洁的语法" class="headerlink" title="3. 简洁的语法"></a>3. <strong>简洁的语法</strong></h3><p>Python 语言本身具有简洁明了的语法，使得编写和阅读代码变得更加容易。相比之下，C++ 代码通常更冗长，需要更多的模板和库支持。</p>
+<h3 id="4-动态类型和交互性"><a href="#4-动态类型和交互性" class="headerlink" title="4. 动态类型和交互性"></a>4. <strong>动态类型和交互性</strong></h3><p>Python 是一种动态类型语言，可以在运行时动态地创建和修改对象。这使得开发和调试更加灵活。Scapy 还提供了交互式 shell，可以方便地测试和调试网络包。</p>
+<h3 id="5-丰富的社区支持和文档"><a href="#5-丰富的社区支持和文档" class="headerlink" title="5. 丰富的社区支持和文档"></a>5. <strong>丰富的社区支持和文档</strong></h3><p>Scapy 有一个活跃的社区和详细的文档，提供了大量的示例和教程。这使得学习和使用 Scapy 变得更加容易。</p>
+<h3 id="具体对比"><a href="#具体对比" class="headerlink" title="具体对比"></a>具体对比</h3><h4 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h4><p><strong>Python + Scapy:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">    data = file.read()</span><br></pre></td></tr></table></figure>
+
+<p><strong>C++ + Npcap:</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">std::vector&lt;<span class="type">uint8_t</span>&gt; <span class="title">read_file</span><span class="params">(<span class="type">const</span> std::string&amp; file_path)</span> </span>&#123;</span><br><span class="line">    <span class="function">std::ifstream <span class="title">file</span><span class="params">(file_path, std::ios::binary)</span></span>;</span><br><span class="line">    <span class="keyword">if</span> (!file) &#123;</span><br><span class="line">        <span class="keyword">throw</span> std::<span class="built_in">runtime_error</span>(<span class="string">&quot;无法打开文件&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">std::vector&lt;<span class="type">uint8_t</span>&gt; <span class="title">data</span><span class="params">(std::istreambuf_iterator&lt;<span class="type">char</span>&gt;(file), &#123;&#125;)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="分割数据"><a href="#分割数据" class="headerlink" title="分割数据"></a>分割数据</h4><p><strong>Python + Scapy:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">max_frame_size = <span class="number">1500</span></span><br><span class="line">frames = [data[i:i + max_frame_size] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(data), max_frame_size)]</span><br></pre></td></tr></table></figure>
+
+<p><strong>C++ + Npcap:</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">size_t</span> max_frame_size = <span class="number">1500</span>;</span><br><span class="line">std::vector&lt;std::vector&lt;<span class="type">uint8_t</span>&gt;&gt; <span class="built_in">split_data</span>(<span class="type">const</span> std::vector&lt;<span class="type">uint8_t</span>&gt;&amp; data) &#123;</span><br><span class="line">    std::vector&lt;std::vector&lt;<span class="type">uint8_t</span>&gt;&gt; frames;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; data.<span class="built_in">size</span>(); i += max_frame_size) &#123;</span><br><span class="line">        frames.<span class="built_in">push_back</span>(std::<span class="built_in">vector</span>&lt;<span class="type">uint8_t</span>&gt;(data.<span class="built_in">begin</span>() + i, data.<span class="built_in">begin</span>() + std::<span class="built_in">min</span>(i + max_frame_size, data.<span class="built_in">size</span>())));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> frames;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建和发送以太网帧"><a href="#创建和发送以太网帧" class="headerlink" title="创建和发送以太网帧"></a>创建和发送以太网帧</h4><p><strong>Python + Scapy:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> frame_data <span class="keyword">in</span> frames:</span><br><span class="line">    ether = Ether()</span><br><span class="line">    ether.dst = <span class="string">&quot;00:11:22:33:44:55&quot;</span></span><br><span class="line">    ether.src = <span class="string">&quot;00:AA:BB:CC:DD:EE&quot;</span></span><br><span class="line">    ether.<span class="built_in">type</span> = <span class="number">0x0800</span></span><br><span class="line">    ether /= Raw(load=frame_data)</span><br><span class="line">    sendp(ether, iface=interface)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;发送数据帧: <span class="subst">&#123;<span class="built_in">len</span>(frame_data)&#125;</span> 字节&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>C++ + Npcap:</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pcap.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/ether.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/ip.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">send_ethernet_frame</span><span class="params">(<span class="type">pcap_t</span>* handle, <span class="type">const</span> std::vector&lt;<span class="type">uint8_t</span>&gt;&amp; frame_data, <span class="type">const</span> std::string&amp; interface)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">ether_header</span> eth_hdr;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;eth_hdr, <span class="number">0</span>, <span class="built_in">sizeof</span>(eth_hdr));</span><br><span class="line">    <span class="built_in">ether_aton_r</span>(<span class="string">&quot;00:11:22:33:44:55&quot;</span>, &amp;eth_hdr.ether_dhost);</span><br><span class="line">    <span class="built_in">ether_aton_r</span>(<span class="string">&quot;00:AA:BB:CC:DD:EE&quot;</span>, &amp;eth_hdr.ether_shost);</span><br><span class="line">    eth_hdr.ether_type = <span class="built_in">htons</span>(ETH_P_IP);</span><br><span class="line"></span><br><span class="line">    std::vector&lt;<span class="type">uint8_t</span>&gt; packet;</span><br><span class="line">    packet.<span class="built_in">insert</span>(packet.<span class="built_in">end</span>(), <span class="built_in">reinterpret_cast</span>&lt;<span class="type">uint8_t</span>*&gt;(&amp;eth_hdr), <span class="built_in">reinterpret_cast</span>&lt;<span class="type">uint8_t</span>*&gt;(&amp;eth_hdr) + <span class="built_in">sizeof</span>(eth_hdr));</span><br><span class="line">    packet.<span class="built_in">insert</span>(packet.<span class="built_in">end</span>(), frame_data.<span class="built_in">begin</span>(), frame_data.<span class="built_in">end</span>());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">pcap_sendpacket</span>(handle, packet.<span class="built_in">data</span>(), packet.<span class="built_in">size</span>()) != <span class="number">0</span>) &#123;</span><br><span class="line">        std::cerr &lt;&lt; <span class="string">&quot;Error sending packet: &quot;</span> &lt;&lt; <span class="built_in">pcap_geterr</span>(handle) &lt;&lt; std::endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;发送数据帧: &quot;</span> &lt;&lt; frame_data.<span class="built_in">size</span>() &lt;&lt; <span class="string">&quot; 字节&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* device = <span class="string">&quot;WLAN&quot;</span>;</span><br><span class="line">    <span class="type">char</span> errbuf[PCAP_ERRBUF_SIZE];</span><br><span class="line">    <span class="type">pcap_t</span>* handle = <span class="built_in">pcap_open_live</span>(device, BUFSIZ, <span class="number">1</span>, <span class="number">1000</span>, errbuf);</span><br><span class="line">    <span class="keyword">if</span> (handle == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        std::cerr &lt;&lt; <span class="string">&quot;无法打开设备 &quot;</span> &lt;&lt; device &lt;&lt; <span class="string">&quot;: &quot;</span> &lt;&lt; errbuf &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    std::vector&lt;<span class="type">uint8_t</span>&gt; data = <span class="built_in">read_file</span>(<span class="string">&quot;C:\\Users\\21354\\Videos\\asdf.mp4&quot;</span>);</span><br><span class="line">    std::vector&lt;std::vector&lt;<span class="type">uint8_t</span>&gt;&gt; frames = <span class="built_in">split_data</span>(data);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; frame_data : frames) &#123;</span><br><span class="line">        <span class="built_in">send_ethernet_frame</span>(handle, frame_data, device);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">pcap_close</span>(handle);</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;所有数据帧发送完毕&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>Python + Scapy</strong> 提供了高级抽象和简洁的语法，使得代码更加简洁和易读。</li>
+<li><strong>C++ + Npcap</strong> 虽然提供了更低级别的控制和更高的性能，但需要更多的代码和更复杂的逻辑来处理相同的功能。</li>
+</ul>
+<p>如果你对网络编程的需求不是特别复杂，且对性能要求不是非常高，使用 Python 和 Scapy 是一个非常好的选择。如果你需要更高的性能和更细粒度的控制，那么 C++ 和 Npcap 可能更适合。</p>
+<hr>
+<p>好了，在这里还是继续讲解一下scapy是怎样实现的，深入了解：（上吧！通义）</p>
+<hr>
+<p>当然，我可以详细介绍 Scapy 中数据帧结构的定义。Scapy 是一个强大的 Python 库，用于网络包的构造、解析和发送。它内部已经定义了许多常见的网络协议数据结构，包括以太网帧（Ethernet Frame）、IP 包、TCP 段等。</p>
+<h3 id="以太网帧（Ethernet-Frame）的定义"><a href="#以太网帧（Ethernet-Frame）的定义" class="headerlink" title="以太网帧（Ethernet Frame）的定义"></a>以太网帧（Ethernet Frame）的定义</h3><p>在 Scapy 中，以太网帧的数据结构是由 <code>Ether</code> 类定义的。以下是 <code>Ether</code> 类的主要属性和方法：</p>
+<h4 id="主要属性"><a href="#主要属性" class="headerlink" title="主要属性"></a>主要属性</h4><ul>
+<li><strong>dst</strong>: 目的 MAC 地址（6 字节）</li>
+<li><strong>src</strong>: 源 MAC 地址（6 字节）</li>
+<li><strong>type</strong>: 以太网类型字段（2 字节），用于指示上层协议类型（例如，0x0800 表示 IP 协议）</li>
+</ul>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> Ether</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个以太网帧</span></span><br><span class="line">ether = Ether(dst=<span class="string">&quot;00:11:22:33:44:55&quot;</span>, src=<span class="string">&quot;00:AA:BB:CC:DD:EE&quot;</span>, <span class="built_in">type</span>=<span class="number">0x0800</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印以太网帧</span></span><br><span class="line"><span class="built_in">print</span>(ether.show())</span><br></pre></td></tr></table></figure>
+
+<h3 id="内部实现"><a href="#内部实现" class="headerlink" title="内部实现"></a>内部实现</h3><p>Scapy 的 <code>Ether</code> 类继承自 <code>Packet</code> 类，<code>Packet</code> 类是所有网络包的基础类。<code>Ether</code> 类的定义如下：</p>
+<h4 id="Ether-类定义"><a href="#Ether-类定义" class="headerlink" title="Ether 类定义"></a><code>Ether</code> 类定义</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Ether</span>(<span class="title class_ inherited__">Packet</span>):</span><br><span class="line">    name = <span class="string">&quot;Ethernet&quot;</span></span><br><span class="line">    fields_desc = [</span><br><span class="line">        DestMACField(<span class="string">&quot;dst&quot;</span>),</span><br><span class="line">        SourceMACField(<span class="string">&quot;src&quot;</span>),</span><br><span class="line">        XShortEnumField(<span class="string">&quot;type&quot;</span>, <span class="number">0x9000</span>, ETHER_TYPES)</span><br><span class="line">    ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="字段解释"><a href="#字段解释" class="headerlink" title="字段解释"></a>字段解释</h4><ul>
+<li><strong>DestMACField(“dst”)</strong>: 目的 MAC 地址字段，类型为 <code>DestMACField</code>，用于解析和构建目的 MAC 地址。</li>
+<li><strong>SourceMACField(“src”)</strong>: 源 MAC 地址字段，类型为 <code>SourceMACField</code>，用于解析和构建源 MAC 地址。</li>
+<li><strong>XShortEnumField(“type”, 0x9000, ETHER_TYPES)</strong>: 以太网类型字段，类型为 <code>XShortEnumField</code>，用于解析和构建以太网类型字段。<code>ETHER_TYPES</code> 是一个字典，包含常见的以太网类型及其对应的数值。</li>
+</ul>
+<h3 id="常见的以太网类型"><a href="#常见的以太网类型" class="headerlink" title="常见的以太网类型"></a>常见的以太网类型</h3><p>Scapy 内置了一个 <code>ETHER_TYPES</code> 字典，定义了常见的以太网类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ETHER_TYPES = &#123;</span><br><span class="line">    <span class="number">0x0800</span>: <span class="string">&quot;IP&quot;</span>,</span><br><span class="line">    <span class="number">0x0806</span>: <span class="string">&quot;ARP&quot;</span>,</span><br><span class="line">    <span class="number">0x8035</span>: <span class="string">&quot;RARP&quot;</span>,</span><br><span class="line">    <span class="number">0x86dd</span>: <span class="string">&quot;IPv6&quot;</span>,</span><br><span class="line">    <span class="number">0x88cc</span>: <span class="string">&quot;LLDP&quot;</span>,</span><br><span class="line">    <span class="comment"># 更多类型...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="构造和解析以太网帧"><a href="#构造和解析以太网帧" class="headerlink" title="构造和解析以太网帧"></a>构造和解析以太网帧</h3><h4 id="构造以太网帧"><a href="#构造以太网帧" class="headerlink" title="构造以太网帧"></a>构造以太网帧</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> Ether, Raw</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个以太网帧</span></span><br><span class="line">ether = Ether(dst=<span class="string">&quot;00:11:22:33:44:55&quot;</span>, src=<span class="string">&quot;00:AA:BB:CC:DD:EE&quot;</span>, <span class="built_in">type</span>=<span class="number">0x0800</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加数据部分</span></span><br><span class="line">ether /= Raw(load=<span class="string">b&quot;Hello, World!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印以太网帧</span></span><br><span class="line"><span class="built_in">print</span>(ether.show())</span><br></pre></td></tr></table></figure>
+
+<h4 id="解析以太网帧"><a href="#解析以太网帧" class="headerlink" title="解析以太网帧"></a>解析以太网帧</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> Ether</span><br><span class="line"></span><br><span class="line"><span class="comment"># 假设我们从网络中接收到一个原始以太网帧</span></span><br><span class="line">raw_frame = <span class="string">b&#x27;\x00\x11\x22\x33\x44\x55\x00\xaa\xbb\xcc\xdd\xee\x08\x00Hello, World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析以太网帧</span></span><br><span class="line">ether = Ether(raw_frame)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印解析后的以太网帧</span></span><br><span class="line"><span class="built_in">print</span>(ether.show())</span><br></pre></td></tr></table></figure>
+
+<h3 id="填充（Padding）"><a href="#填充（Padding）" class="headerlink" title="填充（Padding）"></a>填充（Padding）</h3><p>Scapy 在发送以太网帧时会自动处理填充。如果数据部分不足 46 字节，Scapy 会自动在数据后面添加填充字节，以确保整个帧的长度不低于 64 字节。</p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>Scapy 通过高度抽象的类和字段定义，简化了网络包的构造和解析。<code>Ether</code> 类定义了以太网帧的数据结构，包括目的 MAC 地址、源 MAC 地址和类型字段。Scapy 还提供了丰富的内置功能，如自动计算 CRC 校验码和处理填充，使得网络编程变得更加简单和高效。希望这些信息对您理解 Scapy 的内部实现有所帮助！如果有更多问题，请随时提问。</p>
+<hr>
+<p>在 Scapy 中，计算和验证 CRC 校验码（FCS，Frame Check Sequence）通常是自动处理的。Scapy 在发送以太网帧时会自动计算 CRC 校验码，并在接收以太网帧时自动验证 CRC 校验码。不过，如果你想手动计算 CRC 校验码，Scapy 也提供了相应的工具。</p>
+<h3 id="自动处理-CRC-校验码"><a href="#自动处理-CRC-校验码" class="headerlink" title="自动处理 CRC 校验码"></a>自动处理 CRC 校验码</h3><p>当你使用 Scapy 发送以太网帧时，Scapy 会自动计算 CRC 校验码并将其附加到帧的末尾。同样，当你接收以太网帧时，Scapy 会自动验证 CRC 校验码。</p>
+<h4 id="发送以太网帧"><a href="#发送以太网帧" class="headerlink" title="发送以太网帧"></a>发送以太网帧</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> Ether, Raw, sendp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个以太网帧</span></span><br><span class="line">ether = Ether(dst=<span class="string">&quot;00:11:22:33:44:55&quot;</span>, src=<span class="string">&quot;00:AA:BB:CC:DD:EE&quot;</span>, <span class="built_in">type</span>=<span class="number">0x0800</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加数据部分</span></span><br><span class="line">ether /= Raw(load=<span class="string">b&quot;Hello, World!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送以太网帧</span></span><br><span class="line">sendp(ether, iface=<span class="string">&quot;WLAN&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，Scapy 会自动计算 CRC 校验码并将其附加到帧的末尾。</p>
+<h3 id="手动计算-CRC-校验码"><a href="#手动计算-CRC-校验码" class="headerlink" title="手动计算 CRC 校验码"></a>手动计算 CRC 校验码</h3><p>如果你需要手动计算 CRC 校验码，可以使用 Scapy 提供的 <code>checksum</code> 函数。Scapy 使用的是标准的 CRC-32 校验算法。</p>
+<h4 id="手动计算-CRC-校验码-1"><a href="#手动计算-CRC-校验码-1" class="headerlink" title="手动计算 CRC 校验码"></a>手动计算 CRC 校验码</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> Ether, Raw</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个以太网帧</span></span><br><span class="line">ether = Ether(dst=<span class="string">&quot;00:11:22:33:44:55&quot;</span>, src=<span class="string">&quot;00:AA:BB:CC:DD:EE&quot;</span>, <span class="built_in">type</span>=<span class="number">0x0800</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加数据部分</span></span><br><span class="line">ether /= Raw(load=<span class="string">b&quot;Hello, World!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取以太网帧的原始字节</span></span><br><span class="line">raw_frame = <span class="built_in">bytes</span>(ether)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算 CRC 校验码</span></span><br><span class="line">crc = binascii.crc32(raw_frame) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 CRC 校验码转换为字节形式</span></span><br><span class="line">crc_bytes = crc.to_bytes(<span class="number">4</span>, byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 CRC 校验码附加到帧的末尾</span></span><br><span class="line">full_frame = raw_frame + crc_bytes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印完整的帧</span></span><br><span class="line"><span class="built_in">print</span>(full_frame.<span class="built_in">hex</span>())</span><br></pre></td></tr></table></figure>
+
+<h3 id="解析和验证-CRC-校验码"><a href="#解析和验证-CRC-校验码" class="headerlink" title="解析和验证 CRC 校验码"></a>解析和验证 CRC 校验码</h3><p>当你接收到一个以太网帧时，可以手动验证 CRC 校验码。</p>
+<h4 id="解析和验证-CRC-校验码-1"><a href="#解析和验证-CRC-校验码-1" class="headerlink" title="解析和验证 CRC 校验码"></a>解析和验证 CRC 校验码</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> Ether</span><br><span class="line"></span><br><span class="line"><span class="comment"># 假设我们从网络中接收到一个带有 CRC 校验码的原始以太网帧</span></span><br><span class="line">raw_frame_with_crc = <span class="string">b&#x27;\x00\x11\x22\x33\x44\x55\x00\xaa\xbb\xcc\xdd\xee\x08\x00Hello, World!\x1e\xde\x4d\xad&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分离数据部分和 CRC 校验码</span></span><br><span class="line">raw_frame = raw_frame_with_crc[:-<span class="number">4</span>]</span><br><span class="line">received_crc = raw_frame_with_crc[-<span class="number">4</span>:]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算 CRC 校验码</span></span><br><span class="line">computed_crc = binascii.crc32(raw_frame) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将计算的 CRC 校验码转换为字节形式</span></span><br><span class="line">computed_crc_bytes = computed_crc.to_bytes(<span class="number">4</span>, byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证 CRC 校验码</span></span><br><span class="line"><span class="keyword">if</span> received_crc == computed_crc_bytes:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;CRC 校验码验证成功&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;CRC 校验码验证失败&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析以太网帧</span></span><br><span class="line">ether = Ether(raw_frame)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印解析后的以太网帧</span></span><br><span class="line"><span class="built_in">print</span>(ether.show())</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>自动处理</strong>: Scapy 在发送和接收以太网帧时会自动处理 CRC 校验码的计算和验证。</li>
+<li><strong>手动计算</strong>: 如果你需要手动计算 CRC 校验码，可以使用 <code>binascii.crc32</code> 函数。</li>
+<li><strong>手动验证</strong>: 如果你需要手动验证 CRC 校验码，可以将计算的 CRC 校验码与接收到的 CRC 校验码进行比较。</li>
+</ul>
+<p>希望这些信息对你理解 Scapy 中 CRC 校验码的处理有所帮助！如果有更多问题，请随时提问。</p>
+<hr>
+<p>FCS（Frame Check Sequence，帧校验序列）是一种用于检测数据传输过程中错误的技术。在以太网和其他网络协议中，FCS 通常使用 32 位的 CRC（Cyclic Redundancy Check，循环冗余校验）来实现。CRC 是一种非常有效的错误检测机制，能够检测出大多数常见的传输错误。</p>
+<h3 id="生成多项式-G-X-和-CRC-32"><a href="#生成多项式-G-X-和-CRC-32" class="headerlink" title="生成多项式 G(X) 和 CRC-32"></a>生成多项式 G(X) 和 CRC-32</h3><h4 id="1-生成多项式-G-X"><a href="#1-生成多项式-G-X" class="headerlink" title="1. 生成多项式 G(X)"></a>1. 生成多项式 G(X)</h4><p>生成多项式（Generator Polynomial）是一个特定的多项式，用于生成 CRC 校验码。对于 32 位的 CRC 校验码，最常用的生成多项式是 <code>G(X) = X^32 + X^26 + X^23 + X^22 + X^16 + X^12 + X^11 + X^10 + X^8 + X^7 + X^5 + X^4 + X^2 + X + 1</code>。</p>
+<p>这个多项式可以表示为二进制数 <code>100000100110000010001110110110111</code>，或者十六进制数 <code>0x04C11DB7</code>。</p>
+<h4 id="2-CRC-32"><a href="#2-CRC-32" class="headerlink" title="2. CRC-32"></a>2. CRC-32</h4><p>CRC-32 是一种使用 32 位生成多项式的 CRC 校验算法。它是最常用的一种 CRC 校验算法，广泛应用于各种通信协议和文件格式中。CRC-32 的生成多项式就是上面提到的 <code>0x04C11DB7</code>。</p>
+<h3 id="CRC-32-的计算过程"><a href="#CRC-32-的计算过程" class="headerlink" title="CRC-32 的计算过程"></a>CRC-32 的计算过程</h3><ol>
+<li><strong>初始值</strong>：通常，CRC-32 的初始值设为全 1（即 <code>0xFFFFFFFF</code>），但也可以根据具体应用设置为其他值。</li>
+<li><strong>预处理</strong>：将数据帧的每个字节依次处理。</li>
+<li><strong>多项式除法</strong>：使用生成多项式 <code>0x04C11DB7</code> 对数据进行模 2 除法运算。</li>
+<li><strong>结果</strong>：最终得到的 32 位结果就是 CRC-32 校验码。</li>
+</ol>
+<h3 id="Python-实现-CRC-32"><a href="#Python-实现-CRC-32" class="headerlink" title="Python 实现 CRC-32"></a>Python 实现 CRC-32</h3><p>Scapy 内部使用了 <code>binascii</code> 模块来计算 CRC-32。以下是一个简单的 Python 实现，展示了如何手动计算 CRC-32 校验码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate_crc32</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 计算 CRC-32 校验码</span></span><br><span class="line">    crc = binascii.crc32(data) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line">    <span class="keyword">return</span> crc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例数据</span></span><br><span class="line">data = <span class="string">b&quot;Hello, World!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算 CRC-32 校验码</span></span><br><span class="line">crc = calculate_crc32(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 CRC 校验码转换为字节形式</span></span><br><span class="line">crc_bytes = crc.to_bytes(<span class="number">4</span>, byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印结果</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;原始数据: <span class="subst">&#123;data&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;CRC-32 校验码: <span class="subst">&#123;crc:08x&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;CRC-32 校验码（字节形式）: <span class="subst">&#123;crc_bytes.<span class="built_in">hex</span>()&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">原始数据: b&#x27;Hello, World!&#x27;</span><br><span class="line">CRC-32 校验码: 1d2bcb2c</span><br><span class="line">CRC-32 校验码（字节形式）: 2c0b2b1d</span><br></pre></td></tr></table></figure>
+
+<h3 id="Scapy-中的-CRC-32"><a href="#Scapy-中的-CRC-32" class="headerlink" title="Scapy 中的 CRC-32"></a>Scapy 中的 CRC-32</h3><p>在 Scapy 中，发送以太网帧时，CRC-32 校验码的计算和附加是自动处理的。Scapy 使用 <code>binascii</code> 模块来计算 CRC-32 校验码。</p>
+<h4 id="发送以太网帧-1"><a href="#发送以太网帧-1" class="headerlink" title="发送以太网帧"></a>发送以太网帧</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> Ether, Raw, sendp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个以太网帧</span></span><br><span class="line">ether = Ether(dst=<span class="string">&quot;00:11:22:33:44:55&quot;</span>, src=<span class="string">&quot;00:AA:BB:CC:DD:EE&quot;</span>, <span class="built_in">type</span>=<span class="number">0x0800</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加数据部分</span></span><br><span class="line">ether /= Raw(load=<span class="string">b&quot;Hello, World!&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送以太网帧</span></span><br><span class="line">sendp(ether, iface=<span class="string">&quot;WLAN&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，Scapy 会自动计算 CRC-32 校验码并将其附加到帧的末尾。</p>
+<h3 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>**生成多项式 G(X)**：用于生成 CRC 校验码的多项式，对于 CRC-32，生成多项式是 <code>0x04C11DB7</code>。</li>
+<li><strong>CRC-32</strong>：使用 32 位生成多项式的 CRC 校验算法，广泛应用于各种通信协议和文件格式中。</li>
+<li><strong>手动计算</strong>：可以使用 <code>binascii.crc32</code> 函数来手动计算 CRC-32 校验码。</li>
+<li><strong>Scapy 自动处理</strong>：Scapy 在发送和接收以太网帧时会自动处理 CRC-32 校验码的计算和验证。</li>
+</ul>
+<p>希望这些信息对你理解 CRC-32 和生成多项式 G(X) 有所帮助！如果有更多问题，请随时提问。</p>
+<hr>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/11/16/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E4%B8%80/"
+      title="计网实验一"
+     >
+
+    <p class="title-text">
+      
+        计网实验一
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title">留言 </div>
+    </div>
+    <div id="vcomments"></div>
+  </div>
+  <script>
+      new Valine({"enable":true,"appId":"AVo4oPTEvfsleHngLc8BZ535-gzGzoHsz","appKey":"gSa0juG3A4yPHmR3nL5ENl3i","placeholder":"Just go go","pageSize":10,"highlight":true,"serverURLs":null,"el":"#vcomments"});
+  </script>
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

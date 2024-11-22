@@ -20,16 +20,16 @@
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta name="description" content="前言 原理 过程 功能点与代码对应关系 完整代码 1. 高级抽象和内置功能 2. 自动处理细节 3. 简洁的语法 4. 动态类型和交互性 5. 丰富的社区支持和文档   具体对比 读取文件 分割数据 创建和发送以太网帧 总结 以太网帧（Ethernet Frame）的定义 主要属性 示例   内部实现 Ether 类定义 字段解释   常见的以太网类型 构造和解析以太网帧 构造以太网帧 解析以太">
+  <meta name="description" content="前言 最最重要的前言！！！！！ 802.3（以太网）帧结构 802.11（Wi-Fi）帧结构   原理 过程 功能点与代码对应关系 完整代码 1. 高级抽象和内置功能 2. 自动处理细节 3. 简洁的语法 4. 动态类型和交互性 5. 丰富的社区支持和文档   具体对比 读取文件 分割数据 创建和发送以太网帧 总结 以太网帧（Ethernet Frame）的定义 主要属性 示例   内部实现 E">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计网实验二">
 <meta property="og:url" content="https://buyun14.github.io/2024/11/19/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E4%BA%8C/index.html">
 <meta property="og:site_name" content="Buyun&#39;s Blog">
-<meta property="og:description" content="前言 原理 过程 功能点与代码对应关系 完整代码 1. 高级抽象和内置功能 2. 自动处理细节 3. 简洁的语法 4. 动态类型和交互性 5. 丰富的社区支持和文档   具体对比 读取文件 分割数据 创建和发送以太网帧 总结 以太网帧（Ethernet Frame）的定义 主要属性 示例   内部实现 Ether 类定义 字段解释   常见的以太网类型 构造和解析以太网帧 构造以太网帧 解析以太">
+<meta property="og:description" content="前言 最最重要的前言！！！！！ 802.3（以太网）帧结构 802.11（Wi-Fi）帧结构   原理 过程 功能点与代码对应关系 完整代码 1. 高级抽象和内置功能 2. 自动处理细节 3. 简洁的语法 4. 动态类型和交互性 5. 丰富的社区支持和文档   具体对比 读取文件 分割数据 创建和发送以太网帧 总结 以太网帧（Ethernet Frame）的定义 主要属性 示例   内部实现 E">
 <meta property="og:locale">
 <meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202411191422885.png">
 <meta property="article:published_time" content="2024-11-19T03:40:03.000Z">
-<meta property="article:modified_time" content="2024-11-21T18:02:25.097Z">
+<meta property="article:modified_time" content="2024-11-22T17:31:39.534Z">
 <meta property="article:author" content="buyun">
 <meta property="article:tag" content="计算机网络原理">
 <meta name="twitter:card" content="summary">
@@ -209,7 +209,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            14k 词 
+            15k 词 
           </div>
         </div>
         
@@ -220,6 +220,11 @@
         
           <ul>
 <li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#%E6%9C%80%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E5%89%8D%E8%A8%80"><strong>最最重要的前言！！！！！</strong></a><ul>
+<li><a href="#8023%E4%BB%A5%E5%A4%AA%E7%BD%91%E5%B8%A7%E7%BB%93%E6%9E%84">802.3（以太网）帧结构</a></li>
+<li><a href="#80211wi-fi%E5%B8%A7%E7%BB%93%E6%9E%84">802.11（Wi-Fi）帧结构</a></li>
+</ul>
+</li>
 <li><a href="#%E5%8E%9F%E7%90%86">原理</a></li>
 <li><a href="#%E8%BF%87%E7%A8%8B">过程</a><ul>
 <li><a href="#%E5%8A%9F%E8%83%BD%E7%82%B9%E4%B8%8E%E4%BB%A3%E7%A0%81%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB">功能点与代码对应关系</a></li>
@@ -286,7 +291,118 @@
 </li>
 </ul>
 <p>&lt;仍在编辑中&gt;</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><del><code>winpcap</code>太老没法用，改用<code>npcap</code></del><br><del>C++写的时候<code>npcap</code>包的函数死活找不到,只能换python写了。</del><br>C++实现就自己汇报用了，python实现简洁明了，用来分享讲解。<br>代码分享项目：<a target="_blank" rel="noopener" href="https://github.com/buyun14/PoCN">https://github.com/buyun14/PoCN</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>C++实现就自己汇报用了，python实现简洁明了，用来分享讲解。<br>代码分享项目：<a target="_blank" rel="noopener" href="https://github.com/buyun14/PoCN">https://github.com/buyun14/PoCN</a><br><font color=red>注意：实例中代码为初版，存在大文件写入更不上传输等等诸多小问题，请参考评论区自行修改</font></p>
+<hr>
+<h2 id="最最重要的前言！！！！！"><a href="#最最重要的前言！！！！！" class="headerlink" title="最最重要的前言！！！！！"></a><strong><font color=red>最最重要的前言！！！！！</font></strong></h2><p>此处为作者原话</p>
+<ol>
+<li>我们那个实验报告上给出实现的是个啥？他是个以太网帧，但它是基于有线连接的802.3的帧格式</li>
+<li>我这个代码也一样, ether是scamper库已经内置好的类。用来表示以太网帧（802.3）</li>
+<li>这是什么意思呢?意思是你要用这个帧实现通信，你必须是用的有线以太网连接。</li>
+<li>你要是一个人检查一个主机上实现那没关系，你一个主机上所有的程序都是物理层上互相连接的（他们互相能确定自己的位置）。</li>
+<li>但有些老师他要求两个人合作，<font color=red>两个人机子上互相通信</font>。</li>
+<li>我也说白了，用他实验报告给的这个帧就tm不可能实现。<font color=red>除非你带条网线，把你和你队友的机子连起来</font>。（我虽然准备是这样干的）</li>
+<li>为什么我会这样说？因为实验报告这个实验他要求的讲解的构造的是一个有线以太网连接的基于IEEE 802.3的帧 ，但我们实验室难不成带着网线去？我们顶多是拿手机热点创建一个局域网。问题来了，无线局域网通信他用的以太网帧是（IEEE802.11标准的）WIFI帧，这种结构是和我们实验报告要求实现的讲解的不是一个东西！</li>
+</ol>
+<p>你要是和我一样爱折腾，可以去看一下这个帧的结构，自己再构造一下，用scapy的Dot11函数（802.11）。<br>这样实现的理论上就可以在不带网线的情况下，让你和你的朋友在同一个局域网下（用手机热点最好，校园网防火墙网络环境复杂）实现通信。</p>
+<p>但问题你老师要是要求非得跨主机实现，老师，你为什么要在实验报告中讲有线网（802.3）的协议和帧结构呢？而不是无线局域网（802.11）的呢? 难不成你指望学生全都带根网线去上课？<br>还是说老师我觉得我讲个有线网的就够了，我觉得你们学生很聪明，你们自己去找无线局域网的自己实现?</p>
+<p>好了，抱怨完了，这篇文章剩下的东西实际上很有限，嗯，最好自己搜一搜了解一下方面的知识。<br>只想要检查过实验很简单，李老师比较宽容，你直接过去自己主机上给助教演示一下文件发送就行（解释一下函数实现和这个帧结构毕竟这次实验的目的就是这个）</p>
+<p><font color=red>再提一嘴</font></p>
+<p>这个库函数包括他给的wincap npcap里实际上我们实现的只有（目标地址 原地址 类型 数据部分），通过这些接口，我们提取不到最后那4个字节的FCS字段（CRC校验）！<br>为什么？因为<strong>FCS字段是发送给你的网卡由硬件实现的</strong>！你可以在系统网卡设置里更多属性那看到以太网帧，默认最大是1514，6+6+2+1500，没有给最后FCS留的位置！！<br>硬件他实现了，但是我们调不出来。<br>但你知道这个CRC校验原理并向助教描述就可以，或者！！在1500个数据字段中，你留下4个字节，1496用来传数据，然后这4个字节拿来存计算的crc校验码，附加到数据字段上发过去。然后接收方把钱1496再计算一遍，和你发过来的这4个对比一下。（程序写的没问题肯定一样的）（联系上文，校验早在硬件网卡那就实现了，你只不过是校验里面套校验展示一下他是怎么实现的原理罢了了）OK，没了。后面的东西虽然多但实际上精华是我这些前言，我只提出思路，不提供实现。想进一步做的，可以自己问问ai搜搜资料。</p>
+<hr>
+<h4 id="802-3（以太网）帧结构"><a href="#802-3（以太网）帧结构" class="headerlink" title="802.3（以太网）帧结构"></a>802.3（以太网）帧结构</h4><table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>长度（字节）</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前导码</td>
+<td>8</td>
+<td>用于接收同步信号</td>
+</tr>
+<tr>
+<td>目的MAC地址</td>
+<td>6</td>
+<td>表示帧的目的地址</td>
+</tr>
+<tr>
+<td>源MAC地址</td>
+<td>6</td>
+<td>表示帧的源地址</td>
+</tr>
+<tr>
+<td>类型&#x2F;长度</td>
+<td>2</td>
+<td>标识上层协议或帧的有效载荷长度</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>[46,1500]</td>
+<td>包含上层协议的数据</td>
+</tr>
+<tr>
+<td>帧校验序列(FCS)</td>
+<td>4</td>
+<td>用于检测帧在传输过程中的错误</td>
+</tr>
+</tbody></table>
+<h4 id="802-11（Wi-Fi）帧结构"><a href="#802-11（Wi-Fi）帧结构" class="headerlink" title="802.11（Wi-Fi）帧结构"></a>802.11（Wi-Fi）帧结构</h4><table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>长度（字节）</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>帧控制</td>
+<td>2</td>
+<td>包含帧类型、子类型、标志位等信息</td>
+</tr>
+<tr>
+<td>持续时间&#x2F;ID</td>
+<td>2</td>
+<td>用于管理传输时间</td>
+</tr>
+<tr>
+<td>地址1</td>
+<td>6</td>
+<td>通常是目标地址</td>
+</tr>
+<tr>
+<td>地址2</td>
+<td>6</td>
+<td>通常是源地址</td>
+</tr>
+<tr>
+<td>地址3</td>
+<td>6</td>
+<td>通常是BSSID（基本服务集标识符）</td>
+</tr>
+<tr>
+<td>序列控制</td>
+<td>2</td>
+<td>用于管理帧的顺序</td>
+</tr>
+<tr>
+<td>地址4（可选）</td>
+<td>6</td>
+<td>可选，用于扩展用途</td>
+</tr>
+<tr>
+<td>帧体</td>
+<td>[0,2312]</td>
+<td>包含上层协议的数据，最大长度受物理层限制</td>
+</tr>
+<tr>
+<td>帧校验序列(FCS)</td>
+<td>4</td>
+<td>用于检测帧在传输过程中的错误</td>
+</tr>
+</tbody></table>
+<hr>
 <p><strong>scapy</strong><br>Scapy是一个 Python程序，它允许用户发送、嗅探、分析和伪造网络包。这种能力允许构建能够探测、扫描或攻击网络的工具。scapy还可以很好地执行许多其他工具无法处理的其他特定任务，例如发送无效帧、注入自己的802.11帧、结合技术（VLAN跳跃+ARP缓存中毒、WEP加密通道上的VoIP解码等）。</p>
 <p>更详细的介绍可以去读文档：<a target="_blank" rel="noopener" href="https://www.osgeo.cn/scapy/introduction.html">scapy传送门</a></p>
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>回忆一下以太网数据帧的组成</p>

@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>计网实验三 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="前言 实验内容1: 网络协议分析与验证 DNS协议 DNS 请求报文结构 应用层：DNS 协议 传输层：UDP 协议 网络层：IP 协议 数据链路层：以太网协议   HTTP协议 HTTP 请求报文结构 1. 请求行 (Request Line) 2. 请求头 (Request Headers) 3. 请求体 (Request Body) 完整的HTTP请求报文示例 字段意义总结   TCP请求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计网实验三">
+<meta property="og:url" content="https://buyun14.github.io/2024/11/26/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E4%B8%89/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="前言 实验内容1: 网络协议分析与验证 DNS协议 DNS 请求报文结构 应用层：DNS 协议 传输层：UDP 协议 网络层：IP 协议 数据链路层：以太网协议   HTTP协议 HTTP 请求报文结构 1. 请求行 (Request Line) 2. 请求头 (Request Headers) 3. 请求体 (Request Body) 完整的HTTP请求报文示例 字段意义总结   TCP请求">
+<meta property="og:locale">
+<meta property="og:image" content="https://tool.lu/netcard/">
+<meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202411262137187.png">
+<meta property="article:published_time" content="2024-11-26T03:21:33.000Z">
+<meta property="article:modified_time" content="2024-11-26T16:20:13.343Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="计算机网络原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tool.lu/netcard/">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-计网实验三" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        计网实验三
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-11-26T03:21:33.000Z" itemprop="datePublished">2024-11-26</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            24k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <ul>
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B91-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90%E4%B8%8E%E9%AA%8C%E8%AF%81">实验内容1: 网络协议分析与验证</a><ul>
+<li><a href="#dns%E5%8D%8F%E8%AE%AE">DNS协议</a></li>
+<li><a href="#dns-%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84">DNS 请求报文结构</a><ul>
+<li><a href="#%E5%BA%94%E7%94%A8%E5%B1%82dns-%E5%8D%8F%E8%AE%AE">应用层：DNS 协议</a></li>
+<li><a href="#%E4%BC%A0%E8%BE%93%E5%B1%82udp-%E5%8D%8F%E8%AE%AE">传输层：UDP 协议</a></li>
+<li><a href="#%E7%BD%91%E7%BB%9C%E5%B1%82ip-%E5%8D%8F%E8%AE%AE">网络层：IP 协议</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E4%BB%A5%E5%A4%AA%E7%BD%91%E5%8D%8F%E8%AE%AE">数据链路层：以太网协议</a></li>
+</ul>
+</li>
+<li><a href="#http%E5%8D%8F%E8%AE%AE">HTTP协议</a></li>
+<li><a href="#http-%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84">HTTP 请求报文结构</a><ul>
+<li><a href="#1-%E8%AF%B7%E6%B1%82%E8%A1%8C-request-line">1. <strong>请求行 (Request Line)</strong></a></li>
+<li><a href="#2-%E8%AF%B7%E6%B1%82%E5%A4%B4-request-headers">2. <strong>请求头 (Request Headers)</strong></a></li>
+<li><a href="#3-%E8%AF%B7%E6%B1%82%E4%BD%93-request-body">3. <strong>请求体 (Request Body)</strong></a></li>
+<li><a href="#%E5%AE%8C%E6%95%B4%E7%9A%84http%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87%E7%A4%BA%E4%BE%8B">完整的HTTP请求报文示例</a></li>
+<li><a href="#%E5%AD%97%E6%AE%B5%E6%84%8F%E4%B9%89%E6%80%BB%E7%BB%93">字段意义总结</a></li>
+</ul>
+</li>
+<li><a href="#tcp%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87">TCP请求报文</a></li>
+<li><a href="#tcp-%E8%BF%9E%E6%8E%A5%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84">TCP 连接请求报文结构</a><ul>
+<li><a href="#1-%E4%BC%A0%E8%BE%93%E5%B1%82tcp-%E5%8D%8F%E8%AE%AE">1. <strong>传输层：TCP 协议</strong></a></li>
+</ul>
+</li>
+<li><a href="#tcp-%E8%BF%9E%E6%8E%A5%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87%E7%A4%BA%E4%BE%8B">TCP 连接请求报文示例</a><ul>
+<li><a href="#1-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B">1. <strong>三次握手过程</strong></a></li>
+<li><a href="#2-%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8F%A1%E6%89%8Bsyn%E6%8A%A5%E6%96%87">2. <strong>第一次握手（SYN）报文</strong></a></li>
+<li><a href="#%E5%AD%97%E6%AE%B5%E6%84%8F%E4%B9%89%E8%AF%A6%E8%A7%A3">字段意义详解</a></li>
+<li><a href="#%E4%BC%AA%E5%A4%B4%E9%83%A8">伪头部</a></li>
+<li><a href="#%E5%AE%8C%E6%95%B4%E7%9A%84tcp%E8%BF%9E%E6%8E%A5%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87%E7%A4%BA%E4%BE%8B">完整的TCP连接请求报文示例</a></li>
+<li><a href="#%E4%BC%AA%E5%A4%B4%E9%83%A8%E7%A4%BA%E4%BE%8B">伪头部示例</a></li>
+</ul>
+</li>
+<li><a href="#arp-%E5%8D%8F%E8%AE%AE">ARP 协议</a><ul>
+<li><a href="#arp%E5%8D%8F%E8%AE%AE%E7%9A%84%E4%BD%9C%E7%94%A8">ARP协议的作用</a></li>
+<li><a href="#arp%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B">ARP工作流程</a></li>
+</ul>
+</li>
+<li><a href="#arp%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84">ARP报文结构</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C1">实验结果1</a><ul>
+<li><a href="#1-dns%E6%9F%A5%E8%AF%A2">1. <strong>DNS查询</strong></a></li>
+<li><a href="#2-tcp%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B%E8%BF%87%E7%A8%8B">2. <strong>TCP连接建立过程</strong></a></li>
+<li><a href="#3-http%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94">3. <strong>HTTP请求和响应</strong></a></li>
+<li><a href="#4-arp%E8%AF%B7%E6%B1%82%E5%92%8C%E5%BA%94%E7%AD%94">4. <strong>ARP请求和应答</strong></a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+<li><a href="#1-arp%E8%AF%B7%E6%B1%82%E5%92%8C%E5%BA%94%E7%AD%94">1. <strong>ARP请求和应答</strong></a></li>
+<li><a href="#2-icmp%E8%AF%B7%E6%B1%82%E5%92%8C%E5%BA%94%E7%AD%94">2. <strong>ICMP请求和应答</strong></a></li>
+<li><a href="#3-%E8%B7%AF%E7%94%B1%E8%A1%A8">3. <strong>路由表</strong></a></li>
+<li><a href="#4-tcp%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B%E8%BF%87%E7%A8%8B">4. <strong>TCP连接建立过程</strong></a></li>
+<li><a href="#%E6%80%BB%E7%BB%93-1">总结</a></li>
+<li><a href="#1-%E5%88%9D%E5%A7%8B%E5%BA%8F%E5%88%97%E5%8F%B7-isn">1. <strong>初始序列号 (ISN)</strong></a></li>
+<li><a href="#2-%E7%9C%9F%E6%AD%A3%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AE%9E%E9%99%85%E8%B5%B7%E5%A7%8B%E5%BA%8F%E5%8F%B7">2. <strong>真正发送数据的实际起始序号</strong></a></li>
+<li><a href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%9C%89%E8%BF%99%E6%A0%B7%E7%9A%84%E8%AE%BE%E7%BD%AE">3. <strong>为什么会有这样的设置？</strong></a></li>
+<li><a href="#%E7%A4%BA%E4%BE%8B">示例</a></li>
+<li><a href="#%E5%AE%9E%E9%99%85%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE%E7%9A%84%E8%B5%B7%E5%A7%8B%E5%BA%8F%E5%8F%B7">实际发送数据的起始序号</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93-2">总结</a></li>
+<li><a href="#http-%E7%89%88%E6%9C%AC%E5%8F%B7">HTTP 版本号</a><ul>
+<li><a href="#1-http10">1. <strong>HTTP&#x2F;1.0</strong></a></li>
+<li><a href="#2-http11">2. <strong>HTTP&#x2F;1.1</strong></a></li>
+<li><a href="#3-http2">3. <strong>HTTP&#x2F;2</strong></a></li>
+</ul>
+</li>
+<li><a href="#%E8%AF%81%E6%8D%AE%E8%AF%B4%E6%98%8E">证据说明</a></li>
+<li><a href="#%E7%A4%BA%E4%BE%8B-1">示例</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93-3">总结</a></li>
+<li><a href="#1-%E4%BD%BF%E7%94%A8wireshark%E6%8A%93%E5%8C%85">1. <strong>使用Wireshark抓包</strong></a></li>
+<li><a href="#2-%E6%9F%A5%E6%89%BEtcp%E8%BF%9E%E6%8E%A5">2. <strong>查找TCP连接</strong></a></li>
+<li><a href="#3-%E7%BB%9F%E8%AE%A1%E6%80%BB%E5%AD%97%E8%8A%82%E6%95%B0">3. <strong>统计总字节数</strong></a></li>
+<li><a href="#4-%E8%AE%A1%E7%AE%97%E6%80%BB%E5%AD%97%E8%8A%82%E6%95%B0">4. <strong>计算总字节数</strong></a></li>
+<li><a href="#5-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E8%BF%99%E6%A0%B7%E8%AE%A1%E7%AE%97">5. <strong>为什么需要这样计算？</strong></a></li>
+<li><a href="#%E7%A4%BA%E4%BE%8B-2">示例</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93-4">总结</a></li>
+<li><a href="#1-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E6%8A%A5%E6%96%87%E6%AE%B5">1. <strong>三次握手报文段</strong></a><ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8F%A1%E6%89%8Bsyn">第一次握手（SYN）</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%8F%A1%E6%89%8Bsynack">第二次握手（SYN+ACK）</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8Back">第三次握手（ACK）</a></li>
+</ul>
+</li>
+<li><a href="#2-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E6%8A%A5%E6%96%87%E6%AE%B5">2. <strong>四次挥手报文段</strong></a><ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8C%A5%E6%89%8Bfin">第一次挥手（FIN）</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E6%8C%A5%E6%89%8Back">第二次挥手（ACK）</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8C%A5%E6%89%8Bfin">第三次挥手（FIN）</a></li>
+<li><a href="#%E7%AC%AC%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8Back">第四次挥手（ACK）</a></li>
+</ul>
+</li>
+<li><a href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E8%BF%99%E4%BA%9B%E8%AF%81%E6%8D%AE%E6%98%AF%E9%92%88%E5%AF%B9%E4%B8%80%E4%B8%AAtcp%E8%BF%9E%E6%8E%A5">3. <strong>为什么说这些证据是针对一个TCP连接？</strong></a><ul>
+<li><a href="#1-%E7%9B%B8%E5%90%8C%E7%9A%84%E6%BA%90%E7%AB%AF%E5%8F%A3%E5%92%8C%E7%9B%AE%E7%9A%84%E7%AB%AF%E5%8F%A3">1. <strong>相同的源端口和目的端口</strong></a></li>
+<li><a href="#2-%E8%BF%9E%E7%BB%AD%E7%9A%84%E5%BA%8F%E5%88%97%E5%8F%B7%E5%92%8C%E7%A1%AE%E8%AE%A4%E5%8F%B7">2. <strong>连续的序列号和确认号</strong></a></li>
+<li><a href="#3-%E7%9B%B8%E5%90%8C%E7%9A%84ip%E5%9C%B0%E5%9D%80">3. <strong>相同的IP地址</strong></a></li>
+</ul>
+</li>
+<li><a href="#%E7%A4%BA%E4%BE%8B-3">示例</a><ul>
+<li><a href="#%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B">三次握手</a></li>
+<li><a href="#%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B">四次挥手</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%BA%9B%E8%AF%81%E6%8D%AE%E6%98%AF%E9%92%88%E5%AF%B9%E5%90%8C%E4%B8%80%E4%B8%AAtcp%E8%BF%9E%E6%8E%A5">为什么这些证据是针对同一个TCP连接？</a></li>
+<li><a href="#1-%E5%BA%94%E7%94%A8%E5%B1%82-http">1. <strong>应用层 (HTTP)</strong></a></li>
+<li><a href="#2-%E4%BC%A0%E8%BE%93%E5%B1%82-tcp">2. <strong>传输层 (TCP)</strong></a></li>
+<li><a href="#3-%E7%BD%91%E7%BB%9C%E5%B1%82-ip">3. <strong>网络层 (IP)</strong></a></li>
+<li><a href="#4-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82-%E4%BB%A5%E5%A4%AA%E7%BD%91">4. <strong>数据链路层 (以太网)</strong></a></li>
+<li><a href="#%E4%B8%8D%E5%90%8C%E5%B1%82%E9%87%8D%E5%A4%8D%E7%9A%84%E6%A0%A1%E9%AA%8C%E6%98%AF%E5%90%A6%E5%A4%9A%E4%BD%99">不同层重复的校验是否多余？</a></li>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%E5%B1%82%E7%9A%84%E6%A0%A1%E9%AA%8C%E4%B8%8D%E6%98%AF%E5%A4%9A%E4%BD%99%E7%9A%84">为什么不同层的校验不是多余的？</a></li>
+<li><a href="#%E5%8F%AF%E8%83%BD%E7%9A%84%E5%8E%9F%E5%9B%A0">可能的原因</a></li>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%AD%A5%E9%AA%A4">解决步骤</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4">使用的网络命令</a><ul>
+<li><a href="#1-ipconfig-all-windows-%E6%88%96-ifconfig-linuxmac">1. <strong><code>ipconfig /all</code> (Windows) 或 <code>ifconfig</code> (Linux&#x2F;Mac)</strong></a></li>
+<li><a href="#2-nslookup-%E6%88%96-ping">2. <strong><code>nslookup</code> 或 <code>ping</code></strong></a></li>
+</ul>
+</li>
+<li><a href="#%E8%AF%8A%E6%96%AD%E5%92%8C%E8%A7%A3%E5%86%B3%E6%AD%A5%E9%AA%A4">诊断和解决步骤</a></li>
+<li><a href="#%E5%8F%AF%E8%83%BD%E7%9A%84%E5%8E%9F%E5%9B%A0-1">可能的原因</a></li>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%AD%A5%E9%AA%A4-1">解决步骤</a></li>
+<li><a href="#%E7%A4%BA%E4%BE%8B-4">示例</a></li>
+<li><a href="#%E5%88%86%E6%9E%90">分析</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93-5">总结</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B92-%E7%BD%91%E7%BB%9C%E5%B9%BF%E6%92%AD%E6%8A%A5%E6%96%87%E5%8F%91%E9%80%81">实验内容2: 网络广播报文发送</a><ul>
+<li><a href="#1-%E4%BB%8E%E6%8A%93%E5%8F%96%E7%9A%84%E6%8A%A5%E6%96%87%E4%B8%AD%E8%BF%87%E6%BB%A4%E5%87%BA%E6%BA%90ip--%E5%8F%91%E9%80%81%E6%96%B9ip%E5%9C%B0%E5%9D%80%E7%9A%84%E6%9F%90%E4%B8%80%E4%B8%AA%E6%8A%A5%E6%96%87">1. 从抓取的报文中过滤出源IP &#x3D; 发送方IP地址的某一个报文</a><ul>
+<li><a href="#%E6%89%8B%E5%8A%A8%E8%BF%87%E6%BB%A4">手动过滤</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E8%BF%87%E6%BB%A4%E5%99%A8">使用过滤器</a></li>
+</ul>
+</li>
+<li><a href="#2-%E5%88%86%E6%9E%90%E5%B9%BF%E6%92%AD%E6%8A%A5%E6%96%87%E4%BC%A0%E8%BE%93%E5%B1%82%E9%87%87%E7%94%A8udptcp%E7%90%86%E8%A7%A3%E5%B9%BF%E6%92%AD%E6%88%96%E8%80%85%E7%BB%84%E6%92%AD%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E6%98%AFtcp">2. 分析广播报文传输层采用UDP&#x2F;TCP，理解广播或者组播为什么不是TCP</a><ul>
+<li><a href="#%E5%B9%BF%E6%92%AD%E6%8A%A5%E6%96%87%E4%BC%A0%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE">广播报文传输层协议</a></li>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B9%BF%E6%92%AD%E6%88%96%E7%BB%84%E6%92%AD%E4%B8%8D%E6%98%AFtcp">为什么广播或组播不是TCP</a></li>
+</ul>
+</li>
+<li><a href="#3-%E6%8A%93%E5%8F%96%E5%8F%91%E9%80%81%E7%9A%84%E5%B9%BF%E6%92%AD%E6%8A%A5%E6%96%87%E6%89%BE%E5%87%BA%E9%80%9A%E4%BF%A1%E7%9A%84%E4%BA%94%E5%85%83%E7%BB%84%E4%BF%A1%E6%81%AF%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B8%A7%E9%A6%96%E9%83%A8%E4%BF%A1%E6%81%AF%E5%88%86%E6%9E%90%E7%9B%AE%E7%9A%84ip%E5%9C%B0%E5%9D%80%E6%BA%90ip%E5%9C%B0%E5%9D%80%E5%8D%8F%E8%AE%AE%E7%B1%BB%E5%9E%8B%E7%9B%AE%E7%9A%84mac%E5%9C%B0%E5%9D%80%E6%BA%90mac%E5%9C%B0%E5%9D%80%E7%AD%89%E4%B8%8E%E5%8D%95%E6%92%ADudp%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%9A%84%E4%B8%8D%E5%90%8C">3. 抓取发送的广播报文，找出通信的五元组信息和数据帧首部信息，分析目的IP地址、源IP地址、协议类型、目的MAC地址、源MAC地址等与单播UDP用户数据报的不同</a><ul>
+<li><a href="#%E4%BA%94%E5%85%83%E7%BB%84%E4%BF%A1%E6%81%AF">五元组信息</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%B8%A7%E9%A6%96%E9%83%A8%E4%BF%A1%E6%81%AF">数据帧首部信息</a></li>
+<li><a href="#%E4%B8%8E%E5%8D%95%E6%92%ADudp%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%9A%84%E4%B8%8D%E5%90%8C">与单播UDP用户数据报的不同</a></li>
+</ul>
+</li>
+<li><a href="#%E7%A4%BA%E4%BE%8B-5">示例</a><ul>
+<li><a href="#%E5%88%86%E6%9E%90-1">分析</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://tool.lu/netcard/" alt="IP签名"></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><font color=red>
+非常好的巩固理论知识的一次实验，我将实验原理所涉及的知识详尽的列举了出来。  
+
+<p>检查内容很简单，抓包分析即可。我不再赘述（看情况，文章还会更新）<br></font></p>
+<p>根据文档内容，实验分为两个部分：网络协议分析与验证，以及网络广播报文发送编程。以下是两个实验内容的详细介绍：</p>
+<hr>
+<h2 id="实验内容1-网络协议分析与验证"><a href="#实验内容1-网络协议分析与验证" class="headerlink" title="实验内容1: 网络协议分析与验证"></a>实验内容1: 网络协议分析与验证</h2><p><strong>实验目标：</strong></p>
+<ul>
+<li>通过分析用户访问WEB网站的过程，深入理解WEB服务系统的原理。</li>
+<li>使用Wireshark或Ethereal工具捕获并分析WEB服务过程中的数据报文，了解DNS、WEB协议的工作机制。</li>
+<li>分析TCP三次握手建立连接和四次挥手断开连接的时序关系。</li>
+<li>探讨ARP协议的工作原理。</li>
+<li>研究数据链路层工业以太网的工作原理及其数据帧的格式。</li>
+</ul>
+<p><strong>实验内容：</strong></p>
+<ul>
+<li>学习Wireshark或Ethereal工具的使用方法。</li>
+<li>访问<code>www.baidu.com</code>首页，捕获整个通信过程的数据包。</li>
+<li>通过分析捕获的数据包，加深对网络协议的理解。</li>
+</ul>
+<p><strong>实验要求：</strong></p>
+<ul>
+<li>解释DNS请求报文、HTTP请求报文、TCP连接请求报文、ARP请求报文和应答报文从应用层到数据链路层各协议单元首部字段的意义。</li>
+<li>分析并提供证据证明如何获取特定信息，如<code>www.baidu.com</code>对应的IP地址、网关的IP地址和MAC地址等。</li>
+<li>以HTTP请求报文为例，描述WEB服务器接收到报文后，接收方从数据链路层到应用层如何识别不同层数据字段的长度和位置。</li>
+<li>讨论从应用层到数据链路层的校验字段，包括校验码的计算方法和校验范围，评估不同层次重复校验的必要性。</li>
+<li>如果实验中未观察到DNS和ARP协议的工作，探讨可能的原因及解决方案，并列出使用的网络命令。</li>
+<li>解释在客户端使用<code>ping</code>命令测试网络连通性时，出现的异常情况及其原因。</li>
+</ul>
+<p><strong>实验步骤：</strong></p>
+<ul>
+<li>安装WINPCAP组件和Wireshark抓包工具。</li>
+<li>启动Wireshark，在指定的网络接口上开始抓包。</li>
+<li>浏览器访问<code>www.baidu.com</code>直至页面加载完成。<a target="_blank" rel="noopener" href="https://blog.csdn.net/Carson_Chu/article/details/104283019">【网络协议】DNS域名解析的详细过程</a></li>
+<li>结束抓包，对捕获的数据包进行分析，寻找满足实验要求的报文证据。<code>nslookup baidu.com</code></li>
+</ul>
+<hr>
+<p>ok，我们先来复习下相关知识：</p>
+<h3 id="DNS协议"><a href="#DNS协议" class="headerlink" title="DNS协议"></a>DNS协议</h3><p>简述：域名系统（Domain Name System，DNS）是因特网的一项服务，它用于将域名转换为IP地址。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zy_dreamer/article/details/132477656">DNS协议详解</a></p>
+<p>详细解析DNS请求报文及其从应用层到数据链路层各协议单元首部字段的意义。</p>
+<p>DNS请求报文从应用层到数据链路层各协议单元首部字段的表格形式：</p>
+<h3 id="DNS-请求报文结构"><a href="#DNS-请求报文结构" class="headerlink" title="DNS 请求报文结构"></a>DNS 请求报文结构</h3><h4 id="应用层：DNS-协议"><a href="#应用层：DNS-协议" class="headerlink" title="应用层：DNS 协议"></a>应用层：DNS 协议</h4><table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>长度（字节）</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>事务ID</td>
+<td>2</td>
+<td>用于匹配请求和响应报文。</td>
+</tr>
+<tr>
+<td>标志</td>
+<td>2</td>
+<td>包含多个标志位，如查询类型、响应标志、递归期望等。</td>
+</tr>
+<tr>
+<td>问题数</td>
+<td>2</td>
+<td>表示问题部分的条目数。</td>
+</tr>
+<tr>
+<td>答案数</td>
+<td>2</td>
+<td>表示答案部分的条目数（在请求报文中为0）。</td>
+</tr>
+<tr>
+<td>权威记录数</td>
+<td>2</td>
+<td>表示权威记录部分的条目数（在请求报文中为0）。</td>
+</tr>
+<tr>
+<td>附加记录数</td>
+<td>2</td>
+<td>表示附加记录部分的条目数（在请求报文中可能为0）。</td>
+</tr>
+<tr>
+<td>问题部分</td>
+<td>可变</td>
+<td>包含需要解析的域名和查询类型。</td>
+</tr>
+<tr>
+<td>- QNAME</td>
+<td>可变</td>
+<td>域名，使用标签压缩方式表示。</td>
+</tr>
+<tr>
+<td>- QTYPE</td>
+<td>2</td>
+<td>查询类型，如1表示A记录（IPv4地址）。</td>
+</tr>
+<tr>
+<td>- QCLASS</td>
+<td>2</td>
+<td>查询类别，通常为1（IN，表示Internet）。</td>
+</tr>
+</tbody></table>
+<ol>
+<li><strong>ID</strong> (16位)：用于标识请求，响应中包含相同的ID，以便客户端可以匹配请求和响应。</li>
+<li><strong>标志</strong> (16位)：<ul>
+<li><strong>QR</strong> (1位)：查询&#x2F;响应标志，0表示请求，1表示响应。</li>
+<li><strong>Opcode</strong> (4位)：操作码，通常为0表示标准查询。</li>
+<li><strong>AA</strong> (1位)：授权回答，如果设置，表示响应来自权威名称服务器。</li>
+<li><strong>TC</strong> (1位)：截断标志，如果设置，表示消息被截断。</li>
+<li><strong>RD</strong> (1位)：期望递归，如果设置，请求递归查询。</li>
+<li><strong>RA</strong> (1位)：可用递归，如果设置，表示服务器支持递归查询。</li>
+<li><strong>Z</strong> (3位)：保留位，必须为0。</li>
+<li><strong>Rcode</strong> (4位)：响应代码，0表示没有错误。</li>
+</ul>
+</li>
+<li><strong>问题数</strong> (16位)：问题部分中的条目数。</li>
+<li><strong>回答RRs数</strong> (16位)：回答资源记录的数量。</li>
+<li><strong>权威RRs数</strong> (16位)：权威资源记录的数量。</li>
+<li><strong>额外RRs数</strong> (16位)：额外资源记录的数量。</li>
+</ol>
+<h4 id="传输层：UDP-协议"><a href="#传输层：UDP-协议" class="headerlink" title="传输层：UDP 协议"></a>传输层：UDP 协议</h4><table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>长度（字节）</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>源端口</td>
+<td>2</td>
+<td>发送方的端口号。</td>
+</tr>
+<tr>
+<td>目的端口</td>
+<td>2</td>
+<td>接收方的端口号（DNS默认为53）。</td>
+</tr>
+<tr>
+<td>长度</td>
+<td>2</td>
+<td>整个UDP数据报的长度（包括头部和数据）。</td>
+</tr>
+<tr>
+<td>校验和</td>
+<td>2</td>
+<td>用于检测数据报是否损坏。对于IPv4，校验和是可选的；对于IPv6，校验和是必需的。</td>
+</tr>
+</tbody></table>
+<ol>
+<li><strong>源端口</strong> (16位)：发送方的端口号。</li>
+<li><strong>目的端口</strong> (16位)：接收方的端口号，DNS默认使用53端口。</li>
+<li><strong>长度</strong> (16位)：整个UDP数据包的长度，包括头部和数据部分。</li>
+<li><strong>校验和</strong> (16位)：用于检测数据包在传输过程中是否发生错误。</li>
+</ol>
+<h4 id="网络层：IP-协议"><a href="#网络层：IP-协议" class="headerlink" title="网络层：IP 协议"></a>网络层：IP 协议</h4><table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>长度（字节）</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>版本</td>
+<td>1&#x2F;8</td>
+<td>表示IP协议版本（4表示IPv4，6表示IPv6）。</td>
+</tr>
+<tr>
+<td>头部长度</td>
+<td>1&#x2F;8</td>
+<td>表示IP头部的长度（以32位字为单位）。</td>
+</tr>
+<tr>
+<td>服务类型</td>
+<td>1</td>
+<td>表示服务质量。</td>
+</tr>
+<tr>
+<td>总长度</td>
+<td>2</td>
+<td>表示整个IP数据报的长度（包括头部和数据）。</td>
+</tr>
+<tr>
+<td>标识</td>
+<td>2</td>
+<td>用于唯一标识主机发送的每一份数据报。</td>
+</tr>
+<tr>
+<td>标志</td>
+<td>1&#x2F;8</td>
+<td>控制数据报的分片。</td>
+</tr>
+<tr>
+<td>分片偏移</td>
+<td>2&#x2F;8</td>
+<td>表示数据报片在原始数据报中的位置。</td>
+</tr>
+<tr>
+<td>生存时间</td>
+<td>1</td>
+<td>表示数据报的生存时间（跳数）。</td>
+</tr>
+<tr>
+<td>协议</td>
+<td>1</td>
+<td>表示上层协议类型（17表示UDP）。</td>
+</tr>
+<tr>
+<td>头部校验和</td>
+<td>2</td>
+<td>用于检测IP头部是否损坏。</td>
+</tr>
+<tr>
+<td>源IP地址</td>
+<td>4 (IPv4)</td>
+<td>表示发送方的IP地址。</td>
+</tr>
+<tr>
+<td>目的IP地址</td>
+<td>4 (IPv4)</td>
+<td>表示接收方的IP地址。</td>
+</tr>
+</tbody></table>
+<ol>
+<li><strong>版本</strong> (4位)：IP协议版本，如IPv4或IPv6。</li>
+<li><strong>IHL</strong> (4位)：IP头部长度。</li>
+<li><strong>服务类型</strong> (8位)：已废弃，现在用于区分服务。</li>
+<li><strong>总长度</strong> (16位)：整个IP数据包的长度。</li>
+<li><strong>标识</strong> (16位)：用于分片重组的唯一标识。</li>
+<li><strong>标志</strong> (3位)：用于控制分片的行为。</li>
+<li><strong>分片偏移</strong> (13位)：指示该分片相对于原始数据包的位置。</li>
+<li><strong>生存时间</strong> (TTL, 8位)：限制数据包在网络中存活的时间，每通过一个路由器减1。</li>
+<li><strong>协议</strong> (8位)：上层协议类型，对于DNS请求来说，通常是17 (UDP)。</li>
+<li><strong>头部校验和</strong> (16位)：用于验证IP头部的完整性。</li>
+<li><strong>源地址</strong> (32位或128位)：发送方的IP地址。</li>
+<li><strong>目的地址</strong> (32位或128位)：接收方的IP地址。</li>
+</ol>
+<h4 id="数据链路层：以太网协议"><a href="#数据链路层：以太网协议" class="headerlink" title="数据链路层：以太网协议"></a>数据链路层：以太网协议</h4><table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>长度（字节）</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前导码</td>
+<td>8</td>
+<td>用于接收同步。</td>
+</tr>
+<tr>
+<td>目标MAC地址</td>
+<td>6</td>
+<td>表示接收方的MAC地址。</td>
+</tr>
+<tr>
+<td>源MAC地址</td>
+<td>6</td>
+<td>表示发送方的MAC地址。</td>
+</tr>
+<tr>
+<td>类型</td>
+<td>2</td>
+<td>表示上层协议类型（0x0800表示IPv4）。</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>46-1500</td>
+<td>包含上层协议的数据。</td>
+</tr>
+<tr>
+<td>帧校验序列</td>
+<td>4</td>
+<td>用于检测帧的完整性。</td>
+</tr>
+</tbody></table>
+<ol>
+<li><strong>目标MAC地址</strong> (48位)：接收方的物理地址。</li>
+<li><strong>源MAC地址</strong> (48位)：发送方的物理地址。</li>
+<li><strong>类型</strong> (16位)：指示上层协议类型，对于IP数据包，值为0x0800 (IPv4) 或 0x86DD (IPv6)。</li>
+<li><strong>数据</strong>：实际传输的数据，即上述所有层次的数据。</li>
+<li><strong>帧校验序列 (FCS)</strong> (32位)：用于检测以太网帧在传输过程中是否发生错误。</li>
+</ol>
+<h3 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h3><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP">面向开发者的 Web 技术-HTTP</a></p>
+<p>超文本传输协议（HyperText Transfer Protocol）是一个用于传输超媒体文档（例如 HTML）的应用层协议。它是为 Web 浏览器与 Web 服务器之间的通信而设计的，但也可以用于其他目的。HTTP 遵循经典的客户端—服务端模型，客户端打开一个连接以发出请求，然后等待直到收到服务器端响应。HTTP 是无状态协议，这意味着服务器不会在两个请求之间保留任何数据（状态）。<br>（HTTP通常使用TCP作为传输层协议，默认端口为80（HTTP）和443（HTTPS）。）</p>
+<h3 id="HTTP-请求报文结构"><a href="#HTTP-请求报文结构" class="headerlink" title="HTTP 请求报文结构"></a>HTTP 请求报文结构</h3><h4 id="1-请求行-Request-Line"><a href="#1-请求行-Request-Line" class="headerlink" title="1. 请求行 (Request Line)"></a>1. <strong>请求行 (Request Line)</strong></h4><p>请求行包含请求方法、请求URI和HTTP版本。</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>请求方法</td>
+<td>指定请求类型，常见的有GET、POST、PUT、DELETE等。</td>
+</tr>
+<tr>
+<td>请求URI</td>
+<td>指定请求资源的路径，可以是绝对路径或相对路径。</td>
+</tr>
+<tr>
+<td>HTTP版本</td>
+<td>指定使用的HTTP协议版本，如HTTP&#x2F;1.1。</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /index.html HTTP/1.1</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-请求头-Request-Headers"><a href="#2-请求头-Request-Headers" class="headerlink" title="2. 请求头 (Request Headers)"></a>2. <strong>请求头 (Request Headers)</strong></h4><p>请求头包含多个键值对，每个键值对占一行，以冒号分隔。请求头提供了关于请求的额外信息。</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Host</td>
+<td>指定请求的主机和端口。</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>指定发送请求的客户端软件信息。</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td>指定客户端可以接受的媒体类型。</td>
+</tr>
+<tr>
+<td>Accept-Language</td>
+<td>指定客户端可以接受的语言。</td>
+</tr>
+<tr>
+<td>Accept-Encoding</td>
+<td>指定客户端可以接受的内容编码。</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>指定连接类型，如keep-alive或close。</td>
+</tr>
+<tr>
+<td>Content-Length</td>
+<td>指定请求体的长度（字节数）。</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>指定请求体的媒体类型。</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>指定客户端发送的Cookie信息。</td>
+</tr>
+<tr>
+<td>Referer</td>
+<td>指定请求的来源页面URL。</td>
+</tr>
+<tr>
+<td>Authorization</td>
+<td>指定认证信息。</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Host: www.example.com</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Length: 23</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Cookie: sessionid=abc123</span><br><span class="line">Referer: http://www.example.com/</span><br><span class="line">Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-请求体-Request-Body"><a href="#3-请求体-Request-Body" class="headerlink" title="3. 请求体 (Request Body)"></a>3. <strong>请求体 (Request Body)</strong></h4><p>请求体包含客户端发送给服务器的数据，通常在POST、PUT等方法中使用。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=admin&amp;password=secret</span><br></pre></td></tr></table></figure>
+
+<h4 id="完整的HTTP请求报文示例"><a href="#完整的HTTP请求报文示例" class="headerlink" title="完整的HTTP请求报文示例"></a>完整的HTTP请求报文示例</h4><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST /login HTTP/1.1 </span><br><span class="line">Host: www.example.com </span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0<span class="comment">; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3 </span></span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml<span class="comment">;q=0.9,image/webp,*/*;q=0.8 </span></span><br><span class="line">Accept-Language: en-US,en<span class="comment">;q=0.5 </span></span><br><span class="line">Accept-Encoding: gzip, deflate, br </span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Length: 23</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Cookie: <span class="attr">sessionid</span>=abc123</span><br><span class="line">Referer: http://www.example.com/</span><br><span class="line">Authorization: Basic <span class="attr">QWxhZGRpbjpvcGVuIHNlc2FtZQ</span>==</span><br><span class="line"></span><br><span class="line"><span class="attr">username</span>=admin&amp;password=secret</span><br></pre></td></tr></table></figure>
+
+<h4 id="字段意义总结"><a href="#字段意义总结" class="headerlink" title="字段意义总结"></a>字段意义总结</h4><ul>
+<li><strong>请求方法</strong>：指定请求类型，如GET、POST等。</li>
+<li><strong>请求URI</strong>：指定请求资源的路径。</li>
+<li><strong>HTTP版本</strong>：指定使用的HTTP协议版本。</li>
+<li><strong>Host</strong>：指定请求的主机和端口。</li>
+<li><strong>User-Agent</strong>：指定发送请求的客户端软件信息。</li>
+<li><strong>Accept</strong>：指定客户端可以接受的媒体类型。</li>
+<li><strong>Accept-Language</strong>：指定客户端可以接受的语言。</li>
+<li><strong>Accept-Encoding</strong>：指定客户端可以接受的内容编码。</li>
+<li><strong>Connection</strong>：指定连接类型，如keep-alive或close。</li>
+<li><strong>Content-Length</strong>：指定请求体的长度（字节数）。</li>
+<li><strong>Content-Type</strong>：指定请求体的媒体类型。</li>
+<li><strong>Cookie</strong>：指定客户端发送的Cookie信息。</li>
+<li><strong>Referer</strong>：指定请求的来源页面URL。</li>
+<li><strong>Authorization</strong>：指定认证信息。</li>
+<li><strong>请求体</strong>：包含客户端发送给服务器的数据，通常在POST、PUT等方法中使用。</li>
+</ul>
+<h3 id="TCP请求报文"><a href="#TCP请求报文" class="headerlink" title="TCP请求报文"></a>TCP请求报文</h3><p>TCP连接请求报文是TCP三次握手过程中的第一个报文，用于发起连接请求。下面详细解析TCP连接请求报文的结构和各字段的意义。</p>
+<h3 id="TCP-连接请求报文结构"><a href="#TCP-连接请求报文结构" class="headerlink" title="TCP 连接请求报文结构"></a>TCP 连接请求报文结构</h3><h4 id="1-传输层：TCP-协议"><a href="#1-传输层：TCP-协议" class="headerlink" title="1. 传输层：TCP 协议"></a>1. <strong>传输层：TCP 协议</strong></h4><p>TCP报文头包含多个字段，用于控制和管理TCP连接。以下是TCP报文头的主要字段及其意义：</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>长度（字节）</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>源端口</td>
+<td>2</td>
+<td>发送方的端口号。</td>
+</tr>
+<tr>
+<td>目的端口</td>
+<td>2</td>
+<td>接收方的端口号。</td>
+</tr>
+<tr>
+<td>序列号</td>
+<td>4</td>
+<td>发送方的序列号，用于标识发送的数据段。</td>
+</tr>
+<tr>
+<td>确认号</td>
+<td>4</td>
+<td>接收方期望收到的下一个字节的序列号，初始时为0。</td>
+</tr>
+<tr>
+<td>数据偏移</td>
+<td>1&#x2F;4</td>
+<td>TCP头部的长度（以32位字为单位），通常为5（20字节）。</td>
+</tr>
+<tr>
+<td>保留</td>
+<td>1&#x2F;4</td>
+<td>保留字段，必须设置为0。</td>
+</tr>
+<tr>
+<td>控制位</td>
+<td>1</td>
+<td>包含多个标志位，如SYN、ACK、FIN、RST等。</td>
+</tr>
+<tr>
+<td>窗口大小</td>
+<td>2</td>
+<td>接收方的接收窗口大小，表示接收方可以接收的字节数。</td>
+</tr>
+<tr>
+<td>校验和</td>
+<td>2</td>
+<td>用于检测TCP报文头和数据的完整性。</td>
+</tr>
+<tr>
+<td>紧急指针</td>
+<td>2</td>
+<td>如果URG标志位被设置，表示紧急数据的偏移量。</td>
+</tr>
+<tr>
+<td>选项</td>
+<td>可变</td>
+<td>用于扩展TCP功能，如最大段大小（MSS）、窗口缩放等。</td>
+</tr>
+<tr>
+<td>填充</td>
+<td>可变</td>
+<td>用于填充选项字段，使TCP头部长度为32位的倍数。</td>
+</tr>
+</tbody></table>
+<h3 id="TCP-连接请求报文示例"><a href="#TCP-连接请求报文示例" class="headerlink" title="TCP 连接请求报文示例"></a>TCP 连接请求报文示例</h3><h4 id="1-三次握手过程"><a href="#1-三次握手过程" class="headerlink" title="1. 三次握手过程"></a>1. <strong>三次握手过程</strong></h4><ul>
+<li><strong>第一次握手（SYN）</strong>：客户端发送一个带有SYN标志的TCP报文，请求建立连接。</li>
+<li><strong>第二次握手（SYN+ACK）</strong>：服务器收到请求后，发送一个带有SYN和ACK标志的TCP报文，确认收到请求并同意建立连接。</li>
+<li><strong>第三次握手（ACK）</strong>：客户端收到确认后，发送一个带有ACK标志的TCP报文，确认连接建立。</li>
+</ul>
+<h4 id="2-第一次握手（SYN）报文"><a href="#2-第一次握手（SYN）报文" class="headerlink" title="2. 第一次握手（SYN）报文"></a>2. <strong>第一次握手（SYN）报文</strong></h4><p>假设客户端的源端口为12345，服务器的目的端口为80，客户端的初始序列号为1000。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">源端口: 12345</span><br><span class="line">目的端口: 80</span><br><span class="line">序列号: 1000</span><br><span class="line">确认号: 0</span><br><span class="line">数据偏移: 5</span><br><span class="line">保留: 0</span><br><span class="line">控制位: SYN (0x02)</span><br><span class="line">窗口大小: 65535</span><br><span class="line">校验和: (计算得出)</span><br><span class="line">紧急指针: 0</span><br><span class="line">选项: (可选)</span><br><span class="line">填充: (可选)</span><br></pre></td></tr></table></figure>
+
+<h4 id="字段意义详解"><a href="#字段意义详解" class="headerlink" title="字段意义详解"></a>字段意义详解</h4><ul>
+<li><strong>源端口</strong>：发送方的端口号，用于标识发送方的应用程序。</li>
+<li><strong>目的端口</strong>：接收方的端口号，用于标识接收方的应用程序。</li>
+<li><strong>序列号</strong>：发送方的序列号，用于标识发送的数据段。在连接请求中，序列号是客户端选择的一个随机初始值。</li>
+<li><strong>确认号</strong>：接收方期望收到的下一个字节的序列号。在连接请求中，确认号为0。</li>
+<li><strong>数据偏移</strong>：TCP头部的长度（以32位字为单位），通常为5（20字节）。</li>
+<li><strong>保留</strong>：保留字段，必须设置为0。</li>
+<li><strong>控制位</strong>：包含多个标志位，如SYN、ACK、FIN、RST等。在连接请求中，SYN标志位被设置为1。</li>
+<li><strong>窗口大小</strong>：接收方的接收窗口大小，表示接收方可以接收的字节数。</li>
+<li><strong>校验和</strong>：用于检测TCP报文头和数据的完整性。校验和包括伪头部（IP头部的一部分）、TCP头部和数据。</li>
+<li><strong>紧急指针</strong>：如果URG标志位被设置，表示紧急数据的偏移量。在连接请求中，通常为0。</li>
+<li><strong>选项</strong>：用于扩展TCP功能，如最大段大小（MSS）、窗口缩放等。在连接请求中，通常包含MSS选项。</li>
+<li><strong>填充</strong>：用于填充选项字段，使TCP头部长度为32位的倍数。</li>
+</ul>
+<h4 id="伪头部"><a href="#伪头部" class="headerlink" title="伪头部"></a>伪头部</h4><p>在计算TCP校验和时，需要使用伪头部，伪头部包括以下字段：</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>长度（字节）</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>源IP地址</td>
+<td>4 (IPv4)</td>
+<td>发送方的IP地址。</td>
+</tr>
+<tr>
+<td>目的IP地址</td>
+<td>4 (IPv4)</td>
+<td>接收方的IP地址。</td>
+</tr>
+<tr>
+<td>零填充</td>
+<td>1</td>
+<td>1字节的零填充。</td>
+</tr>
+<tr>
+<td>协议</td>
+<td>1</td>
+<td>表示上层协议类型（6表示TCP）。</td>
+</tr>
+<tr>
+<td>TCP长度</td>
+<td>2</td>
+<td>TCP报文的总长度（包括头部和数据）。</td>
+</tr>
+</tbody></table>
+<h4 id="完整的TCP连接请求报文示例"><a href="#完整的TCP连接请求报文示例" class="headerlink" title="完整的TCP连接请求报文示例"></a>完整的TCP连接请求报文示例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">源端口: 12345</span><br><span class="line">目的端口: 80</span><br><span class="line">序列号: 1000</span><br><span class="line">确认号: 0</span><br><span class="line">数据偏移: 5</span><br><span class="line">保留: 0</span><br><span class="line">控制位: SYN (0x02)</span><br><span class="line">窗口大小: 65535</span><br><span class="line">校验和: (计算得出)</span><br><span class="line">紧急指针: 0</span><br><span class="line">选项: MSS=1460</span><br><span class="line">填充: (可选)</span><br></pre></td></tr></table></figure>
+
+<h4 id="伪头部示例"><a href="#伪头部示例" class="headerlink" title="伪头部示例"></a>伪头部示例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源IP地址: 192.168.1.1</span><br><span class="line">目的IP地址: 192.168.1.2</span><br><span class="line">零填充: 00</span><br><span class="line">协议: 6 (TCP)</span><br><span class="line">TCP长度: 40 (20字节的TCP头部 + 20字节的选项)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="ARP-协议"><a href="#ARP-协议" class="headerlink" title="ARP 协议"></a>ARP 协议</h3><p>ARP协议，全称为<strong>地址解析协议</strong>（Address Resolution Protocol），是一种用于<strong>将网络层的地址转换为数据链路层地址</strong>的重要网络协议。在TCP&#x2F;IP网络中，ARP的主要功能是将IP地址转换为MAC地址，这一过程对于网络中的数据传输至关重要。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cxuanBlog/p/14265315.html">一文详解ARP协议</a></p>
+<h4 id="ARP协议的作用"><a href="#ARP协议的作用" class="headerlink" title="ARP协议的作用"></a>ARP协议的作用</h4><p>在以太网环境中，数据传输依赖于MAC地址，而非IP地址。当一个主机需要与另一个主机通信时，它必须知道目标主机的MAC地址。ARP协议正是用来解决这个问题的，它通过目标设备的IP地址查询目标设备的MAC地址，从而确保通信的顺利进行。</p>
+<h4 id="ARP工作流程"><a href="#ARP工作流程" class="headerlink" title="ARP工作流程"></a>ARP工作流程</h4><p>ARP的工作流程通常包括以下几个步骤：</p>
+<p>主机A检查自己的ARP表，查看是否已经有主机B的MAC地址。</p>
+<p>如果没有，主机A会发送一个ARP请求报文，询问网络中谁拥有主机B的IP地址。</p>
+<p>网络中的所有主机都会收到这个ARP请求，但只有主机B会响应，因为它拥有被询问的IP地址。</p>
+<p>主机B会发送一个ARP响应报文给主机A，告知自己的MAC地址。</p>
+<p>主机A收到响应后，会更新自己的ARP表，并使用主机B的MAC地址来发送数据。</p>
+<p><code>arp</code></p>
+<h3 id="ARP报文结构"><a href="#ARP报文结构" class="headerlink" title="ARP报文结构"></a>ARP报文结构</h3><p><img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202411262137187.png" alt="ARP请求报文结构" title="ARP请求报文结构"></p>
+<p>前面 14 个字节构成标准以太网的首部，前两个字段 DST 和 SRC 分别表示 以太网的目的地址 和 以太网的源地址，以太网的目的地址如果是 ff:ff:ff:ff:ff:ff 全部为 1 表示广播地址，在同一广播域中的所有以太网接口可以接收这些帧。后面紧跟着的是 ARP 请求的长度&#x2F;类型，ARP 请求 和 ARP 应答这个值为 0x0806。</p>
+<p><strong>硬件类型</strong>表示硬件地址的类型，硬件地址常见的有 MAC 物理或者以太网地址，对于以太网来说，此值为 1。<br><strong>协议类型</strong> 指出映射的协议地址类型，对于 IPv4 地址，这个值是 0x0800。<br><strong>硬件大小</strong>和 <strong>协议大小</strong> 分别指出硬件地址和协议地址的字节数。对于以太网中使用 IPv4 的 ARP 请求或应答，它们的值分别是 6 和 4。<br><strong>Op</strong> 字段指出如果是 ARP 请求，Op &#x3D; 1，ARP 应答 ，Op &#x3D; 2，RARP 请求 Op &#x3D; 3，RARP 应答，Op &#x3D; 4。<br>紧跟在 Op 之后的是 <strong>发送方硬件地址</strong>(MAC 地址)，<strong>发送方的协议地址</strong>(IPv4 地址)，目的硬件地址 和 目的协议地址。</p>
+<h2 id="实验结果1"><a href="#实验结果1" class="headerlink" title="实验结果1"></a>实验结果1</h2><p>要求1-3已经概述过，这里不再赘述。</p>
+<p>4.通过对捕获的数据包进行分析，提供证据，说明如何获得以下信息：</p>
+<p><strong>1）<code>www.baidu.com</code> 对应的IP地址，有几种方法可以获得该IP地址；</strong></p>
+<hr>
+<p>根据文档和前文内容，要通过捕获的数据包分析来获得<code>www.baidu.com</code>对应的IP地址，可以采用以下几种方法：</p>
+<h4 id="1-DNS查询"><a href="#1-DNS查询" class="headerlink" title="1. DNS查询"></a>1. <strong>DNS查询</strong></h4><ul>
+<li><strong>方法</strong>：通过DNS（域名系统）查询来获取域名对应的IP地址。</li>
+<li><strong>证据</strong>：<ul>
+<li>在Wireshark中抓取的数据包中，查找DNS请求和应答报文。</li>
+<li><strong>DNS请求报文</strong>：在应用层的DNS部分，可以看到客户端发送的DNS查询请求，其中包含域名<code>www.baidu.com</code>。</li>
+<li><strong>DNS应答报文</strong>：在DNS应答报文中，可以看到服务器返回的IP地址。通常，DNS应答报文中的<code>Answer</code>部分会包含域名对应的A记录（IPv4地址）或AAAA记录（IPv6地址）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-TCP连接建立过程"><a href="#2-TCP连接建立过程" class="headerlink" title="2. TCP连接建立过程"></a>2. <strong>TCP连接建立过程</strong></h4><ul>
+<li><strong>方法</strong>：通过观察TCP三次握手过程中涉及的IP地址。</li>
+<li><strong>证据</strong>：<ul>
+<li>在Wireshark中查找TCP三次握手的过程。</li>
+<li><strong>第一次握手（SYN）</strong>：客户端发送一个带有SYN标志的TCP报文，目标IP地址为<code>www.baidu.com</code>的IP地址。</li>
+<li><strong>第二次握手（SYN+ACK）</strong>：服务器回应一个带有SYN和ACK标志的TCP报文，源IP地址即为<code>www.baidu.com</code>的IP地址。</li>
+<li><strong>第三次握手（ACK）</strong>：客户端发送一个带有ACK标志的TCP报文，确认连接建立，目标IP地址同样为<code>www.baidu.com</code>的IP地址。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-HTTP请求和响应"><a href="#3-HTTP请求和响应" class="headerlink" title="3. HTTP请求和响应"></a>3. <strong>HTTP请求和响应</strong></h4><ul>
+<li><strong>方法</strong>：通过HTTP请求和响应报文中的IP地址。</li>
+<li><strong>证据</strong>：<ul>
+<li>在Wireshark中查找HTTP请求和响应报文。</li>
+<li><strong>HTTP请求报文</strong>：在传输层的TCP头部，可以看到目标IP地址是<code>www.baidu.com</code>的IP地址。</li>
+<li><strong>HTTP响应报文</strong>：在传输层的TCP头部，可以看到源IP地址是<code>www.baidu.com</code>的IP地址。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-ARP请求和应答"><a href="#4-ARP请求和应答" class="headerlink" title="4. ARP请求和应答"></a>4. <strong>ARP请求和应答</strong></h4><ul>
+<li><strong>方法</strong>：如果在同一局域网内，可以通过ARP请求和应答来获取IP地址对应的MAC地址，从而间接确认IP地址。</li>
+<li><strong>证据</strong>：<ul>
+<li>在Wireshark中查找ARP请求和应答报文。</li>
+<li><strong>ARP请求报文</strong>：如果客户端和服务器在同一局域网内，客户端会发送ARP请求以获取<code>www.baidu.com</code>的MAC地址，此时可以看到目标IP地址。</li>
+<li><strong>ARP应答报文</strong>：服务器回应ARP应答报文，其中包含其MAC地址和IP地址。</li>
+</ul>
+</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>通过上述方法，可以确定<code>www.baidu.com</code>对应的IP地址。具体步骤如下：</p>
+<ol>
+<li><strong>DNS查询</strong>：在DNS应答报文中找到<code>www.baidu.com</code>的IP地址。</li>
+<li><strong>TCP连接建立</strong>：在TCP三次握手的过程中，查看目标IP地址。</li>
+<li><strong>HTTP请求和响应</strong>：在HTTP请求和响应报文中查看目标IP地址。</li>
+<li><strong>ARP请求和应答</strong>：在ARP请求和应答报文中查看目标IP地址（适用于同一局域网内的情况）。</li>
+</ol>
+<hr>
+<p><strong>2）网关IP地址和MAC地址分别是多少，有几种方法可以获得；</strong></p>
+<hr>
+<p>要通过捕获的数据包分析来获得网关的IP地址和MAC地址，可以采用以下几种方法：</p>
+<h4 id="1-ARP请求和应答"><a href="#1-ARP请求和应答" class="headerlink" title="1. ARP请求和应答"></a>1. <strong>ARP请求和应答</strong></h4><ul>
+<li><strong>方法</strong>：通过ARP（Address Resolution Protocol）请求和应答报文来获取网关的IP地址和MAC地址。</li>
+<li><strong>证据</strong>：<ul>
+<li>在Wireshark中查找ARP请求和应答报文。</li>
+<li><strong>ARP请求报文</strong>：客户端发送ARP请求以获取网关的MAC地址。请求报文中会包含目标IP地址（即网关的IP地址），但目标MAC地址为全0（因为此时还不知道网关的MAC地址）。</li>
+<li><strong>ARP应答报文</strong>：网关回应ARP应答报文，其中包含网关的MAC地址和IP地址。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-ICMP请求和应答"><a href="#2-ICMP请求和应答" class="headerlink" title="2. ICMP请求和应答"></a>2. <strong>ICMP请求和应答</strong></h4><ul>
+<li><strong>方法</strong>：通过ICMP（Internet Control Message Protocol）请求（如ping）和应答报文来获取网关的IP地址。MAC地址可以通过ARP解析得到。</li>
+<li><strong>证据</strong>：<ul>
+<li>在Wireshark中查找ICMP Echo Request（ping请求）和ICMP Echo Reply（ping应答）报文。</li>
+<li><strong>ICMP Echo Request</strong>：客户端发送ICMP Echo Request到网关的IP地址。</li>
+<li><strong>ICMP Echo Reply</strong>：网关回应ICMP Echo Reply，源IP地址即为网关的IP地址。</li>
+<li>结合ARP请求和应答报文，可以找到与网关IP地址对应的MAC地址。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-路由表"><a href="#3-路由表" class="headerlink" title="3. 路由表"></a>3. <strong>路由表</strong></h4><ul>
+<li><strong>方法</strong>：查看本地主机的路由表来获取默认网关的IP地址。MAC地址可以通过ARP解析得到。</li>
+<li><strong>证据</strong>：<ul>
+<li>在Windows系统中，可以通过命令<code>ipconfig /all</code>查看默认网关的IP地址。</li>
+<li>使用<code>arp -a</code>命令可以查看ARP缓存，找到与网关IP地址对应的MAC地址。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-TCP连接建立过程"><a href="#4-TCP连接建立过程" class="headerlink" title="4. TCP连接建立过程"></a>4. <strong>TCP连接建立过程</strong></h4><ul>
+<li><strong>方法</strong>：在TCP三次握手过程中，如果客户端和服务器之间的通信需要经过网关，可以通过观察数据包中的IP地址和MAC地址来确定网关的信息。</li>
+<li><strong>证据</strong>：<ul>
+<li>在Wireshark中查找TCP三次握手的过程。</li>
+<li><strong>第一次握手（SYN）</strong>：客户端发送一个带有SYN标志的TCP报文，目标IP地址为服务器的IP地址，但下一跳通常是网关的IP地址。</li>
+<li><strong>第二次握手（SYN+ACK）</strong>：服务器回应一个带有SYN和ACK标志的TCP报文，源IP地址是服务器的IP地址，但下一跳通常是网关的IP地址。</li>
+<li><strong>第三次握手（ACK）</strong>：客户端发送一个带有ACK标志的TCP报文，确认连接建立，目标IP地址同样是服务器的IP地址，但下一跳通常是网关的IP地址。</li>
+<li>通过这些报文的源&#x2F;目标MAC地址，可以找到网关的MAC地址。</li>
+</ul>
+</li>
+</ul>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><p>通过上述方法，可以确定网关的IP地址和MAC地址。具体步骤如下：</p>
+<ol>
+<li><strong>ARP请求和应答</strong>：在ARP请求和应答报文中找到网关的IP地址和MAC地址。</li>
+<li><strong>ICMP请求和应答</strong>：在ICMP Echo Request和Echo Reply报文中找到网关的IP地址，并结合ARP解析找到MAC地址。</li>
+<li><strong>路由表</strong>：通过命令行工具查看默认网关的IP地址，并通过ARP缓存找到对应的MAC地址。</li>
+<li><strong>TCP连接建立过程</strong>：在TCP三次握手的过程中，通过观察数据包中的IP地址和MAC地址来确定网关的信息。</li>
+</ol>
+<hr>
+<p><strong>3）发送方和接收方TCP协议协商的初始序号？真正发送数据的实际起始序号是多少？为什么？</strong></p>
+<hr>
+<p>在TCP连接建立过程中，发送方和接收方会协商初始序列号（Initial Sequence Number, ISN）。这些序列号用于确保数据传输的可靠性和顺序性。以下是关于初始序号和实际发送数据的起始序号的详细解释：</p>
+<h4 id="1-初始序列号-ISN"><a href="#1-初始序列号-ISN" class="headerlink" title="1. 初始序列号 (ISN)"></a>1. <strong>初始序列号 (ISN)</strong></h4><ul>
+<li><strong>定义</strong>：初始序列号是TCP连接中第一个字节的序列号。每个方向的连接都有自己的初始序列号。</li>
+<li><strong>生成方式</strong>：ISN通常是随机生成的，以提高安全性。现代操作系统通常使用一个复杂的算法来生成ISN，该算法基于时间戳和其他因素，以减少被猜测的风险。</li>
+<li><strong>目的</strong>：通过使用随机的ISN，可以防止攻击者轻易地猜测序列号并进行重放攻击或注入恶意数据。</li>
+</ul>
+<h4 id="2-真正发送数据的实际起始序号"><a href="#2-真正发送数据的实际起始序号" class="headerlink" title="2. 真正发送数据的实际起始序号"></a>2. <strong>真正发送数据的实际起始序号</strong></h4><ul>
+<li><strong>定义</strong>：实际发送数据的起始序号是从ISN开始的下一个可用序列号。在三次握手完成后，客户端和服务器都准备好发送数据。</li>
+<li><strong>计算方法</strong>：<ul>
+<li><strong>客户端</strong>：客户端在SYN报文中发送ISN，假设为<code>ISN_c</code>。客户端在第三次握手（ACK）后发送的第一个数据段的序列号将是<code>ISN_c + 1</code>。</li>
+<li><strong>服务器</strong>：服务器在SYN+ACK报文中发送ISN，假设为<code>ISN_s</code>。服务器在接收到客户端的ACK后发送的第一个数据段的序列号将是<code>ISN_s + 1</code>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-为什么会有这样的设置？"><a href="#3-为什么会有这样的设置？" class="headerlink" title="3. 为什么会有这样的设置？"></a>3. <strong>为什么会有这样的设置？</strong></h4><ul>
+<li><strong>可靠性</strong>：通过使用ISN，TCP可以确保数据包按正确的顺序到达，并且能够检测到丢失的数据包。如果某个数据包丢失，接收方可以通过序列号请求重新发送。</li>
+<li><strong>安全</strong>：随机生成的ISN增加了攻击者预测序列号的难度，从而提高了安全性。如果攻击者能够预测序列号，他们可能会插入恶意数据或执行其他攻击。</li>
+<li><strong>同步</strong>：ISN允许双方在连接建立时同步它们的序列号计数器，从而确保数据传输的一致性和完整性。</li>
+</ul>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>假设客户端和服务器之间的TCP连接建立过程如下：</p>
+<ol>
+<li><p><strong>第一次握手（SYN）</strong>：</p>
+<ul>
+<li>客户端发送一个带有SYN标志的TCP报文，序列号为<code>ISN_c</code>（例如1000）。</li>
+<li>报文格式：<code>SYN, seq=1000</code></li>
+</ul>
+</li>
+<li><p><strong>第二次握手（SYN+ACK）</strong>：</p>
+<ul>
+<li>服务器回应一个带有SYN和ACK标志的TCP报文，确认收到客户端的SYN，同时发送自己的ISN（例如2000），并且确认号为<code>ISN_c + 1</code>（即1001）。</li>
+<li>报文格式：<code>SYN, ACK, seq=2000, ack=1001</code></li>
+</ul>
+</li>
+<li><p><strong>第三次握手（ACK）</strong>：</p>
+<ul>
+<li>客户端发送一个带有ACK标志的TCP报文，确认收到服务器的SYN，确认号为<code>ISN_s + 1</code>（即2001）。</li>
+<li>报文格式：<code>ACK, seq=1001, ack=2001</code></li>
+</ul>
+</li>
+</ol>
+<h4 id="实际发送数据的起始序号"><a href="#实际发送数据的起始序号" class="headerlink" title="实际发送数据的起始序号"></a>实际发送数据的起始序号</h4><ul>
+<li><strong>客户端</strong>：在第三次握手后，客户端发送的第一个数据段的序列号将是<code>ISN_c + 1</code>，即1001。</li>
+<li><strong>服务器</strong>：在接收到客户端的ACK后，服务器发送的第一个数据段的序列号将是<code>ISN_s + 1</code>，即2001。</li>
+</ul>
+<h4 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>**初始序列号 (ISN)**：由客户端和服务器各自生成，用于确保数据传输的可靠性和安全性。</li>
+<li><strong>实际发送数据的起始序号</strong>：从ISN加1开始，客户端为<code>ISN_c + 1</code>，服务器为<code>ISN_s + 1</code>。</li>
+<li><strong>原因</strong>：这种机制确保了数据传输的顺序性和完整性，同时增加了安全性，防止攻击者轻易猜测序列号并进行攻击。</li>
+</ul>
+<hr>
+<p><strong>4）HTTP协议协商的版本号是多少？该版本号HTTP协议工作特点是什么？提供证据说明。</strong></p>
+<hr>
+<p>在HTTP协议中，版本号是请求行和状态行中的一个重要部分，它指定了使用的HTTP协议的版本。常见的HTTP版本包括HTTP&#x2F;1.0、HTTP&#x2F;1.1和HTTP&#x2F;2。以下是这些版本的特点以及如何通过Wireshark捕获的数据包来确定HTTP协议的版本号。</p>
+<h4 id="HTTP-版本号"><a href="#HTTP-版本号" class="headerlink" title="HTTP 版本号"></a>HTTP 版本号</h4><h5 id="1-HTTP-1-0"><a href="#1-HTTP-1-0" class="headerlink" title="1. HTTP&#x2F;1.0"></a>1. <strong>HTTP&#x2F;1.0</strong></h5><ul>
+<li><strong>特点</strong>：<ul>
+<li>每个请求都需要建立一个新的TCP连接。</li>
+<li>不支持持久连接（Persistent Connections）。</li>
+<li>不支持管道化（Pipelining），即客户端必须等待前一个请求的响应才能发送下一个请求。</li>
+<li>不支持分块传输编码（Chunked Transfer Encoding）。</li>
+<li>不支持虚拟主机（Virtual Hosting）。</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-HTTP-1-1"><a href="#2-HTTP-1-1" class="headerlink" title="2. HTTP&#x2F;1.1"></a>2. <strong>HTTP&#x2F;1.1</strong></h5><ul>
+<li><strong>特点</strong>：<ul>
+<li>支持持久连接（Persistent Connections），默认情况下保持连接打开，直到客户端或服务器关闭连接。</li>
+<li>支持管道化（Pipelining），客户端可以连续发送多个请求而不必等待每个请求的响应。</li>
+<li>支持分块传输编码（Chunked Transfer Encoding），允许数据以小块的形式传输，不需要事先知道整个消息的长度。</li>
+<li>支持虚拟主机（Virtual Hosting），允许多个域名共享同一个IP地址。</li>
+<li>引入了更多的请求头和响应头，如<code>Host</code>、<code>Connection</code>等。</li>
+</ul>
+</li>
+</ul>
+<h5 id="3-HTTP-2"><a href="#3-HTTP-2" class="headerlink" title="3. HTTP&#x2F;2"></a>3. <strong>HTTP&#x2F;2</strong></h5><ul>
+<li><strong>特点</strong>：<ul>
+<li>多路复用（Multiplexing），允许多个请求和响应同时在单个TCP连接上进行。</li>
+<li>头部压缩（Header Compression），减少传输的头部信息量。</li>
+<li>服务器推送（Server Push），服务器可以在客户端请求之前主动推送资源。</li>
+<li>二进制格式（Binary Format），使用二进制格式而不是文本格式，提高解析效率。</li>
+<li>流控制（Flow Control），允许客户端和服务器对数据流进行更精细的控制。</li>
+</ul>
+</li>
+</ul>
+<h4 id="证据说明"><a href="#证据说明" class="headerlink" title="证据说明"></a>证据说明</h4><p>要通过Wireshark捕获的数据包来确定HTTP协议的版本号，可以通过以下步骤：</p>
+<ol>
+<li><p><strong>启动Wireshark并开始抓包</strong>：</p>
+<ul>
+<li>打开Wireshark并选择正确的网络接口开始抓包。</li>
+<li>在浏览器中访问<code>www.baidu.com</code>或其他网站，直到页面加载完成。</li>
+<li>停止抓包。</li>
+</ul>
+</li>
+<li><p><strong>查找HTTP请求报文</strong>：</p>
+<ul>
+<li>在Wireshark的过滤器栏中输入<code>http.request</code>，筛选出HTTP请求报文。</li>
+<li>选择一个HTTP请求报文，查看其详细信息。</li>
+</ul>
+</li>
+<li><p><strong>检查请求行</strong>：</p>
+<ul>
+<li>在请求报文中找到请求行（Request Line），通常位于报文的顶部。</li>
+<li>请求行的格式为：<code>&lt;Method&gt; &lt;URL&gt; &lt;HTTP-Version&gt;</code>。</li>
+<li>例如，<code>GET /index.html HTTP/1.1</code> 表示这是一个HTTP&#x2F;1.1的GET请求。</li>
+</ul>
+</li>
+<li><p><strong>确认版本号</strong>：</p>
+<ul>
+<li>从请求行中可以直接看到HTTP版本号，例如<code>HTTP/1.1</code>。</li>
+</ul>
+</li>
+</ol>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h4><p>假设我们捕获了一个HTTP请求报文，其请求行如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: www.baidu.com</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Connection: keep-alive</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，请求行<code>GET / HTTP/1.1</code>表明该请求使用的是HTTP&#x2F;1.1版本。</p>
+<h4 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h4><ul>
+<li><strong>HTTP&#x2F;1.0</strong>：每个请求都需要新的TCP连接，不支持持久连接和管道化。</li>
+<li><strong>HTTP&#x2F;1.1</strong>：支持持久连接、管道化、分块传输编码和虚拟主机。</li>
+<li><strong>HTTP&#x2F;2</strong>：支持多路复用、头部压缩、服务器推送和二进制格式。</li>
+</ul>
+<p>通过Wireshark捕获的数据包，可以从请求行中直接看到HTTP协议的版本号，从而确定使用的HTTP版本及其工作特点。</p>
+<hr>
+<p><strong>5）一个TCP连接从建立到释放，总共发送和接收了多少字节数据？为什么？</strong></p>
+<hr>
+<p>要确定一个TCP连接从建立到释放过程中总共发送和接收了多少字节数据，可以通过Wireshark抓包工具来分析。以下是如何通过Wireshark获取这些信息的步骤和解释：</p>
+<h4 id="1-使用Wireshark抓包"><a href="#1-使用Wireshark抓包" class="headerlink" title="1. 使用Wireshark抓包"></a>1. <strong>使用Wireshark抓包</strong></h4><ul>
+<li><strong>启动Wireshark</strong>：打开Wireshark并选择正确的网络接口开始抓包。</li>
+<li><strong>触发TCP连接</strong>：在浏览器中访问<code>www.baidu.com</code>或其他网站，直到页面加载完成。</li>
+<li><strong>停止抓包</strong>：页面加载完成后，停止Wireshark的抓包。</li>
+</ul>
+<h4 id="2-查找TCP连接"><a href="#2-查找TCP连接" class="headerlink" title="2. 查找TCP连接"></a>2. <strong>查找TCP连接</strong></h4><ul>
+<li><strong>过滤TCP连接</strong>：在Wireshark的过滤器栏中输入<code>tcp</code>，筛选出所有TCP报文。</li>
+<li><strong>找到三次握手</strong>：查找三次握手过程（SYN, SYN+ACK, ACK）以确定TCP连接的开始。</li>
+<li><strong>找到四次挥手</strong>：查找四次挥手过程（FIN, ACK, FIN, ACK）以确定TCP连接的结束。</li>
+</ul>
+<h4 id="3-统计总字节数"><a href="#3-统计总字节数" class="headerlink" title="3. 统计总字节数"></a>3. <strong>统计总字节数</strong></h4><ul>
+<li><p><strong>统计发送的数据量</strong>：</p>
+<ul>
+<li>在Wireshark中，可以使用<code>Follow TCP Stream</code>功能来查看整个TCP会话的数据流。</li>
+<li>右键点击任意一个属于该TCP连接的报文，选择<code>Follow &gt; TCP Stream</code>。</li>
+<li>在弹出的窗口中，可以看到客户端和服务器之间的完整数据交换。</li>
+<li>Wireshark会显示每个方向上发送的总字节数。</li>
+</ul>
+</li>
+<li><p><strong>统计接收的数据量</strong>：</p>
+<ul>
+<li>同样在<code>Follow TCP Stream</code>窗口中，可以看到服务器发送给客户端的数据总量。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-计算总字节数"><a href="#4-计算总字节数" class="headerlink" title="4. 计算总字节数"></a>4. <strong>计算总字节数</strong></h4><ul>
+<li><strong>发送的总字节数</strong>：在<code>Follow TCP Stream</code>窗口中，查看客户端发送的数据总量。</li>
+<li><strong>接收的总字节数</strong>：在<code>Follow TCP Stream</code>窗口中，查看服务器发送的数据总量。</li>
+<li><strong>总字节数</strong>：将发送的总字节数和接收的总字节数相加，得到整个TCP连接期间发送和接收的总字节数。</li>
+</ul>
+<h4 id="5-为什么需要这样计算？"><a href="#5-为什么需要这样计算？" class="headerlink" title="5. 为什么需要这样计算？"></a>5. <strong>为什么需要这样计算？</strong></h4><ul>
+<li><strong>准确性</strong>：通过<code>Follow TCP Stream</code>功能，Wireshark能够准确地统计整个TCP连接期间的数据传输量，包括应用层数据和TCP头部数据。</li>
+<li><strong>完整性</strong>：这种方法确保了统计的数据是完整的，包括所有数据段和重传的数据。</li>
+<li><strong>直观性</strong>：<code>Follow TCP Stream</code>窗口提供了直观的数据视图，便于理解数据流的方向和内容。</li>
+</ul>
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h4><p>假设我们捕获了一个TCP连接，并且在<code>Follow TCP Stream</code>窗口中看到以下信息：</p>
+<ul>
+<li><strong>客户端发送的数据总量</strong>：1024字节</li>
+<li><strong>服务器发送的数据总量</strong>：8192字节</li>
+</ul>
+<p>那么，这个TCP连接从建立到释放期间，总共发送和接收的字节数为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">总字节数 = 客户端发送的数据总量 + 服务器发送的数据总量</span><br><span class="line">总字节数 = 1024 + 8192 = 9216字节</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结-4"><a href="#总结-4" class="headerlink" title="总结"></a>总结</h4><ul>
+<li><strong>使用Wireshark的<code>Follow TCP Stream</code>功能</strong>：可以方便地查看和统计整个TCP连接期间的数据传输量。</li>
+<li><strong>计算总字节数</strong>：通过统计客户端发送的数据总量和服务器发送的数据总量，然后相加得到总字节数。</li>
+<li><strong>准确性与完整性</strong>：这种方法确保了数据统计的准确性和完整性。</li>
+</ul>
+<hr>
+<p><strong>6）针对一个TCP连接，提供该连接建立三次握手报文段和四次挥手报文段，为什么说该证据是针对一个TCP连接？</strong></p>
+<hr>
+<p>要提供一个TCP连接的三次握手和四次挥手的报文段，并解释为什么这些证据是针对同一个TCP连接，我们需要详细分析这些报文段中的关键字段。以下是具体的步骤和示例：</p>
+<h4 id="1-三次握手报文段"><a href="#1-三次握手报文段" class="headerlink" title="1. 三次握手报文段"></a>1. <strong>三次握手报文段</strong></h4><h5 id="第一次握手（SYN）"><a href="#第一次握手（SYN）" class="headerlink" title="第一次握手（SYN）"></a>第一次握手（SYN）</h5><ul>
+<li><strong>发送方</strong>：客户端</li>
+<li><strong>接收方</strong>：服务器</li>
+<li><strong>报文格式</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SYN, seq=x</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>seq=x</code>：客户端选择的初始序列号（ISN）。</li>
+</ul>
+</li>
+</ul>
+<h5 id="第二次握手（SYN-ACK）"><a href="#第二次握手（SYN-ACK）" class="headerlink" title="第二次握手（SYN+ACK）"></a>第二次握手（SYN+ACK）</h5><ul>
+<li><strong>发送方</strong>：服务器</li>
+<li><strong>接收方</strong>：客户端</li>
+<li><strong>报文格式</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SYN, ACK, seq=y, ack=x+1</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>seq=y</code>：服务器选择的初始序列号（ISN）。</li>
+<li><code>ack=x+1</code>：确认客户端的初始序列号加1。</li>
+</ul>
+</li>
+</ul>
+<h5 id="第三次握手（ACK）"><a href="#第三次握手（ACK）" class="headerlink" title="第三次握手（ACK）"></a>第三次握手（ACK）</h5><ul>
+<li><strong>发送方</strong>：客户端</li>
+<li><strong>接收方</strong>：服务器</li>
+<li><strong>报文格式</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ACK, seq=x+1, ack=y+1</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>seq=x+1</code>：客户端的下一个序列号。</li>
+<li><code>ack=y+1</code>：确认服务器的初始序列号加1。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-四次挥手报文段"><a href="#2-四次挥手报文段" class="headerlink" title="2. 四次挥手报文段"></a>2. <strong>四次挥手报文段</strong></h4><h5 id="第一次挥手（FIN）"><a href="#第一次挥手（FIN）" class="headerlink" title="第一次挥手（FIN）"></a>第一次挥手（FIN）</h5><ul>
+<li><strong>发送方</strong>：客户端或服务器</li>
+<li><strong>接收方</strong>：对方</li>
+<li><strong>报文格式</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FIN, seq=a</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>seq=a</code>：发送方当前的序列号。</li>
+</ul>
+</li>
+</ul>
+<h5 id="第二次挥手（ACK）"><a href="#第二次挥手（ACK）" class="headerlink" title="第二次挥手（ACK）"></a>第二次挥手（ACK）</h5><ul>
+<li><strong>发送方</strong>：对方</li>
+<li><strong>接收方</strong>：发送方</li>
+<li><strong>报文格式</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ACK, seq=b, ack=a+1</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>seq=b</code>：对方当前的序列号。</li>
+<li><code>ack=a+1</code>：确认发送方的FIN序列号加1。</li>
+</ul>
+</li>
+</ul>
+<h5 id="第三次挥手（FIN）"><a href="#第三次挥手（FIN）" class="headerlink" title="第三次挥手（FIN）"></a>第三次挥手（FIN）</h5><ul>
+<li><strong>发送方</strong>：对方</li>
+<li><strong>接收方</strong>：发送方</li>
+<li><strong>报文格式</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FIN, seq=c</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>seq=c</code>：对方当前的序列号。</li>
+</ul>
+</li>
+</ul>
+<h5 id="第四次挥手（ACK）"><a href="#第四次挥手（ACK）" class="headerlink" title="第四次挥手（ACK）"></a>第四次挥手（ACK）</h5><ul>
+<li><strong>发送方</strong>：发送方</li>
+<li><strong>接收方</strong>：对方</li>
+<li><strong>报文格式</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ACK, seq=a+1, ack=c+1</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>seq=a+1</code>：发送方的下一个序列号。</li>
+<li><code>ack=c+1</code>：确认对方的FIN序列号加1。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-为什么说这些证据是针对一个TCP连接？"><a href="#3-为什么说这些证据是针对一个TCP连接？" class="headerlink" title="3. 为什么说这些证据是针对一个TCP连接？"></a>3. <strong>为什么说这些证据是针对一个TCP连接？</strong></h4><p>以下是一些关键点，可以证明这些报文段是针对同一个TCP连接：</p>
+<h5 id="1-相同的源端口和目的端口"><a href="#1-相同的源端口和目的端口" class="headerlink" title="1. 相同的源端口和目的端口"></a>1. <strong>相同的源端口和目的端口</strong></h5><ul>
+<li>在三次握手和四次挥手中，源端口和目的端口必须一致。例如，如果三次握手中的源端口是12345，目的端口是80，那么在四次挥手中，源端口和目的端口也必须是12345和80。</li>
+</ul>
+<h5 id="2-连续的序列号和确认号"><a href="#2-连续的序列号和确认号" class="headerlink" title="2. 连续的序列号和确认号"></a>2. <strong>连续的序列号和确认号</strong></h5><ul>
+<li>序列号和确认号在三次握手和四次挥手中必须是连续的。例如，在三次握手中，客户端的初始序列号是<code>x</code>，那么在四次挥手中，客户端的序列号应该从<code>x+1</code>开始。</li>
+<li>确认号也是如此，服务器在三次握手中确认了客户端的<code>x+1</code>，那么在四次挥手中，服务器的确认号也应该基于这个值。</li>
+</ul>
+<h5 id="3-相同的IP地址"><a href="#3-相同的IP地址" class="headerlink" title="3. 相同的IP地址"></a>3. <strong>相同的IP地址</strong></h5><ul>
+<li>三次握手和四次挥手的IP地址必须一致。即客户端和服务器的IP地址在整个连接过程中保持不变。</li>
+</ul>
+<h4 id="示例-3"><a href="#示例-3" class="headerlink" title="示例"></a>示例</h4><p>假设我们捕获了一个TCP连接的三次握手和四次挥手报文段，具体如下：</p>
+<h5 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h5><ol>
+<li><p><strong>第一次握手（SYN）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源IP: 192.168.1.10</span><br><span class="line">目的IP: 192.168.1.1</span><br><span class="line">源端口: 12345</span><br><span class="line">目的端口: 80</span><br><span class="line">SYN, seq=1000</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>第二次握手（SYN+ACK）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源IP: 192.168.1.1</span><br><span class="line">目的IP: 192.168.1.10</span><br><span class="line">源端口: 80</span><br><span class="line">目的端口: 12345</span><br><span class="line">SYN, ACK, seq=2000, ack=1001</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>第三次握手（ACK）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源IP: 192.168.1.10</span><br><span class="line">目的IP: 192.168.1.1</span><br><span class="line">源端口: 12345</span><br><span class="line">目的端口: 80</span><br><span class="line">ACK, seq=1001, ack=2001</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h5><ol>
+<li><p><strong>第一次挥手（FIN）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源IP: 192.168.1.10</span><br><span class="line">目的IP: 192.168.1.1</span><br><span class="line">源端口: 12345</span><br><span class="line">目的端口: 80</span><br><span class="line">FIN, seq=1001</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>第二次挥手（ACK）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源IP: 192.168.1.1</span><br><span class="line">目的IP: 192.168.1.10</span><br><span class="line">源端口: 80</span><br><span class="line">目的端口: 12345</span><br><span class="line">ACK, seq=2001, ack=1002</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>第三次挥手（FIN）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源IP: 192.168.1.1</span><br><span class="line">目的IP: 192.168.1.10</span><br><span class="line">源端口: 80</span><br><span class="line">目的端口: 12345</span><br><span class="line">FIN, seq=2001</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>第四次挥手（ACK）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源IP: 192.168.1.10</span><br><span class="line">目的IP: 192.168.1.1</span><br><span class="line">源端口: 12345</span><br><span class="line">目的端口: 80</span><br><span class="line">ACK, seq=1002, ack=2002</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="为什么这些证据是针对同一个TCP连接？"><a href="#为什么这些证据是针对同一个TCP连接？" class="headerlink" title="为什么这些证据是针对同一个TCP连接？"></a>为什么这些证据是针对同一个TCP连接？</h4><ol>
+<li><p><strong>相同的源端口和目的端口</strong>：</p>
+<ul>
+<li>三次握手和四次挥手中的源端口和目的端口都是12345和80。</li>
+</ul>
+</li>
+<li><p><strong>连续的序列号和确认号</strong>：</p>
+<ul>
+<li>三次握手中的初始序列号是1000和2000，四次挥手中的序列号是从1001和2001开始的，确认号也是连续的。</li>
+</ul>
+</li>
+<li><p><strong>相同的IP地址</strong>：</p>
+<ul>
+<li>三次握手和四次挥手的IP地址都是192.168.1.10和192.168.1.1。</li>
+</ul>
+</li>
+</ol>
+<p>通过这些关键点，我们可以确定这些报文段是针对同一个TCP连接的。</p>
+<hr>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>数据链路层 (以太网帧)</th>
+<th>网络层 (IP)</th>
+<th>传输层 (TCP)</th>
+<th>应用层 (HTTP)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>目标MAC地址</td>
+<td>6字节</td>
+<td>（）</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>源MAC地址</td>
+<td>6字节</td>
+<td>（）</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>以太类型&#x2F;长度</td>
+<td>2字节</td>
+<td>（）</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>数据部分</td>
+<td>可变</td>
+<td>（）</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>校验和</td>
+<td>4字节</td>
+<td>（）</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>版本</td>
+<td>（）</td>
+<td>4位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>头部长度</td>
+<td>（）</td>
+<td>4位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>服务类型</td>
+<td>（）</td>
+<td>8位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>总长度</td>
+<td>（）</td>
+<td>16位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>标识</td>
+<td>（）</td>
+<td>16位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>标志</td>
+<td>（）</td>
+<td>3位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>分片偏移</td>
+<td>（）</td>
+<td>13位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>生存时间</td>
+<td>（）</td>
+<td>8位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>协议</td>
+<td>（）</td>
+<td>8位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>头部校验和</td>
+<td>（）</td>
+<td>16位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>源IP地址</td>
+<td>（）</td>
+<td>32位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>目的IP地址</td>
+<td>（）</td>
+<td>32位</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>选项</td>
+<td>（）</td>
+<td>可变</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>填充</td>
+<td>（）</td>
+<td>可变</td>
+<td>（）</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>源端口</td>
+<td>（）</td>
+<td>（）</td>
+<td>16位</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>目的端口</td>
+<td>（）</td>
+<td>（）</td>
+<td>16位</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>序列号</td>
+<td>（）</td>
+<td>（）</td>
+<td>32位</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>确认号</td>
+<td>（）</td>
+<td>（）</td>
+<td>32位</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>数据偏移</td>
+<td>（）</td>
+<td>（）</td>
+<td>4位</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>保留</td>
+<td>（）</td>
+<td>（）</td>
+<td>6位</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>控制位</td>
+<td>（）</td>
+<td>（）</td>
+<td>6位</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>窗口大小</td>
+<td>（）</td>
+<td>（）</td>
+<td>16位</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>校验和</td>
+<td>（）</td>
+<td>（）</td>
+<td>16位</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>紧急指针</td>
+<td>（）</td>
+<td>（）</td>
+<td>16位</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>选项</td>
+<td>（）</td>
+<td>（）</td>
+<td>可变</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>填充</td>
+<td>（）</td>
+<td>（）</td>
+<td>可变</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>数据部分</td>
+<td>（）</td>
+<td>（）</td>
+<td>可变</td>
+<td>（）</td>
+</tr>
+<tr>
+<td>请求行</td>
+<td>（）</td>
+<td>（）</td>
+<td>（）</td>
+<td>请求方法、请求URI 和 HTTP版本</td>
+</tr>
+<tr>
+<td>请求头</td>
+<td>（）</td>
+<td>（）</td>
+<td>（）</td>
+<td>多个键值对，每个键值对占一行，以冒号分隔</td>
+</tr>
+<tr>
+<td>空行</td>
+<td>（）</td>
+<td>（）</td>
+<td>（）</td>
+<td>请求头与请求体之间的空行</td>
+</tr>
+<tr>
+<td>请求体</td>
+<td>（）</td>
+<td>（）</td>
+<td>（）</td>
+<td>可选，包含客户端发送给服务器的数据</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>（6）从应用层到数据链路层有哪些校验字段，分别采用什么方法计算校验码，其校验范围分别是什么，不同层重复的校验是多余的吗？为什么？</strong></p>
+<hr>
+<p>从应用层到数据链路层，每一层都有其特定的校验字段和校验方法。这些校验字段用于确保数据在传输过程中的完整性和正确性。以下是各层的校验字段、校验方法及其校验范围，并讨论不同层重复的校验是否多余。</p>
+<h4 id="1-应用层-HTTP"><a href="#1-应用层-HTTP" class="headerlink" title="1. 应用层 (HTTP)"></a>1. <strong>应用层 (HTTP)</strong></h4><ul>
+<li><strong>校验字段</strong>：无</li>
+<li><strong>校验方法</strong>：HTTP协议本身没有内置的校验字段。数据的完整性通常依赖于下层协议（如TCP）提供的校验机制。</li>
+<li><strong>校验范围</strong>：无</li>
+</ul>
+<h4 id="2-传输层-TCP"><a href="#2-传输层-TCP" class="headerlink" title="2. 传输层 (TCP)"></a>2. <strong>传输层 (TCP)</strong></h4><ul>
+<li><strong>校验字段</strong>：校验和 (Checksum)</li>
+<li><strong>校验方法</strong>：TCP校验和是通过计算整个TCP报文段（包括头部和数据部分）的16位补码和来生成的。具体步骤如下：<ol>
+<li>将TCP报文段分为多个16位的字。</li>
+<li>对所有16位字进行求和。</li>
+<li>如果结果超过16位，则将高16位加到低16位上。</li>
+<li>取该和的16位补码作为校验和。</li>
+</ol>
+</li>
+<li><strong>校验范围</strong>：整个TCP报文段（包括头部和数据部分）</li>
+</ul>
+<h4 id="3-网络层-IP"><a href="#3-网络层-IP" class="headerlink" title="3. 网络层 (IP)"></a>3. <strong>网络层 (IP)</strong></h4><ul>
+<li><strong>校验字段</strong>：头部校验和 (Header Checksum)</li>
+<li><strong>校验方法</strong>：IP头部校验和是通过计算IP头部的16位补码和来生成的。具体步骤如下：<ol>
+<li>将IP头部分为多个16位的字。</li>
+<li>对所有16位字进行求和。</li>
+<li>如果结果超过16位，则将高16位加到低16位上。</li>
+<li>取该和的16位补码作为头部校验和。</li>
+</ol>
+</li>
+<li><strong>校验范围</strong>：仅IP头部</li>
+</ul>
+<h4 id="4-数据链路层-以太网"><a href="#4-数据链路层-以太网" class="headerlink" title="4. 数据链路层 (以太网)"></a>4. <strong>数据链路层 (以太网)</strong></h4><ul>
+<li><strong>校验字段</strong>：帧校验序列 (FCS, Frame Check Sequence)</li>
+<li><strong>校验方法</strong>：以太网帧使用CRC-32（循环冗余校验）来生成FCS。具体步骤如下：<ol>
+<li>使用生成多项式对整个以太网帧（不包括FCS字段）进行CRC-32计算。</li>
+<li>计算结果作为FCS附加在帧尾部。</li>
+</ol>
+</li>
+<li><strong>校验范围</strong>：整个以太网帧（包括头部和数据部分，但不包括FCS字段）</li>
+</ul>
+<h4 id="不同层重复的校验是否多余？"><a href="#不同层重复的校验是否多余？" class="headerlink" title="不同层重复的校验是否多余？"></a>不同层重复的校验是否多余？</h4><p>不同层的校验并不是多余的，每层的校验都有其特定的目的和作用：</p>
+<ol>
+<li><p>**应用层 (HTTP)**：</p>
+<ul>
+<li>HTTP本身没有校验字段，但可以通过下层协议（如TCP）提供的校验机制来保证数据的完整性。</li>
+</ul>
+</li>
+<li><p>**传输层 (TCP)**：</p>
+<ul>
+<li>TCP校验和确保了整个TCP报文段的完整性，包括头部和数据部分。这可以检测到数据在传输过程中可能发生的错误。</li>
+</ul>
+</li>
+<li><p>**网络层 (IP)**：</p>
+<ul>
+<li>IP头部校验和只检查IP头部的完整性，不包括数据部分。这是因为在IP层，数据部分可能会被分片或重组，因此单独校验头部可以确保头部信息的正确性。</li>
+</ul>
+</li>
+<li><p>**数据链路层 (以太网)**：</p>
+<ul>
+<li>以太网帧的FCS确保了整个帧的完整性，包括头部和数据部分。这是因为在局域网内，数据可能会受到物理层干扰，FCS可以检测到这些错误。</li>
+</ul>
+</li>
+</ol>
+<h4 id="为什么不同层的校验不是多余的？"><a href="#为什么不同层的校验不是多余的？" class="headerlink" title="为什么不同层的校验不是多余的？"></a>为什么不同层的校验不是多余的？</h4><ul>
+<li><strong>独立性</strong>：每一层的校验都是独立的，各自负责不同的数据范围。例如，IP头部校验和只检查IP头部，而TCP校验和检查整个TCP报文段。</li>
+<li><strong>分层设计</strong>：网络协议采用分层设计，每一层都有其特定的功能和责任。不同层的校验确保了每一层的数据完整性，从而提高了整体的可靠性。</li>
+<li><strong>故障隔离</strong>：不同层的校验可以帮助快速定位问题。例如，如果TCP校验失败，可以确定问题出在传输层；如果IP头部校验失败，可以确定问题出在网络层。</li>
+<li><strong>冗余与安全性</strong>：多层校验提供了额外的安全性和冗余，即使某一层的校验失败，其他层的校验仍然可以提供一定程度的保护。</li>
+</ul>
+<p>综上所述，不同层的校验虽然看起来有重叠，但实际上它们各自负责不同的数据范围和功能，共同确保了数据在传输过程中的完整性和正确性。</p>
+<hr>
+<p><strong>（7）如果在本次实验过程，对抓取的报文进行分析，发现DNS和ARP协议没有工作，为什么？如何解决该问题？在解决该问题过程中用到两个网络命令，分别是什么，写出这两个命令具体应用。</strong></p>
+<hr>
+<p>如果在实验过程中发现DNS和ARP协议没有工作，这可能意味着网络配置或网络设备存在问题。以下是一些可能的原因以及如何解决这些问题的步骤，包括使用两个网络命令来诊断和解决问题。</p>
+<h4 id="可能的原因"><a href="#可能的原因" class="headerlink" title="可能的原因"></a>可能的原因</h4><ol>
+<li><p><strong>网络连接问题</strong>：</p>
+<ul>
+<li>网络接口可能未正确配置或未连接。</li>
+<li>网络设备（如路由器、交换机）可能存在故障。</li>
+</ul>
+</li>
+<li><p><strong>DNS服务器配置问题</strong>：</p>
+<ul>
+<li>本地DNS服务器地址可能未正确配置。</li>
+<li>DNS服务器可能不可达或无响应。</li>
+</ul>
+</li>
+<li><p><strong>ARP缓存问题</strong>：</p>
+<ul>
+<li>ARP缓存可能已损坏或未正确更新。</li>
+<li>局域网内的设备可能未正确响应ARP请求。</li>
+</ul>
+</li>
+</ol>
+<h4 id="解决步骤"><a href="#解决步骤" class="headerlink" title="解决步骤"></a>解决步骤</h4><ol>
+<li><p><strong>检查网络连接</strong>：</p>
+<ul>
+<li>确保网络接口已启用并正确连接。</li>
+<li>检查物理连接（网线、交换机端口等）是否正常。</li>
+</ul>
+</li>
+<li><p><strong>检查DNS配置</strong>：</p>
+<ul>
+<li>确认本地DNS服务器地址是否正确配置。</li>
+<li>尝试使用不同的DNS服务器地址。</li>
+</ul>
+</li>
+<li><p><strong>检查ARP缓存</strong>：</p>
+<ul>
+<li>清除ARP缓存并重新生成。</li>
+<li>确认局域网内的设备能够响应ARP请求。</li>
+</ul>
+</li>
+</ol>
+<h4 id="使用的网络命令"><a href="#使用的网络命令" class="headerlink" title="使用的网络命令"></a>使用的网络命令</h4><h5 id="1-ipconfig-all-Windows-或-ifconfig-Linux-Mac"><a href="#1-ipconfig-all-Windows-或-ifconfig-Linux-Mac" class="headerlink" title="1. ipconfig /all (Windows) 或 ifconfig (Linux&#x2F;Mac)"></a>1. <strong><code>ipconfig /all</code> (Windows) 或 <code>ifconfig</code> (Linux&#x2F;Mac)</strong></h5><ul>
+<li><strong>用途</strong>：显示当前网络接口的详细配置信息，包括IP地址、子网掩码、默认网关和DNS服务器地址。</li>
+<li><strong>具体应用</strong>：<ul>
+<li><p><strong>Windows</strong>:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig /all</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看输出中的“DNS Servers”部分，确认DNS服务器地址是否正确。</li>
+<li>查看“IPv4 Address”和“Default Gateway”部分，确认IP地址和网关是否正确配置。</li>
+</ul>
+</li>
+<li><p><strong>Linux&#x2F;Mac</strong>:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看输出中的<code>inet</code>字段，确认IP地址和子网掩码。</li>
+<li>查看<code>route -n</code>命令的输出，确认默认网关。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-nslookup-或-ping"><a href="#2-nslookup-或-ping" class="headerlink" title="2. nslookup 或 ping"></a>2. <strong><code>nslookup</code> 或 <code>ping</code></strong></h5><ul>
+<li><strong>用途</strong>：<ul>
+<li><code>nslookup</code>：用于查询DNS服务器，检查域名解析是否正常。</li>
+<li><code>ping</code>：用于测试网络连通性，检查目标主机是否可达。</li>
+</ul>
+</li>
+<li><strong>具体应用</strong>：<ul>
+<li><p><strong>nslookup</strong>:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nslookup www.baidu.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果返回正确的IP地址，说明DNS解析正常。</li>
+<li>如果返回错误信息，说明DNS服务器可能有问题。</li>
+</ul>
+</li>
+<li><p><strong>ping</strong>:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping www.baidu.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果返回ICMP Echo Reply，说明目标主机可达。</li>
+<li>如果返回“Request timed out”或“Destination host unreachable”，说明网络连接或目标主机存在问题。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="诊断和解决步骤"><a href="#诊断和解决步骤" class="headerlink" title="诊断和解决步骤"></a>诊断和解决步骤</h4><ol>
+<li><p><strong>检查网络接口配置</strong>：</p>
+<ul>
+<li>在Windows上运行<code>ipconfig /all</code>，在Linux&#x2F;Mac上运行<code>ifconfig</code>，确认IP地址、子网掩码、默认网关和DNS服务器地址是否正确配置。</li>
+<li>如果配置不正确，手动修改或通过DHCP获取正确的配置。</li>
+</ul>
+</li>
+<li><p><strong>检查DNS服务器</strong>：</p>
+<ul>
+<li>运行<code>nslookup www.baidu.com</code>，查看是否能正确解析域名。</li>
+<li>如果无法解析，尝试更换DNS服务器地址。例如，在Windows上可以修改DNS服务器地址：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> dns <span class="string">&quot;以太网&quot;</span> static 8.8.8.8</span><br><span class="line">netsh interface ipv4 add dns <span class="string">&quot;以太网&quot;</span> 8.8.4.4 index=2</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>检查ARP缓存</strong>：</p>
+<ul>
+<li>清除ARP缓存并重新生成：<ul>
+<li><strong>Windows</strong>:<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -d *</span><br></pre></td></tr></table></figure></li>
+<li><strong>Linux&#x2F;Mac</strong>:<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo arp -a -d</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>重新进行网络通信，观察ARP缓存是否正确更新。</li>
+</ul>
+</li>
+<li><p><strong>检查网络连通性</strong>：</p>
+<ul>
+<li>使用<code>ping</code>命令测试与目标主机的连通性：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping www.baidu.com</span><br></pre></td></tr></table></figure></li>
+<li>如果<code>ping</code>失败，检查物理连接和网络设备状态。</li>
+</ul>
+</li>
+</ol>
+<p>通过上述步骤，可以诊断并解决DNS和ARP协议未工作的问题。</p>
+<hr>
+<p><strong>（8）如果在本次实验过程，用户在客户端DOS&gt;ping <a target="_blank" rel="noopener" href="http://www.baidu.com,连续发送了三次icmp/">www.baidu.com,连续发送了三次ICMP</a> ECHO请求报文，但显示第一次接收ICMP ECHO应答报文超时，说明网络不通；但后面两次ICMP ECHO应答报文接收正常，又说明网络是连通的，为什么？</strong></p>
+<hr>
+<p>在实验过程中，用户在客户端使用<code>ping www.baidu.com</code>命令连续发送了三次ICMP ECHO请求报文，但第一次接收ICMP ECHO应答报文超时，而后面两次ICMP ECHO应答报文接收正常。这种情况可能有多种原因，以下是一些可能的解释和解决方法：</p>
+<h4 id="可能的原因-1"><a href="#可能的原因-1" class="headerlink" title="可能的原因"></a>可能的原因</h4><ol>
+<li><p><strong>网络延迟或拥塞</strong>：</p>
+<ul>
+<li>第一次ICMP请求可能在网络中遇到了较高的延迟或拥塞，导致响应超时。</li>
+<li>后续的ICMP请求可能在网络状况改善后成功传输并收到了响应。</li>
+</ul>
+</li>
+<li><p><strong>DNS解析问题</strong>：</p>
+<ul>
+<li>第一次ICMP请求可能由于DNS解析问题导致超时。如果DNS服务器响应较慢或暂时不可达，可能会导致第一次请求超时。</li>
+<li>后续的ICMP请求可能使用了缓存的IP地址，因此能够快速响应。</li>
+</ul>
+</li>
+<li><p><strong>ARP缓存问题</strong>：</p>
+<ul>
+<li>第一次ICMP请求可能由于ARP缓存未更新或ARP请求未收到响应而导致超时。</li>
+<li>后续的ICMP请求可能已经更新了ARP缓存，因此能够成功发送和接收。</li>
+</ul>
+</li>
+<li><p><strong>防火墙或安全设备</strong>：</p>
+<ul>
+<li>网络中的防火墙或其他安全设备可能对第一次ICMP请求进行了更严格的检查，导致响应延迟或被丢弃。</li>
+<li>后续的ICMP请求可能通过了这些安全检查，因此能够成功传输。</li>
+</ul>
+</li>
+<li><p><strong>路由问题</strong>：</p>
+<ul>
+<li>第一次ICMP请求可能由于路由表未更新或路由路径不稳定导致超时。</li>
+<li>后续的ICMP请求可能使用了更新后的路由表或稳定的路由路径，因此能够成功传输。</li>
+</ul>
+</li>
+</ol>
+<h4 id="解决步骤-1"><a href="#解决步骤-1" class="headerlink" title="解决步骤"></a>解决步骤</h4><ol>
+<li><p><strong>检查网络延迟和拥塞</strong>：</p>
+<ul>
+<li>使用<code>ping</code>命令增加发送次数，观察是否有多次超时的情况。</li>
+<li>使用<code>tracert</code>（Windows）或<code>traceroute</code>（Linux&#x2F;Mac）命令查看数据包在网络中的传输路径，找出可能的瓶颈或延迟点。<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tracert www.baidu.com</span><br><span class="line">traceroute www.baidu.com</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>检查DNS解析</strong>：</p>
+<ul>
+<li>使用<code>nslookup</code>命令检查DNS解析是否正常。<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nslookup www.baidu.com</span><br></pre></td></tr></table></figure></li>
+<li>如果DNS解析有问题，尝试更换DNS服务器地址。<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">netsh interface ipv4 <span class="built_in">set</span> dns <span class="string">&quot;以太网&quot;</span> static 8.8.8.8</span><br><span class="line">netsh interface ipv4 add dns <span class="string">&quot;以太网&quot;</span> 8.8.4.4 index=2</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>检查ARP缓存</strong>：</p>
+<ul>
+<li>清除ARP缓存并重新生成。<ul>
+<li><strong>Windows</strong>:<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -d *</span><br></pre></td></tr></table></figure></li>
+<li><strong>Linux&#x2F;Mac</strong>:<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo arp -a -d</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>重新进行<code>ping</code>测试，观察是否还有超时情况。</li>
+</ul>
+</li>
+<li><p><strong>检查防火墙和安全设备</strong>：</p>
+<ul>
+<li>检查本地防火墙设置，确保ICMP请求和响应没有被阻止。</li>
+<li>检查网络中的其他安全设备（如路由器、交换机上的防火墙），确保它们没有阻止ICMP流量。</li>
+</ul>
+</li>
+<li><p><strong>检查路由表</strong>：</p>
+<ul>
+<li>使用<code>route print</code>（Windows）或<code>netstat -rn</code>（Linux&#x2F;Mac）命令查看当前的路由表。<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">route <span class="built_in">print</span></span><br><span class="line">netstat -rn</span><br></pre></td></tr></table></figure></li>
+<li>确认默认网关和其他路由条目是否正确配置。</li>
+</ul>
+</li>
+</ol>
+<h4 id="示例-4"><a href="#示例-4" class="headerlink" title="示例"></a>示例</h4><p>假设你在Windows上执行了以下命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping www.baidu.com -n 3</span><br></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Pinging www.a.shifen.com [14.215.177.38] with 32 bytes of data:</span><br><span class="line">Request timed out.</span><br><span class="line">Reply from 14.215.177.38: bytes=32 time=10ms TTL=56</span><br><span class="line">Reply from 14.215.177.38: bytes=32 time=10ms TTL=56</span><br><span class="line"></span><br><span class="line">Ping statistics for 14.215.177.38:</span><br><span class="line">    Packets: Sent = 3, Received = 2, Lost = 1 (33% loss),</span><br><span class="line">Approximate round trip times in milli-seconds:</span><br><span class="line">    Minimum = 10ms, Maximum = 10ms, Average = 10ms</span><br></pre></td></tr></table></figure>
+
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><strong>第一次请求超时</strong>：可能是由于网络延迟、DNS解析问题、ARP缓存问题、防火墙或路由问题。</li>
+<li><strong>后续请求正常</strong>：说明网络连接在后续请求时是正常的，可能是因为网络状况改善、DNS缓存生效、ARP缓存更新或安全设备放行。</li>
+</ul>
+<h4 id="总结-5"><a href="#总结-5" class="headerlink" title="总结"></a>总结</h4><p>这种情况下，网络可能在第一次请求时存在一些临时性的问题，但在后续请求时恢复正常。通过上述步骤，可以诊断并解决这些问题。</p>
+<hr>
+<h2 id="实验内容2-网络广播报文发送"><a href="#实验内容2-网络广播报文发送" class="headerlink" title="实验内容2: 网络广播报文发送"></a>实验内容2: 网络广播报文发送</h2><p><strong>实验目标：</strong></p>
+<ul>
+<li>编写程序实现三层广播报文的发送。</li>
+<li>使用抓包工具捕获广播报文，分析其头部信息。</li>
+</ul>
+<p><strong>实验内容：</strong></p>
+<ul>
+<li>编写程序发送广播报文。</li>
+<li>利用抓包工具捕获这些广播报文，并分析报文头部信息，特别是五元组（源IP地址、目的IP地址、源端口、目的端口、协议类型）和数据帧头信息。</li>
+</ul>
+<p><strong>实验要求：</strong></p>
+<ul>
+<li>从捕获的报文中筛选出源IP等于发送方IP地址的报文。</li>
+<li>分析广播报文传输层采用的协议（UDP&#x2F;TCP），并解释为什么广播或组播通常不使用TCP。</li>
+<li>比较广播报文与单播UDP用户数据报在目的IP地址、源IP地址、协议类型、目的MAC地址、源MAC地址等方面的差异。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zxh2075/article/details/53817754">二层广播(帧广播)和三层广播(路由器广播)有什么区别？</a></p>
+<p><strong>提交内容：</strong></p>
+<ul>
+<li>源代码、可执行代码及实验报告，需在下次课前提交至指定邮箱。</li>
+</ul>
+<p><strong>助教检查点：</strong></p>
+<ul>
+<li>抓取发送的第一个广播报文，分析其中的五元组信息和数据帧头部信息。</li>
+</ul>
+<p>此实验旨在让学生通过实践加深对网络协议的理解，尤其是对DNS、HTTP、TCP、UDP等常见协议的工作原理有更直观的认识。同时，通过编程实践，学生能够掌握如何发送广播报文及其在网络中的传播特性。</p>
+<hr>
+<h4 id="1-从抓取的报文中过滤出源IP-发送方IP地址的某一个报文"><a href="#1-从抓取的报文中过滤出源IP-发送方IP地址的某一个报文" class="headerlink" title="1. 从抓取的报文中过滤出源IP &#x3D; 发送方IP地址的某一个报文"></a>1. 从抓取的报文中过滤出源IP &#x3D; 发送方IP地址的某一个报文</h4><h5 id="手动过滤"><a href="#手动过滤" class="headerlink" title="手动过滤"></a>手动过滤</h5><ul>
+<li>在抓包工具（如Wireshark）中，可以手动浏览每个报文，查找源IP地址为发送方IP地址的报文。</li>
+</ul>
+<h5 id="使用过滤器"><a href="#使用过滤器" class="headerlink" title="使用过滤器"></a>使用过滤器</h5><ul>
+<li>在Wireshark中，可以使用显示过滤器来快速过滤出特定源IP地址的报文。例如，如果发送方IP地址是<code>192.168.2.2</code>，可以在过滤器栏中输入：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.src == 192.168.2.2</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="2-分析广播报文传输层采用UDP-TCP，理解广播或者组播为什么不是TCP"><a href="#2-分析广播报文传输层采用UDP-TCP，理解广播或者组播为什么不是TCP" class="headerlink" title="2. 分析广播报文传输层采用UDP&#x2F;TCP，理解广播或者组播为什么不是TCP"></a>2. 分析广播报文传输层采用UDP&#x2F;TCP，理解广播或者组播为什么不是TCP</h4><h5 id="广播报文传输层协议"><a href="#广播报文传输层协议" class="headerlink" title="广播报文传输层协议"></a>广播报文传输层协议</h5><ul>
+<li><strong>广播报文</strong>：通常采用UDP协议。</li>
+<li><strong>组播报文</strong>：也通常采用UDP协议。</li>
+</ul>
+<h5 id="为什么广播或组播不是TCP"><a href="#为什么广播或组播不是TCP" class="headerlink" title="为什么广播或组播不是TCP"></a>为什么广播或组播不是TCP</h5><ul>
+<li><strong>连接建立</strong>：TCP是面向连接的协议，需要在数据传输前建立连接。而广播和组播不需要与每个接收者单独建立连接。</li>
+<li><strong>可靠性</strong>：TCP提供可靠的数据传输，但广播和组播的目的是将数据发送给多个接收者，不保证每个接收者都能接收到数据。如果使用TCP，会增加网络开销，因为每个接收者都需要进行确认。</li>
+<li><strong>效率</strong>：广播和组播的目的是高效地将数据发送给多个接收者。TCP的确认机制会导致大量的确认消息在网络中传输，增加了网络负载。</li>
+<li><strong>延迟</strong>：TCP的三次握手和重传机制会导致较高的延迟，不适合广播和组播这种实时性要求较高的场景。</li>
+</ul>
+<h4 id="3-抓取发送的广播报文，找出通信的五元组信息和数据帧首部信息，分析目的IP地址、源IP地址、协议类型、目的MAC地址、源MAC地址等与单播UDP用户数据报的不同"><a href="#3-抓取发送的广播报文，找出通信的五元组信息和数据帧首部信息，分析目的IP地址、源IP地址、协议类型、目的MAC地址、源MAC地址等与单播UDP用户数据报的不同" class="headerlink" title="3. 抓取发送的广播报文，找出通信的五元组信息和数据帧首部信息，分析目的IP地址、源IP地址、协议类型、目的MAC地址、源MAC地址等与单播UDP用户数据报的不同"></a>3. 抓取发送的广播报文，找出通信的五元组信息和数据帧首部信息，分析目的IP地址、源IP地址、协议类型、目的MAC地址、源MAC地址等与单播UDP用户数据报的不同</h4><h5 id="五元组信息"><a href="#五元组信息" class="headerlink" title="五元组信息"></a>五元组信息</h5><ul>
+<li><strong>源IP地址</strong>：发送方的IP地址。</li>
+<li><strong>目的IP地址</strong>：广播地址（通常是<code>255.255.255.255</code>或子网广播地址）。</li>
+<li><strong>源端口</strong>：发送方的端口号。</li>
+<li><strong>目的端口</strong>：广播或组播的目的端口号。</li>
+<li><strong>协议类型</strong>：通常是UDP。</li>
+</ul>
+<h5 id="数据帧首部信息"><a href="#数据帧首部信息" class="headerlink" title="数据帧首部信息"></a>数据帧首部信息</h5><ul>
+<li><strong>目的MAC地址</strong>：对于广播，目的MAC地址通常是<code>FF:FF:FF:FF:FF:FF</code>；对于组播，目的MAC地址是一个特殊的组播MAC地址。</li>
+<li><strong>源MAC地址</strong>：发送方的MAC地址。</li>
+<li><strong>以太网类型</strong>：0x0800（表示IP协议）。</li>
+</ul>
+<h5 id="与单播UDP用户数据报的不同"><a href="#与单播UDP用户数据报的不同" class="headerlink" title="与单播UDP用户数据报的不同"></a>与单播UDP用户数据报的不同</h5><ul>
+<li><p><strong>目的IP地址</strong>：</p>
+<ul>
+<li><strong>单播</strong>：具体的单个IP地址。</li>
+<li><strong>广播&#x2F;组播</strong>：广播地址（如<code>255.255.255.255</code>）或组播地址（如<code>224.0.0.1</code>）。</li>
+</ul>
+</li>
+<li><p><strong>目的MAC地址</strong>：</p>
+<ul>
+<li><strong>单播</strong>：具体的单个MAC地址。</li>
+<li><strong>广播</strong>：<code>FF:FF:FF:FF:FF:FF</code>。</li>
+<li><strong>组播</strong>：一个特殊的组播MAC地址，由组播IP地址映射而来。</li>
+</ul>
+</li>
+<li><p><strong>协议类型</strong>：</p>
+<ul>
+<li><strong>单播</strong>：通常是UDP或TCP。</li>
+<li><strong>广播&#x2F;组播</strong>：通常是UDP。</li>
+</ul>
+</li>
+<li><p><strong>源IP地址和源MAC地址</strong>：</p>
+<ul>
+<li><strong>单播</strong>：发送方的具体IP地址和MAC地址。</li>
+<li><strong>广播&#x2F;组播</strong>：发送方的具体IP地址和MAC地址。</li>
+</ul>
+</li>
+</ul>
+<h4 id="示例-5"><a href="#示例-5" class="headerlink" title="示例"></a>示例</h4><p>假设您抓取到以下广播报文：</p>
+<ul>
+<li><strong>源IP地址</strong>：<code>192.168.2.2</code></li>
+<li><strong>目的IP地址</strong>：<code>255.255.255.255</code></li>
+<li><strong>源端口</strong>：<code>12345</code></li>
+<li><strong>目的端口</strong>：<code>54321</code></li>
+<li><strong>协议类型</strong>：UDP</li>
+<li><strong>目的MAC地址</strong>：<code>FF:FF:FF:FF:FF:FF</code></li>
+<li><strong>源MAC地址</strong>：<code>00:1A:2B:3C:4D:5E</code></li>
+<li><strong>以太网类型</strong>：0x0800</li>
+</ul>
+<h5 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h5><ul>
+<li><strong>目的IP地址</strong>：广播地址<code>255.255.255.255</code>，表示该报文将被发送到局域网内的所有主机。</li>
+<li><strong>目的MAC地址</strong>：<code>FF:FF:FF:FF:FF:FF</code>，表示该报文将被发送到局域网内的所有设备。</li>
+<li><strong>协议类型</strong>：UDP，适合广播和组播，因为它不需要建立连接且没有确认机制。</li>
+<li><strong>源IP地址和源MAC地址</strong>：发送方的具体IP地址和MAC地址，用于标识报文的来源。</li>
+</ul>
+<p>通过这些信息，可以清楚地看到广播报文与单播UDP用户数据报在目的地址和协议选择上的不同。</p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/11/25/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C-%E7%AC%AC%E5%9B%9B%E6%AC%A1/"
+      title="数据库原理实验-第四次"
+     >
+
+    <p class="title-text">
+      
+        数据库原理实验-第四次
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title">Comments </div>
+    </div>
+    <div id="vcomments"></div>
+  </div>
+  <script>
+      new Valine({"enable":true,"appId":"AVo4oPTEvfsleHngLc8BZ535-gzGzoHsz","appKey":"gSa0juG3A4yPHmR3nL5ENl3i","placeholder":"Just go go","pageSize":10,"highlight":true,"serverURLs":null,"el":"#vcomments"});
+  </script>
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

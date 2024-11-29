@@ -20,17 +20,17 @@
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta name="description" content="前言 实验内容1: 网络协议分析与验证 DNS协议 DNS 请求报文结构 应用层：DNS 协议 传输层：UDP 协议 网络层：IP 协议 数据链路层：以太网协议   HTTP协议 HTTP 请求报文结构 1. 请求行 (Request Line) 2. 请求头 (Request Headers) 3. 请求体 (Request Body) 完整的HTTP请求报文示例 字段意义总结   TCP请求">
+  <meta name="description" content="前言 ARP TCP 三次握手与四次挥手 实验内容1: 网络协议分析与验证 DNS协议 DNS 请求报文结构 应用层：DNS 协议 传输层：UDP 协议 网络层：IP 协议 数据链路层：以太网协议   HTTP协议 HTTP 请求报文结构 1. 请求行 (Request Line) 2. 请求头 (Request Headers) 3. 请求体 (Request Body) 完整的HTTP请求报">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计网实验三">
 <meta property="og:url" content="https://buyun14.github.io/2024/11/26/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E4%B8%89/index.html">
 <meta property="og:site_name" content="Buyun&#39;s Blog">
-<meta property="og:description" content="前言 实验内容1: 网络协议分析与验证 DNS协议 DNS 请求报文结构 应用层：DNS 协议 传输层：UDP 协议 网络层：IP 协议 数据链路层：以太网协议   HTTP协议 HTTP 请求报文结构 1. 请求行 (Request Line) 2. 请求头 (Request Headers) 3. 请求体 (Request Body) 完整的HTTP请求报文示例 字段意义总结   TCP请求">
+<meta property="og:description" content="前言 ARP TCP 三次握手与四次挥手 实验内容1: 网络协议分析与验证 DNS协议 DNS 请求报文结构 应用层：DNS 协议 传输层：UDP 协议 网络层：IP 协议 数据链路层：以太网协议   HTTP协议 HTTP 请求报文结构 1. 请求行 (Request Line) 2. 请求头 (Request Headers) 3. 请求体 (Request Body) 完整的HTTP请求报">
 <meta property="og:locale">
 <meta property="og:image" content="https://tool.lu/netcard/">
 <meta property="og:image" content="https://raw.githubusercontent.com/buyun14/KokomiPhoto/refs/heads/main/img/202411262137187.png">
 <meta property="article:published_time" content="2024-11-26T03:21:33.000Z">
-<meta property="article:modified_time" content="2024-11-26T16:20:13.343Z">
+<meta property="article:modified_time" content="2024-11-29T07:12:45.745Z">
 <meta property="article:author" content="buyun">
 <meta property="article:tag" content="计算机网络原理">
 <meta name="twitter:card" content="summary">
@@ -92,7 +92,7 @@
       <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
     </a>
     
-      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS 订阅">
         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
       </a>
     
@@ -111,7 +111,7 @@
       <a class="nav-dropdown-link" href="/about">About</a>
     
     
-      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS 订阅">RSS</a>
      
     </div>
 </div>
@@ -164,7 +164,7 @@
       
   <div class="widget-wrap">
     <div class="widget">
-      <h3 class="widget-title">Tags</h3>
+      <h3 class="widget-title">标签</h3>
       <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li></ul>
     </div>
   </div>
@@ -204,13 +204,13 @@
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
   
-    Uncategorized 
+    未分类 
    
 </div>
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            24k words 
+            26k 词 
           </div>
         </div>
         
@@ -221,6 +221,8 @@
         
           <ul>
 <li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#arp">ARP</a></li>
+<li><a href="#tcp-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B">TCP 三次握手与四次挥手</a></li>
 <li><a href="#%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B91-%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90%E4%B8%8E%E9%AA%8C%E8%AF%81">实验内容1: 网络协议分析与验证</a><ul>
 <li><a href="#dns%E5%8D%8F%E8%AE%AE">DNS协议</a></li>
 <li><a href="#dns-%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87%E7%BB%93%E6%9E%84">DNS 请求报文结构</a><ul>
@@ -369,6 +371,132 @@
 非常好的巩固理论知识的一次实验，我将实验原理所涉及的知识详尽的列举了出来。  
 
 <p>检查内容很简单，抓包分析即可。我不再赘述（看情况，文章还会更新）<br></font></p>
+<font color=green>
+算了，搬一个简化版流程
+</font>
+（11/29更新）
+
+<p>Wireshark 报文抓取<br>DNS 报文<br>查看本机 WLAN 的 DNS 服务器</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig /all</span><br></pre></td></tr></table></figure>
+<p>找到无线局域网适配器下的 DNS 服务器栏，记录下 IP（可能存在多个，先拿第一个尝试，不行再换）。</p>
+<blockquote>
+<p>建议顺便也看下本机 IP</p>
+</blockquote>
+<p>打开 wireshark 选择无线网卡设备 WLAN，开始抓包，同时使用浏览器访问 <a target="_blank" rel="noopener" href="http://www.baidu.com.加载完成后立即停止/">www.baidu.com。加载完成后立即停止</a> wireshark 的抓取。<br>使用过滤器 <code>ip.src == 202.117.80.6 || ip.dst == 202.117.80.6</code>，找到目的地址为 DNS 服务器的报文并找到报文信息含 <a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a> 的包，这就是要求的 DNS 请求报文。</p>
+<blockquote>
+<p>此处 202.117.80.6 替换成你的 DNS 服务器地址<br>找到对应的源地址为 DNS 服务器的报文，即为 DNS 响应报文。</p>
+</blockquote>
+<p>大概长这样：</p>
+<table>
+<thead>
+<tr>
+<th align="center">No.</th>
+<th align="center">Time</th>
+<th align="center">Source</th>
+<th align="center">Destination</th>
+<th align="center">Protocol</th>
+<th align="center">Length</th>
+<th align="left">Info</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">39</td>
+<td align="center">2.863990</td>
+<td align="center">10.31.5.62</td>
+<td align="center">202.117.80.6</td>
+<td align="center">DNS</td>
+<td align="center">73</td>
+<td align="left">Standard query 0xad34 A <a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a></td>
+</tr>
+<tr>
+<td align="center">40</td>
+<td align="center">2.867692</td>
+<td align="center">202.117.80.6</td>
+<td align="center">10.31.5.62</td>
+<td align="center">DNS</td>
+<td align="center">135</td>
+<td align="left">Standard response 0xad34 A <a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a> CNAME <a target="_blank" rel="noopener" href="http://www.a.shifen.com/">www.a.shifen.com</a> A 220.181.38.149 A 220.181.38.150</td>
+</tr>
+</tbody></table>
+<p>其中响应报文中的 <code>220.181.38.149</code> 为百度服务器的 IP，可以通过 <code>nslookup www.baidu.com</code> 进行简单验证：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">服务器:  UnKnown</span><br><span class="line">Address:  202.117.80.6</span><br><span class="line"></span><br><span class="line">非权威应答:</span><br><span class="line">名称:    www.a.shifen.com</span><br><span class="line">Addresses:  240e:ff:e020:966:0:ff:b042:f296</span><br><span class="line">          240e:ff:e020:9ae:0:ff:b014:8e8b</span><br><span class="line">          220.181.38.150</span><br><span class="line">          220.181.38.149</span><br><span class="line">Aliases:  www.baidu.com</span><br></pre></td></tr></table></figure>
+<font color=green>
+注意，注意，有些人现实的网站IP可能不一样，直接访问IP无法到达百度官网，说明是CDN（内容分发网络）。
+
+</font>
+
+<blockquote>
+<p>DNS 响应的地址可能会变，建议实时看下有没有更新</p>
+</blockquote>
+<h2 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h2><p><code>arp -a</code>查看缓存<br>记得清缓存（需要管理员执行）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp -d *</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>sh 可能会把 <code>*</code> 当成 glob，建议用 cmd 运行</p>
+</blockquote>
+<p>学校校园网是华为机子的，看到 arp 报文的通信方含 <code>Huawei</code> 的基本就是了，另一个则是本机网卡设备。</p>
+<h2 id="TCP-三次握手与四次挥手"><a href="#TCP-三次握手与四次挥手" class="headerlink" title="TCP 三次握手与四次挥手"></a>TCP 三次握手与四次挥手</h2><p>TCP 三次握手流程：</p>
+<ol>
+<li>客户端发送 [SYN] SEQ&#x3D;c</li>
+<li>服务端响应 [SYN, ACK] SEQ&#x3D;s ACK&#x3D;c+1</li>
+<li>客户端回复 [ACK] SEQ&#x3D;c+1 ACK&#x3D;s+1</li>
+</ol>
+<p>加强下过滤器，把本机 ip 加上 <code>(ip.src == 10.31.5.62 &amp;&amp; ip.dst == 220.181.38.149) || (ip.src == 220.181.38.149 &amp;&amp; ip.dst == 10.31.5.62)</code>。</p>
+<blockquote>
+<p>10.31.5.62 替换成自己的本机 IP</p>
+</blockquote>
+<p>重点观察信息含 SYN&#x2F;ACK 的报文，最后得到的结果大概长这样（过滤后基本是挨一块的）：</p>
+<table>
+<thead>
+<tr>
+<th align="center">No.</th>
+<th align="center">Time</th>
+<th align="center">Source</th>
+<th align="center">Destination</th>
+<th align="center">Protocol</th>
+<th align="center">Length</th>
+<th align="left">Info</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">42</td>
+<td align="center">2.868711</td>
+<td align="center">10.31.5.62</td>
+<td align="center">202.117.80.6</td>
+<td align="center">TCP</td>
+<td align="center">66</td>
+<td align="left">58015 -&gt; 443 [SYN] Seq&#x3D;0 Win&#x3D;64240 Len&#x3D;0 MSS&#x3D;1460 WS&#x3D;256 SACK_PERM</td>
+</tr>
+<tr>
+<td align="center">43</td>
+<td align="center">2.892018</td>
+<td align="center">202.117.80.6</td>
+<td align="center">10.31.5.62</td>
+<td align="center">TCP</td>
+<td align="center">66</td>
+<td align="left">443 -&gt; 58015 [SYN, ACK] Win&#x3D;8192 Len&#x3D;0 MSS&#x3D;1380 WS&#x3D;32 SACK_PERM</td>
+</tr>
+<tr>
+<td align="center">44</td>
+<td align="center">2.892237</td>
+<td align="center">10.31.5.62</td>
+<td align="center">202.117.80.6</td>
+<td align="center">TCP</td>
+<td align="center">54</td>
+<td align="left">58015 -&gt; 443 [ACK] Seq&#x3D;1 ACK&#x3D;1 Win&#x3D;131072 Len&#x3D;0</td>
+</tr>
+</tbody></table>
+<p>TCP 四次挥手流程</p>
+<ol>
+<li>客户端发送 [FIN, ACK] SEQ&#x3D;s1 ACK&#x3D;c1</li>
+<li>服务器响应 [ACK] SEQ&#x3D;c1 ACK&#x3D;s1+1</li>
+<li>服务器发送 [FIN, ACK] SEQ&#x3D;s2 ACK&#x3D;c2</li>
+<li>客户端发送 [ACK] SEQ&#x3D;c2 ACK&#x3D;s2+1</li>
+</ol>
+<blockquote>
+<p>浏览器与网站建立连接没那么简单，关闭页面后连接可能仍未被关闭，可以将浏览器的所有进程全部关闭等待一段时间直到抓到 FIN。通过该方法掐断的 TCP 连接大概率抓取不到第四次挥手的报文，但是应该可以抓取到一个客户端发送给服务器的 [RST, ACK]，该报文与服务器发送给客户端的 [FIN, ACK] 报文成对出现，且互相的接受序号与确认序号相等。</p>
+</blockquote>
+<hr>
 <p>根据文档内容，实验分为两个部分：网络协议分析与验证，以及网络广播报文发送编程。以下是两个实验内容的详细介绍：</p>
 <hr>
 <h2 id="实验内容1-网络协议分析与验证"><a href="#实验内容1-网络协议分析与验证" class="headerlink" title="实验内容1: 网络协议分析与验证"></a>实验内容1: 网络协议分析与验证</h2><p><strong>实验目标：</strong></p>
@@ -1977,7 +2105,7 @@
   <div id="comment-card" class="comment-card">
     <div class="main-title-bar">
       <div class="main-title-dot"></div>
-      <div class="main-title">Comments </div>
+      <div class="main-title">留言 </div>
     </div>
     <div id="vcomments"></div>
   </div>

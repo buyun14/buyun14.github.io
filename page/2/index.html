@@ -172,6 +172,80 @@
    
 
 
+<article id="post-数据库原理实验-第三次" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 itemprop="name">
+        <a class="p-name article-title" href="/2024/11/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C-%E7%AC%AC%E4%B8%89%E6%AC%A1/">数据库原理实验-第三次</a>
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-11-02T00:41:05.000Z" itemprop="datePublished">2024-11-02</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            31k 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <div class="truncate-text">
+            
+              针对 SPJ_MNG 数据库，创建并执行存储过程第1关：创建一个无参数的存储过程—jsearch1123456789101112131415-- 使用指定的数据库USE SPJ_MNG;-- 更改语句结束符为 //DELIMITER //-- 创建存储过程 jsearch1CREATE PROCEDURE jsearch1()BEGIN    -- 查询 S 表中城市为北京的所有记录    SELECT * FROM s WHERE CITY = &#x27;北京&#x27;;END //-- 恢复默认的语句结束符为 ;DELIMITER ;
+
+第2关：创建带输入参数的存储过程—jsearch2123456789101112131415-- 使用指定的数据库USE SPJ_MNG;-- 更改语句结束符为 //DELIMITER //-- 创建存储过程 jsearch2CREATE PROCEDURE jsearch2(IN city_name VARCHAR(10))BEGIN    -- 查询 S 表中城市为 city_name 的所有记录    SELECT * FROM s...
+            
+          </div>
+        
+      </div>
+
+         
+    </div>
+    
+     
+    <a class="right-panel  non-pic  "
+      
+      href="/2024/11/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C-%E7%AC%AC%E4%B8%89%E6%AC%A1/" 
+    >
+       
+      <i class="fa-solid fa-angle-right non-pic"></i>
+       
+    </a>
+     
+  </div>
+  
+</article>
+
+
+
+
+
+
+   
+
+
 <article id="post-操作系统实验3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
    
   <div class="article-inner">
@@ -865,81 +939,6 @@ SHOW GRANTS FOR &#39;刘星&#39;@&#39;localhost&#39;;
     <a class="right-panel  non-pic  "
       
       href="/2024/09/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C/" 
-    >
-       
-      <i class="fa-solid fa-angle-right non-pic"></i>
-       
-    </a>
-     
-  </div>
-  
-</article>
-
-
-
-
-
-
-   
-
-
-<article id="post-计组实验3-后四次" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-   
-  <div class="article-inner">
-    <div class="article-main">
-      <header class="article-header">
-        
-<div class="main-title-bar">
-  <div class="main-title-dot"></div>
-  
-    
-      <h1 itemprop="name">
-        <a class="p-name article-title" href="/2024/06/09/%E8%AE%A1%E7%BB%84%E5%AE%9E%E9%AA%8C3-%E5%90%8E%E5%9B%9B%E6%AC%A1/">计组实验3-后四次</a>
-      </h1>
-    
-  
-</div>
-
-        <div class='meta-info-bar'>
-          <div class="meta-info">
-  <time class="dt-published" datetime="2024-06-08T17:34:22.000Z" itemprop="datePublished">2024-06-09</time>
-</div>
-          <div class="need-seperator meta-info">
-            <div class="meta-cate-flex">
-  
-    未分类 
-   
-</div>
-  
-          </div>
-          <div class="wordcount need-seperator meta-info">
-            266 词 
-          </div>
-        </div>
-        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li></ul>
-
-      </header>
-      <div class="e-content article-entry" itemprop="articleBody">
-        
-          <div class="truncate-text">
-            
-              流水线CPU设计第一题：在单周期CPU的基础上增加流水线寄存器，在不考虑冒险的前提下，实现一个能够执行下列指令集的流水线CPU:addu, subu, add, and,or,slt, addi, addiu, andi, ori, lui, lw, sw顶层模块接口定义如下:module pipeline cpu(clock,reset);input clock,reset;注意:1.基本模块(pc,im,gpr,alu,dm)定义和单周期CPU保持一致。实例化命名规则也和单周期CPU保持一致。2.流水线CPU中reset低电平有效，同步复位。
-
-分析：
-
-            
-          </div>
-        
-      </div>
-
-         
-    </div>
-    
-     
-    <a class="right-panel  non-pic  "
-      
-      href="/2024/06/09/%E8%AE%A1%E7%BB%84%E5%AE%9E%E9%AA%8C3-%E5%90%8E%E5%9B%9B%E6%AC%A1/" 
     >
        
       <i class="fa-solid fa-angle-right non-pic"></i>

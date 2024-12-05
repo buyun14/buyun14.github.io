@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>计网实验四补充自用 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="[TOC] 1.关于PING报文长度linux（Debian12 ping本地windows）56数据+20+8&#x3D;84字节 123456789101112131415(base) root@kokomi:~# ping 192.168.2.2PING 192.168.2.2 (192.168.2.2) 56(84) bytes of data.64 bytes from 192.168.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计网实验四补充自用">
+<meta property="og:url" content="https://buyun14.github.io/2024/12/06/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E5%9B%9B%E8%A1%A5%E5%85%85%E8%87%AA%E7%94%A8/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="[TOC] 1.关于PING报文长度linux（Debian12 ping本地windows）56数据+20+8&#x3D;84字节 123456789101112131415(base) root@kokomi:~# ping 192.168.2.2PING 192.168.2.2 (192.168.2.2) 56(84) bytes of data.64 bytes from 192.168.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-12-05T18:20:09.000Z">
+<meta property="article:modified_time" content="2024-12-05T18:49:08.363Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="计算机网络原理">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS 订阅">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS 订阅">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">标签</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D/" rel="tag">重中之重</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-计网实验四补充自用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        计网实验四补充自用
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-12-05T18:20:09.000Z" itemprop="datePublished">2024-12-06</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            3.7k 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <p>[TOC]</p>
+<h2 id="1-关于PING报文长度"><a href="#1-关于PING报文长度" class="headerlink" title="1.关于PING报文长度"></a>1.关于PING报文长度</h2><p>linux（Debian12 ping本地windows）56数据+20+8&#x3D;84字节</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(base) root@kokomi:~<span class="comment"># ping 192.168.2.2</span></span><br><span class="line">PING 192.168.2.2 (192.168.2.2) 56(84) bytes of data.</span><br><span class="line">64 bytes from 192.168.2.2: icmp_seq=1 ttl=128 time=0.843 ms</span><br><span class="line">64 bytes from 192.168.2.2: icmp_seq=2 ttl=128 time=1.17 ms</span><br><span class="line">64 bytes from 192.168.2.2: icmp_seq=3 ttl=128 time=0.852 ms</span><br><span class="line">64 bytes from 192.168.2.2: icmp_seq=4 ttl=128 time=0.883 ms</span><br><span class="line">64 bytes from 192.168.2.2: icmp_seq=5 ttl=128 time=1.12 ms</span><br><span class="line">64 bytes from 192.168.2.2: icmp_seq=6 ttl=128 time=0.918 ms</span><br><span class="line">64 bytes from 192.168.2.2: icmp_seq=7 ttl=128 time=0.942 ms</span><br><span class="line">64 bytes from 192.168.2.2: icmp_seq=8 ttl=128 time=0.927 ms</span><br><span class="line">64 bytes from 192.168.2.2: icmp_seq=9 ttl=128 time=0.862 ms</span><br><span class="line">^C</span><br><span class="line">--- 192.168.2.2 ping statistics ---</span><br><span class="line">9 packets transmitted, 9 received, 0% packet loss, time 8051ms</span><br><span class="line">rtt min/avg/max/mdev = 0.843/0.946/1.170/0.111 ms</span><br></pre></td></tr></table></figure>
+<p>AI解释：</p>
+<hr>
+<p>ICMP Echo 请求（即ping）的默认数据部分通常是56个字节，这与UNIX系统和许多网络工具中的传统有关。这个选择并不是强制性的，而是历史惯例和一些实际考虑的结果。</p>
+<h3 id="ICMP-Echo-请求报文结构"><a href="#ICMP-Echo-请求报文结构" class="headerlink" title="ICMP Echo 请求报文结构"></a>ICMP Echo 请求报文结构</h3><p>一个完整的ICMP Echo 请求报文由以下几个部分组成：</p>
+<ol>
+<li><strong>IP头部</strong>（通常20字节）</li>
+<li><strong>ICMP头部</strong>（8字节）</li>
+<li><strong>数据部分</strong>（可变长度，默认情况下为56字节）</li>
+</ol>
+<p>因此，一个典型的ICMP Echo 请求报文总大小是84字节（20 + 8 + 56），但这不包括任何额外的选项或填充。</p>
+<h3 id="为什么是56个字节？"><a href="#为什么是56个字节？" class="headerlink" title="为什么是56个字节？"></a>为什么是56个字节？</h3><ul>
+<li><p><strong>历史原因</strong>：早期的ping实现中，数据部分被设置为56字节。随着时间的推移，这个值成为了默认标准，并在很多操作系统和网络工具中得到了广泛采用。</p>
+</li>
+<li><p><strong>实用性</strong>：56字节的数据部分足够大，可以包含一些有用的信息，如时间戳或者序列号，同时又不会太大以至于增加不必要的网络负载。它提供了一个良好的平衡点，在大多数情况下都能满足需求。</p>
+</li>
+<li><p><strong>显示格式</strong>：当使用命令行工具如<code>ping</code>时，输出通常会提到“字节&#x3D;56”，这是因为它指的是ICMP Echo 请求的数据部分大小。实际上，加上ICMP头部后的整个ICMP报文是64字节（8 + 56）。</p>
+</li>
+<li><p><strong>MTU考量</strong>：以太网的最大传输单元（MTU）通常是1500字节。对于大多数局域网内的通信来说，一个小于MTU的包可以避免分片问题。56字节的数据部分确保了即使加上IP和ICMP头部，整个包仍然远小于MTU，从而减少了网络复杂性和延迟。</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>56字节的数据部分是一个约定俗成的标准，它既保持了向后兼容性，又提供了足够的灵活性来适应各种应用场景。当然，如果你需要发送不同大小的数据部分，可以在编写自己的ICMP Echo请求时调整这个数值，但要注意不要超过网络路径上的最小MTU以避免分片问题。此外，某些网络设备或防火墙可能对ICMP报文有特定的限制或处理方式，这也可能是维持默认56字节的原因之一。</p>
+<hr>
+<p>但windows抓包得到：98</p>
+<p>明白了！你已经找到了问题的关键：Wireshark显示的98字节长度确实包括了以太网数据帧的头部信息。让我们具体解析一下这个长度是如何构成的。</p>
+<h3 id="以太网帧结构"><a href="#以太网帧结构" class="headerlink" title="以太网帧结构"></a>以太网帧结构</h3><p>一个典型的以太网II帧（最常见的类型）包含以下部分：</p>
+<ol>
+<li><strong>目的MAC地址</strong> (6字节)</li>
+<li><strong>源MAC地址</strong> (6字节)</li>
+<li><strong>类型字段</strong> (2字节，对于IPv4为<code>0x0800</code>)</li>
+<li><strong>数据（即IP数据包）</strong></li>
+<li><strong>帧校验序列 (FCS)</strong> (4字节)</li>
+</ol>
+<h3 id="ICMP-Echo-请求报文结构-1"><a href="#ICMP-Echo-请求报文结构-1" class="headerlink" title="ICMP Echo 请求报文结构"></a>ICMP Echo 请求报文结构</h3><p>ICMP Echo 请求报文（ping请求）在IP层上的结构如下：</p>
+<ol>
+<li><strong>IP头部</strong> (通常20字节)</li>
+<li><strong>ICMP头部</strong> (8字节)</li>
+<li><strong>数据部分</strong> (默认情况下为56字节)</li>
+</ol>
+<p>因此，一个标准的ICMP Echo 请求报文总大小是84字节（20 + 8 + 56），但这不包括IP头部可能包含的选项或填充。</p>
+<h3 id="计算总长度"><a href="#计算总长度" class="headerlink" title="计算总长度"></a>计算总长度</h3><p>当你使用Wireshark抓取来自Linux系统的ICMP Echo请求时，看到的长度为98字节，可以这样解释：</p>
+<ul>
+<li><p><strong>以太网帧头</strong>：</p>
+<ul>
+<li>目的MAC地址：6字节</li>
+<li>源MAC地址：6字节</li>
+<li>类型字段（<code>0x0800</code>表示IPv4）：2字节</li>
+<li>总计：14字节</li>
+</ul>
+</li>
+<li><p><strong>IP数据包</strong>：</p>
+<ul>
+<li>IP头部：20字节</li>
+<li>ICMP头部：8字节</li>
+<li>ICMP数据部分：56字节</li>
+<li>总计：84字节</li>
+</ul>
+</li>
+</ul>
+<p>将这两部分相加，我们得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">14字节（以太网帧头） + 84字节（IP数据包） = 98字节</span><br></pre></td></tr></table></figure>
+
+<p>这正是你在Wireshark中看到的长度。需要注意的是，Wireshark通常不会包含帧校验序列（FCS）在显示的数据包长度中，因为FCS是在物理层添加的，并且在大多数情况下对上层协议分析不是必需的。</p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>所以，98字节的长度确实是由于Wireshark显示了完整的以太网帧内容，包括以太网帧头中的目的MAC地址、源MAC地址和类型字段（<code>0x0800</code>），以及后续的IP数据包。如果你只关心IP层的数据包长度，可以在Wireshark中查看IP分组的具体信息，或者通过过滤器来专注于特定层次的内容。</p>
+<hr>
+<h4 id="ICMP攻击"><a href="#ICMP攻击" class="headerlink" title="ICMP攻击"></a>ICMP攻击</h4><p><strong>ICMP攻击</strong><br>ICMP攻击<br>ICMP协议对于网络安全具有极其重要的意义。ICMP协议本身的特点决定了它非常容易被用于攻击网络上的路由器和主机。例如，在1999年8月海信集团悬赏“50万元人民币测试防火墙”的过程中，其防火墙遭受到的ICMP攻击达334050次之多，占整个攻击总数的90%以上。可见，ICMP的重要性绝不可以忽视。<br>比如，可以利用操作系统规定的ICMP数据包最大尺寸不超过64KB这一规定，向主机发起“Ping of Death”（死亡之Ping）攻击。“Ping of Death” 攻击的原理是：如果ICMP数据包的尺寸超过64KB上限时，主机就会出现内存分配错误，导致TCP&#x2F;IP堆栈崩溃，致使主机死机。（操作系统已经取消了发送ICMP数据包的大小的限制，解决了这个漏洞）<br>此外，向目标主机长时间、连续、大量地发送ICMP数据包，也会最终使系统瘫痪。大量的ICMP数据包会形成“ICMP风暴”，使得目标主机耗费大量的CPU资源处理，疲于奔命。</p>
+<h4 id="ICMP报文的长度本身并不会直接导致其被丢弃"><a href="#ICMP报文的长度本身并不会直接导致其被丢弃" class="headerlink" title="ICMP报文的长度本身并不会直接导致其被丢弃"></a>ICMP报文的长度本身并不会直接导致其被丢弃</h4><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">ICMP（Internet Control Message Protocol）报文的最短长度取决于其头部和所携带的数据。对于最常见的ICMP Echo Request和Echo Reply消息，最小长度是由头部决定的，因为数据部分可以为空。</span><br><span class="line"></span><br><span class="line"><span class="section">### ICMP 报文结构</span></span><br><span class="line"></span><br><span class="line">一个典型的ICMP报文包括：</span><br><span class="line"></span><br><span class="line"><span class="bullet">1.</span> <span class="strong">**ICMP头部**</span>：8字节</span><br><span class="line"><span class="bullet">   -</span> <span class="strong">**Type**</span> (1字节)：表示ICMP消息类型。</span><br><span class="line"><span class="bullet">   -</span> <span class="strong">**Code**</span> (1字节)：提供关于Type的额外信息。</span><br><span class="line"><span class="bullet">   -</span> <span class="strong">**Checksum**</span> (2字节)：用于错误检测。</span><br><span class="line"><span class="bullet">   -</span> <span class="strong">**Identifier**</span> (2字节) 和 <span class="strong">**Sequence Number**</span> (2字节)：主要用于Echo Request/Reply中。</span><br><span class="line"></span><br><span class="line"><span class="bullet">2.</span> <span class="strong">**数据部分**</span>：可变长度，默认情况下为56字节，但可以更短或更长。</span><br><span class="line"></span><br><span class="line">因此，不包含任何数据的ICMP Echo Request或Echo Reply报文的最小长度是8字节（仅头部）。</span><br><span class="line"></span><br><span class="line"><span class="section">### IP 层考虑</span></span><br><span class="line"></span><br><span class="line">在实际网络传输中，ICMP报文被封装在一个IP数据包中，所以还需要考虑IP头部：</span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="strong">**IP头部**</span>：通常20字节（没有选项的情况下）</span><br><span class="line"></span><br><span class="line">这意味着，一个不包含任何数据的ICMP Echo Request或Echo Reply报文，在IP层的最小总长度是：</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">20字节（IP头部） + 8字节（ICMP头部） = 28字节</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### 以太网帧最小长度</span></span><br><span class="line"></span><br><span class="line">值得注意的是，以太网帧有一个最小长度要求，即64字节（包括以太网帧头和FCS）。如果整个IP数据包（包括IP头部和ICMP报文）小于这个值，网络设备会在数据部分添加填充字节以满足最小帧大小的要求。这确保了即使是最小的ICMP报文也能符合物理层的传输标准。</span><br><span class="line"></span><br><span class="line"><span class="section">### 总结</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="strong">**ICMP报文本身**</span>的最短长度为8字节（ICMP头部）。</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**加上IP头部**</span>后的最小长度为28字节。</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**考虑到以太网最小帧大小**</span>，实际在网络上传输时，最小长度可能达到64字节（包括以太网帧头、IP头部、ICMP头部以及必要的填充）。</span><br><span class="line"></span><br><span class="line">如果你使用Wireshark抓取这样的最小ICMP报文，你会看到的数据包长度会是64字节，这是因为以太网帧的最小长度要求所致。</span><br></pre></td></tr></table></figure>
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/12/02/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E5%9B%9B/"
+      title="计网实验四"
+     >
+
+    <p class="title-text">
+      
+        计网实验四
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title">留言 </div>
+    </div>
+    <div id="vcomments"></div>
+  </div>
+  <script>
+      new Valine({"enable":true,"appId":"AVo4oPTEvfsleHngLc8BZ535-gzGzoHsz","appKey":"gSa0juG3A4yPHmR3nL5ENl3i","placeholder":"Just go go","pageSize":10,"highlight":true,"serverURLs":null,"el":"#vcomments"});
+  </script>
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

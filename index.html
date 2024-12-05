@@ -172,6 +172,80 @@
    
 
 
+<article id="post-计网实验四补充自用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 itemprop="name">
+        <a class="p-name article-title" href="/2024/12/06/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E5%9B%9B%E8%A1%A5%E5%85%85%E8%87%AA%E7%94%A8/">计网实验四补充自用</a>
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-12-05T18:20:09.000Z" itemprop="datePublished">2024-12-06</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分类 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            3.7k 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <div class="truncate-text">
+            
+              [TOC]
+1.关于PING报文长度linux（Debian12 ping本地windows）56数据+20+8&#x3D;84字节
+123456789101112131415(base) root@kokomi:~# ping 192.168.2.2PING 192.168.2.2 (192.168.2.2) 56(84) bytes of data.64 bytes from 192.168.2.2: icmp_seq=1 ttl=128 time=0.843 ms64 bytes from 192.168.2.2: icmp_seq=2 ttl=128 time=1.17 ms64 bytes from 192.168.2.2: icmp_seq=3 ttl=128 time=0.852 ms64 bytes from 192.168.2.2: icmp_seq=4 ttl=128 time=0.883 ms64 bytes from 192.168.2.2: icmp_seq=5 ttl=128 time=1.12 ms64 bytes from 192.168.2.2:...
+            
+          </div>
+        
+      </div>
+
+         
+    </div>
+    
+     
+    <a class="right-panel  non-pic  "
+      
+      href="/2024/12/06/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E5%9B%9B%E8%A1%A5%E5%85%85%E8%87%AA%E7%94%A8/" 
+    >
+       
+      <i class="fa-solid fa-angle-right non-pic"></i>
+       
+    </a>
+     
+  </div>
+  
+</article>
+
+
+
+
+
+
+   
+
+
 <article id="post-计网实验四" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
    
   <div class="article-inner">
@@ -202,7 +276,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            11k 词 
+            24k 词 
           </div>
         </div>
         
@@ -215,8 +289,8 @@
             
               [TOC]
 本次实验课的内容包括两个部分：ICMP协议分析与验证，以及FTP客户端多进程编程实验。
-
-123456789101112131415161718192021### 实验内容1: ICMP协议分析与验证- **实验要求**：学生两人一组合作完成，需提交源代码和实验报告，并在下周六晚上12点前提交。- **实验环境**：使用Windows XP操作系统，支持VC++、Visual Studio、Python等开发工具。- **实验目的**：通过分析ping命令的实现，理解ICMP ECHO请求报文的构造及工作原理。利用原始套接字发送ICMP ECHO请求报文，并在接收端解析显示报文首部字段。- **实验步骤**：  - 分析ping命令的实例代码，总结其实现原理。  - 构造并发送ICMP ECHO请求报文。  - 接收并解析ICMP ECHO请求报文，显示各字段值。- **思考题**：设计一个tracert命令，探讨如何获取从发送端到目的端的路径信息，特别是网关IP地址和MAC地址。- **助教检查点**：使用Wireshark抓包工具来捕获和分析ICMP ECHO请求...
+Windows 10开启FTP或者HTTP服务进行文件分享
+123456789101112131415161718192021### 实验内容1: ICMP协议分析与验证- **实验要求**：学生两人一组合作完成，需提交源代码和实验报告，并在下周六晚上12点前提交。- **实验环境**：使用Windows XP操作系统，支持VC++、Visual Studio、Python等开发工具。- **实验目的**：通过分析ping命令的实现，理解ICMP ECHO请求报文的构造及工作原理。利用原始套接字发送ICMP ECHO请求报文，并在接收端解析显示报文首部字段。- **实验步骤**：  - 分析ping命令的实例代码，总结其实现原理。  - 构造并发送ICMP ECHO请求报文。  - 接收并解析ICMP ECHO请求报文，显示各字段值。- **思考题**：设计一个tracert命令，探讨如何获取从发送端到目的端的路径信息，特别是网关IP地址和MAC地址。- **助教检查点**：使用W...
             
           </div>
         
@@ -1028,80 +1102,6 @@ TCP与UDP在Socket编程中的不同之处
     <a class="right-panel  non-pic  "
       
       href="/2024/11/02/B-%E6%A0%91%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/" 
-    >
-       
-      <i class="fa-solid fa-angle-right non-pic"></i>
-       
-    </a>
-     
-  </div>
-  
-</article>
-
-
-
-
-
-
-   
-
-
-<article id="post-数据库原理实验-第三次" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-   
-  <div class="article-inner">
-    <div class="article-main">
-      <header class="article-header">
-        
-<div class="main-title-bar">
-  <div class="main-title-dot"></div>
-  
-    
-      <h1 itemprop="name">
-        <a class="p-name article-title" href="/2024/11/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C-%E7%AC%AC%E4%B8%89%E6%AC%A1/">数据库原理实验-第三次</a>
-      </h1>
-    
-  
-</div>
-
-        <div class='meta-info-bar'>
-          <div class="meta-info">
-  <time class="dt-published" datetime="2024-11-02T00:41:05.000Z" itemprop="datePublished">2024-11-02</time>
-</div>
-          <div class="need-seperator meta-info">
-            <div class="meta-cate-flex">
-  
-    未分类 
-   
-</div>
-  
-          </div>
-          <div class="wordcount need-seperator meta-info">
-            31k 词 
-          </div>
-        </div>
-        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
-
-      </header>
-      <div class="e-content article-entry" itemprop="articleBody">
-        
-          <div class="truncate-text">
-            
-              针对 SPJ_MNG 数据库，创建并执行存储过程第1关：创建一个无参数的存储过程—jsearch1123456789101112131415-- 使用指定的数据库USE SPJ_MNG;-- 更改语句结束符为 //DELIMITER //-- 创建存储过程 jsearch1CREATE PROCEDURE jsearch1()BEGIN    -- 查询 S 表中城市为北京的所有记录    SELECT * FROM s WHERE CITY = &#x27;北京&#x27;;END //-- 恢复默认的语句结束符为 ;DELIMITER ;
-
-第2关：创建带输入参数的存储过程—jsearch2123456789101112131415-- 使用指定的数据库USE SPJ_MNG;-- 更改语句结束符为 //DELIMITER //-- 创建存储过程 jsearch2CREATE PROCEDURE jsearch2(IN city_name VARCHAR(10))BEGIN    -- 查询 S 表中城市为 city_name 的所有记录    SELECT * FROM s...
-            
-          </div>
-        
-      </div>
-
-         
-    </div>
-    
-     
-    <a class="right-panel  non-pic  "
-      
-      href="/2024/11/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C-%E7%AC%AC%E4%B8%89%E6%AC%A1/" 
     >
        
       <i class="fa-solid fa-angle-right non-pic"></i>

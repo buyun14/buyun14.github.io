@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>web渗透学习 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="web渗透测试1. 信息收集域名、IP、端口NMAP在进行Web渗透测试的信息收集阶段，特别是针对域名、IP和端口的侦查，以下是具体的步骤和技术： 1.1 域名、IP、端口1.1.1 域名信息收集 WHOIS查询：使用WHOIS数据库来查找关于域名注册者的详细信息，如注册人、注册日期、过期日期等。这有助于了解目标的背景信息。 子域枚举：利用工具（如Sublist3r、Amass）或在线服务（如Ce">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web渗透学习">
+<meta property="og:url" content="https://buyun14.github.io/2024/12/17/web%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="web渗透测试1. 信息收集域名、IP、端口NMAP在进行Web渗透测试的信息收集阶段，特别是针对域名、IP和端口的侦查，以下是具体的步骤和技术： 1.1 域名、IP、端口1.1.1 域名信息收集 WHOIS查询：使用WHOIS数据库来查找关于域名注册者的详细信息，如注册人、注册日期、过期日期等。这有助于了解目标的背景信息。 子域枚举：利用工具（如Sublist3r、Amass）或在线服务（如Ce">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-12-17T08:44:59.000Z">
+<meta property="article:modified_time" content="2024-12-17T09:31:32.895Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%BA%94%E7%94%A8/" rel="tag">云计算技术及应用</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D/" rel="tag">重中之重</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-web渗透学习" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        web渗透学习
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-12-17T08:44:59.000Z" itemprop="datePublished">2024-12-17</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            3.9k words 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="web渗透测试"><a href="#web渗透测试" class="headerlink" title="web渗透测试"></a>web渗透测试</h2><h2 id="1-信息收集"><a href="#1-信息收集" class="headerlink" title="1. 信息收集"></a>1. 信息收集</h2><p>域名、IP、端口<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qqchaozai/article/details/102521557">NMAP</a><br>在进行Web渗透测试的信息收集阶段，特别是针对域名、IP和端口的侦查，以下是具体的步骤和技术：</p>
+<h3 id="1-1-域名、IP、端口"><a href="#1-1-域名、IP、端口" class="headerlink" title="1.1 域名、IP、端口"></a>1.1 域名、IP、端口</h3><h4 id="1-1-1-域名信息收集"><a href="#1-1-1-域名信息收集" class="headerlink" title="1.1.1 域名信息收集"></a>1.1.1 域名信息收集</h4><ul>
+<li><strong>WHOIS查询</strong>：使用WHOIS数据库来查找关于域名注册者的详细信息，如注册人、注册日期、过期日期等。这有助于了解目标的背景信息。</li>
+<li><strong>子域枚举</strong>：利用工具（如Sublist3r、Amass）或在线服务（如Censys、Shodan、VirusTotal）来发现与主域名相关的子域名。这可以揭示更多潜在的攻击面。</li>
+</ul>
+<h4 id="1-1-2-IP地址信息收集"><a href="#1-1-2-IP地址信息收集" class="headerlink" title="1.1.2 IP地址信息收集"></a>1.1.2 IP地址信息收集</h4><ul>
+<li><strong>反向DNS查找</strong>：通过IP地址执行反向DNS查找，确定其对应的主机名或域名。</li>
+<li><strong>IP历史记录检查</strong>：有些网站和服务提供有关特定IP地址的历史变更信息，可能包含之前托管在此IP上的其他网站信息。</li>
+</ul>
+<h4 id="1-1-3-端口扫描"><a href="#1-1-3-端口扫描" class="headerlink" title="1.1.3 端口扫描"></a>1.1.3 端口扫描</h4><ul>
+<li><strong>全端口扫描</strong>：使用nmap等工具对目标服务器进行全面的端口扫描，以识别开放的端口及其对应的服务。这一步骤可以帮助确认哪些服务正在运行，并为后续更深入的测试奠定基础。</li>
+<li><strong>服务版本检测</strong>：在端口扫描的同时，尝试获取每个开放端口上运行的服务版本信息。某些老旧版本的服务可能存在已知的安全漏洞。</li>
+</ul>
+<h4 id="工具推荐"><a href="#工具推荐" class="headerlink" title="工具推荐"></a>工具推荐</h4><ul>
+<li><strong>Nmap</strong>：一个强大的网络扫描和安全审计工具，可用于探测网络连接、端口状态以及操作系统指纹识别。</li>
+<li><strong>Masscan</strong>：号称世界上最快的TCP端口扫描器，适合大规模快速扫描。</li>
+<li><strong>Amass</strong>：专注于资产发现和攻击面映射，特别擅长于子域名挖掘。</li>
+<li><strong>TheHarvester</strong>：用于收集电子邮件地址及子域名的工具。</li>
+<li><strong>DNSDumpster</strong>：在线服务，提供详细的DNS相关信息，包括子域名、A记录、MX记录等。</li>
+</ul>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><ul>
+<li>在进行任何信息收集活动时，请确保遵守法律法规，并且只针对你有合法授权的目标。</li>
+<li>信息收集应当尽量低调，避免引起目标系统的注意或触发入侵检测系统（IDS）&#x2F;入侵防御系统（IPS）报警。</li>
+<li>收集到的信息应该妥善保存，并仅限于项目相关人员访问，保护敏感数据不被泄露。</li>
+</ul>
+<p>以上就是针对域名、IP和端口信息收集的一些基本方法和技术。这些信息是进一步开展渗透测试的基础，对于理解目标环境至关重要。</p>
+<hr>
+<h3 id="nmap详解"><a href="#nmap详解" class="headerlink" title="nmap详解"></a>nmap详解</h3><p>Nmap（Network Mapper）是一个网络扫描和安全审计工具，它提供了丰富的命令行参数来定制扫描行为。以下是nmap常用参数的详细说明：</p>
+<h3 id="基本扫描选项"><a href="#基本扫描选项" class="headerlink" title="基本扫描选项"></a>基本扫描选项</h3><ul>
+<li><code>-sP</code> 或 <code>-sn</code>：仅执行主机发现（ping扫描），不进行端口扫描。</li>
+<li><code>-sT</code>：TCP connect() 扫描，这是最基础的TCP端口扫描方式，速度较慢但不易被防火墙阻挡。</li>
+<li><code>-sS</code>：SYN 扫描（半开放扫描），发送SYN包后不完成三次握手，适用于大多数情况下的快速扫描。</li>
+<li><code>-sU</code>：UDP 扫描，用于检测开放的UDP端口。</li>
+<li><code>-sA</code>：ACK 扫描，主要用于识别防火墙规则，通过发送带有ACK标志的数据包。</li>
+<li><code>-sW</code>：窗口扫描，类似于ACK扫描，但更少见。</li>
+<li><code>-sM</code>：Maimon扫描，一种特殊的TCP扫描方法，对某些操作系统有效。</li>
+</ul>
+<h3 id="主机发现"><a href="#主机发现" class="headerlink" title="主机发现"></a>主机发现</h3><ul>
+<li><code>-Pn</code>：跳过主机发现阶段，默认情况下Nmap会尝试确定目标是否在线；使用此选项可以强制扫描离线的目标。</li>
+<li><code>-PS [portlist]</code>：指定TCP SYN ping使用的端口列表。</li>
+<li><code>-PA [portlist]</code>：指定TCP ACK ping使用的端口列表。</li>
+<li><code>-PU [portlist]</code>：指定UDP ping使用的端口列表。</li>
+<li><code>-PY [portlist]</code>：指定SCTP INIT ping使用的端口列表。</li>
+<li><code>-PE</code>、<code>-PP</code>、<code>-PM</code>：分别对应ICMP Echo、Timestamp、Netmask请求的ping类型。</li>
+<li><code>--disable-arp-ping</code>：禁用ARP ping（局域网内默认开启）。</li>
+<li><code>--traceroute</code>：启用路由跟踪功能，显示到达目标的路径。</li>
+</ul>
+<h3 id="端口指定与服务版本探测"><a href="#端口指定与服务版本探测" class="headerlink" title="端口指定与服务版本探测"></a>端口指定与服务版本探测</h3><ul>
+<li><code>-p &lt;port ranges&gt;</code>：指定要扫描的端口范围，如<code>-p 22</code>或<code>-p 1-65535</code>。</li>
+<li><code>-F</code>：快速模式，只扫描最常见的100个端口。</li>
+<li><code>--top-ports &lt;number&gt;</code>：扫描最常使用的前N个端口。</li>
+<li><code>-sV</code>：尝试识别每个开放端口上运行的服务及其版本信息。</li>
+<li><code>--version-intensity &lt;level&gt;</code>：设置服务版本探测强度，范围是0到9，默认为7。</li>
+</ul>
+<h3 id="操作系统检测"><a href="#操作系统检测" class="headerlink" title="操作系统检测"></a>操作系统检测</h3><ul>
+<li><code>-O</code>：尝试猜测远程操作系统的类型。</li>
+<li><code>--osscan-guess</code>：更加激进地猜测操作系统，即使匹配度不高也返回结果。</li>
+<li><code>--max-os-tries &lt;tries&gt;</code>：限制OS检测的最大重试次数，默认为3次。</li>
+</ul>
+<h3 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h3><ul>
+<li><code>-T&lt;0-5&gt;</code>：设置扫描时间模板，从非常慢（T0）到极其快（T5），默认为T3。</li>
+<li><code>--min-hostgroup &lt;size&gt;</code> 和 <code>--max-hostgroup &lt;size&gt;</code>：设定并行扫描的最小&#x2F;最大主机数。</li>
+<li><code>--min-parallelism &lt;numprobes&gt;</code> 和 <code>--max-parallelism &lt;numprobes&gt;</code>：设定并行探测的数量。</li>
+<li><code>--min-rate &lt;number&gt;</code> 和 <code>--max-rate &lt;number&gt;</code>：控制每秒发送数据包的最小&#x2F;最大速率。</li>
+</ul>
+<h3 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h3><ul>
+<li><code>-oN/-oX/-oS/-oG &lt;file&gt;</code>：将输出保存为普通文本&#x2F;Nmap XML&#x2F;Scripable Output&#x2F;Grepable格式文件。</li>
+<li><code>-oA &lt;basename&gt;</code>：同时生成三种格式的输出文件，文件名以指定的基本名称命名。</li>
+<li><code>--reason</code>：显示导致每个端口状态的原因（例如收到的RST响应）。</li>
+<li><code>--open</code>：只显示开放的端口。</li>
+</ul>
+<h3 id="其他选项"><a href="#其他选项" class="headerlink" title="其他选项"></a>其他选项</h3><ul>
+<li><code>-v</code>：增加输出的详细程度，可以多次使用以提高详细级别（如<code>-vv</code>）。</li>
+<li><code>-d</code>：调试模式，显示详细的调试信息。</li>
+<li><code>-h</code> 或 <code>--help</code>：显示帮助信息。</li>
+<li><code>--script=&lt;Lua脚本&gt;</code>：运行指定的Nmap Scripting Engine (NSE) 脚本，用于执行高级任务如漏洞评估等。</li>
+</ul>
+<hr>
+<p>具体流程：</p>
+<ol>
+<li>-S &lt;源地址&gt; 指定源地址，为了不被发现真实IP，扫描IP欺骗！</li>
+<li>nmap -vv &lt;&gt; 获取端口开放情况</li>
+<li>nmap -sV -p &lt;端口&gt; &lt;&gt; 获取服务版本，猜测服务类型</li>
+</ol>
+<h2 id="2-漏洞扫描"><a href="#2-漏洞扫描" class="headerlink" title="2. 漏洞扫描"></a>2. 漏洞扫描</h2><p>漏洞扫描是渗透测试的重要组成部分，它可以帮助我们识别系统中存在的安全漏洞，并根据漏洞的类型和危害程度，制定相应的应对策略。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/CVE-2003/p/18442392">Windows下安装Nessus 10.8.3安装破解教程</a></p>
+<hr>
+<p>确实存在多个与 Nessus 功能相似或在某些方面更为专业的工具，它们各有特色和优势。选择哪一个取决于你的具体需求、预算以及对特定功能的偏好。以下是一些常见的替代方案：</p>
+<h3 id="1-OpenVAS"><a href="#1-OpenVAS" class="headerlink" title="1. OpenVAS"></a>1. <strong>OpenVAS</strong></h3><ul>
+<li><strong>特点</strong>：开源漏洞扫描器，具有丰富的插件库和详细的报告功能。</li>
+<li><strong>优点</strong>：完全免费且开源；支持广泛的漏洞检测；适合需要定制化解决方案的企业。</li>
+<li><strong>适用场景</strong>：适用于那些希望利用开源资源并进行深度定制的组织。</li>
+</ul>
+<h3 id="2-Metasploit-Framework"><a href="#2-Metasploit-Framework" class="headerlink" title="2. Metasploit Framework"></a>2. <strong>Metasploit Framework</strong></h3><ul>
+<li><strong>特点</strong>：专注于渗透测试，提供从漏洞发现到利用的一站式服务。</li>
+<li><strong>优点</strong>：强大的漏洞开发平台，广泛应用于安全研究领域；社区活跃，更新频繁。</li>
+<li><strong>适用场景</strong>：对于需要深入研究漏洞或执行复杂攻击模拟的安全团队非常有用。</li>
+</ul>
+<h3 id="3-QualysGuard"><a href="#3-QualysGuard" class="headerlink" title="3. QualysGuard"></a>3. <strong>QualysGuard</strong></h3><ul>
+<li><strong>特点</strong>：基于云的服务，提供全面的IT资产管理和漏洞评估。</li>
+<li><strong>优点</strong>：易于部署，无需本地安装；提供实时威胁情报和持续监控。</li>
+<li><strong>适用场景</strong>：适合寻求云端解决方案并且关注自动化和持续保护的企业。</li>
+</ul>
+<h3 id="4-Rapid7-Nexpose-now-InsightVM"><a href="#4-Rapid7-Nexpose-now-InsightVM" class="headerlink" title="4. Rapid7 Nexpose (now InsightVM)"></a>4. <strong>Rapid7 Nexpose (now InsightVM)</strong></h3><ul>
+<li><strong>特点</strong>：集成的风险管理平台，结合了漏洞管理、配置审计和补丁管理等功能。</li>
+<li><strong>优点</strong>：用户界面友好，易于理解和操作；提供了强大的风险评分系统。</li>
+<li><strong>适用场景</strong>：对于需要综合风险管理工具的企业来说是个不错的选择。</li>
+</ul>
+<h3 id="5-Acunetix-Web-Vulnerability-Scanner-AWVS"><a href="#5-Acunetix-Web-Vulnerability-Scanner-AWVS" class="headerlink" title="5. Acunetix Web Vulnerability Scanner (AWVS)"></a>5. <strong>Acunetix Web Vulnerability Scanner (AWVS)</strong></h3><ul>
+<li><strong>特点</strong>：专注于Web应用程序的安全性测试，包括SQL注入、XSS等漏洞。</li>
+<li><strong>优点</strong>：快速准确地识别Web应用中的安全问题；拥有直观的界面和详尽的报告。</li>
+<li><strong>适用场景</strong>：特别适合Web开发者和技术人员用来确保其Web应用程序的安全性。</li>
+</ul>
+<h3 id="6-Core-Impact-Pro"><a href="#6-Core-Impact-Pro" class="headerlink" title="6. Core Impact Pro"></a>6. <strong>Core Impact Pro</strong></h3><ul>
+<li><strong>特点</strong>：高级渗透测试平台，不仅限于漏洞扫描，还包括漏洞利用和后渗透活动。</li>
+<li><strong>优点</strong>：提供了一套完整的安全评估工具集；非常适合专业级的安全顾问和服务提供商。</li>
+<li><strong>适用场景</strong>：适用于需要执行全面安全评估的专业人士或企业。</li>
+</ul>
+<h3 id="7-Probely"><a href="#7-Probely" class="headerlink" title="7. Probely"></a>7. <strong>Probely</strong></h3><ul>
+<li><strong>特点</strong>：SaaS型Web应用安全扫描器，提供自动化的漏洞检测服务。</li>
+<li><strong>优点</strong>：无需安装软件，简单易用；定期更新以应对最新的安全威胁。</li>
+<li><strong>适用场景</strong>：适合中小型企业或初创公司，尤其是那些没有专门的安全团队但又需要基本的安全保障的企业。</li>
+</ul>
+<h3 id="8-Intruder"><a href="#8-Intruder" class="headerlink" title="8. Intruder"></a>8. <strong>Intruder</strong></h3><ul>
+<li><strong>特点</strong>：提供外部和内部网络的持续性安全监测。</li>
+<li><strong>优点</strong>：自动化程度高，能够快速发现新出现的漏洞；价格相对亲民。</li>
+<li><strong>适用场景</strong>：适合想要简化安全流程并获得即时反馈的各类组织。</li>
+</ul>
+<h3 id="9-Sucuri-Web-Security-Platform"><a href="#9-Sucuri-Web-Security-Platform" class="headerlink" title="9. Sucuri Web Security Platform"></a>9. <strong>Sucuri Web Security Platform</strong></h3><ul>
+<li><strong>特点</strong>：专门为网站和Web应用程序设计的安全服务平台。</li>
+<li><strong>优点</strong>：专注于恶意软件清除、防火墙保护及性能优化；提供了良好的客户支持。</li>
+<li><strong>适用场景</strong>：对于托管WordPress或其他CMS平台的网站所有者来说是非常好的选择。</li>
+</ul>
+<h3 id="10-Tenable-sc（原SecurityCenter）"><a href="#10-Tenable-sc（原SecurityCenter）" class="headerlink" title="10. Tenable.sc（原SecurityCenter）"></a>10. <strong>Tenable.sc（原SecurityCenter）</strong></h3><ul>
+<li><strong>特点</strong>：Tenable自家的另一个产品，专注于企业级的安全管理和分析。</li>
+<li><strong>优点</strong>：支持大规模部署，具备强大的报表和可视化功能；与多种第三方工具集成良好。</li>
+<li><strong>适用场景</strong>：大型企业和机构，特别是那些已经使用Tenable产品的组织。</li>
+</ul>
+<hr>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2024/12/22/Docker/"
+      title="Docker"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        Docker
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/12/06/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E5%9B%9B%E8%A1%A5%E5%85%85%E8%87%AA%E7%94%A8/"
+      title="计网实验四补充自用"
+     >
+
+    <p class="title-text">
+      
+        计网实验四补充自用
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title">Comments </div>
+    </div>
+    <div id="vcomments"></div>
+  </div>
+  <script>
+      new Valine({"enable":true,"appId":"AVo4oPTEvfsleHngLc8BZ535-gzGzoHsz","appKey":"gSa0juG3A4yPHmR3nL5ENl3i","placeholder":"Just go go","pageSize":10,"highlight":true,"serverURLs":null,"el":"#vcomments"});
+  </script>
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

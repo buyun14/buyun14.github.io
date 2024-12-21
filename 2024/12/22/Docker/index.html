@@ -20,17 +20,18 @@
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta name="description" content="前言docker的安装不再赘述。本人使用Debian12系统进行Docker部署及相关应用 Docker 包括三个基本概念  镜像（Image） 容器（Container） 仓库（Repository）理解了这三个概念，就理解了 Docker 的整个生命周期。  镜像Docker 镜像（Image），就相当于是一个 root 文件系统。 容器容器（Container）的实质是进程，但与直接在宿主执">
+  <meta name="description" content="前言【2024年12月22日】在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源。（再也不用一篇一篇去找文章写大纲了hhhh">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker">
-<meta property="og:url" content="https://buyun14.github.io/2024/10/20/Docker/index.html">
+<meta property="og:url" content="https://buyun14.github.io/2024/12/22/Docker/index.html">
 <meta property="og:site_name" content="Buyun&#39;s Blog">
-<meta property="og:description" content="前言docker的安装不再赘述。本人使用Debian12系统进行Docker部署及相关应用 Docker 包括三个基本概念  镜像（Image） 容器（Container） 仓库（Repository）理解了这三个概念，就理解了 Docker 的整个生命周期。  镜像Docker 镜像（Image），就相当于是一个 root 文件系统。 容器容器（Container）的实质是进程，但与直接在宿主执">
+<meta property="og:description" content="前言【2024年12月22日】在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源。（再也不用一篇一篇去找文章写大纲了hhhh">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-10-19T16:07:26.000Z">
-<meta property="article:modified_time" content="2024-10-31T02:44:45.123Z">
+<meta property="article:published_time" content="2024-12-21T16:07:26.000Z">
+<meta property="article:modified_time" content="2024-12-21T15:34:15.779Z">
 <meta property="article:author" content="buyun">
 <meta property="article:tag" content="docker">
+<meta property="article:tag" content="云计算技术及应用">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
@@ -162,7 +163,7 @@
   <div class="widget-wrap">
     <div class="widget">
       <h3 class="widget-title">Tags</h3>
-      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D/" rel="tag">重中之重</a></li></ul>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%BA%94%E7%94%A8/" rel="tag">云计算技术及应用</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D/" rel="tag">重中之重</a></li></ul>
     </div>
   </div>
 
@@ -196,7 +197,7 @@
 
         <div class='meta-info-bar'>
           <div class="meta-info">
-  <time class="dt-published" datetime="2024-10-19T16:07:26.000Z" itemprop="datePublished">2024-10-20</time>
+  <time class="dt-published" datetime="2024-12-21T16:07:26.000Z" itemprop="datePublished">2024-12-22</time>
 </div>
           <div class="need-seperator meta-info">
             <div class="meta-cate-flex">
@@ -207,17 +208,17 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            3.5k words 
+            3.6k words 
           </div>
         </div>
         
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%BA%94%E7%94%A8/" rel="tag">云计算技术及应用</a></li></ul>
 
       </header>
       <div class="e-content article-entry" itemprop="articleBody">
         
-          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>docker的安装不再赘述。<br>本人使用Debian12系统进行Docker部署及相关应用</p>
-<p>Docker 包括三个基本概念</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>【2024年12月22日】<br>在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。<br>大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。<br>不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源。（再也不用一篇一篇去找文章写大纲了hhhhh）</p>
+<h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><p>Docker 包括三个基本概念</p>
 <ul>
 <li>镜像（Image）</li>
 <li>容器（Container）</li>
@@ -326,27 +327,22 @@
   
     
 <nav id="article-nav">
-  <a class="article-nav-btn left "
-    
-      href="/2024/10/20/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E7%90%86%E8%AE%BAsql%E7%BB%83%E4%B9%A02/"
-      title="数据库原理理论sql练习2"
+  <a class="article-nav-btn left  disabled "
      >
     <i class="fa-solid fa-angle-left"></i>
     <p class="title-text">
-      
-        数据库原理理论sql练习2
         
     </p>
   </a>
   <a class="article-nav-btn right "
     
-      href="/2024/10/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86%E5%AE%9E%E9%AA%8C-%E7%AC%AC%E4%BA%8C%E6%AC%A1/"
-      title="数据库原理实验-第二次"
+      href="/2024/12/17/web%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/"
+      title="web渗透学习"
      >
 
     <p class="title-text">
       
-        数据库原理实验-第二次
+        web渗透学习
         
     </p>
     <i class="fa-solid fa-angle-right"></i>

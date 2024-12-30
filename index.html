@@ -202,7 +202,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            3.6k words 
+            2.3k words 
           </div>
         </div>
         
@@ -213,16 +213,16 @@
         
           <div class="truncate-text">
             
-              前言【2024年12月22日】在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源。（再也不用一篇一篇去找文章写大纲了hhhhh）
-DockerDocker 包括三个基本概念
+              前言【2024年12月22日】在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源之一。（再也不用一篇一篇去找文章写大纲了hhhhh）
 
-镜像（Image）
-容器（Container）
-仓库（Repository）理解了这三个概念，就理解了 Docker 的整个生命周期。
+Docker的安装和配置
+移除旧版本的Docker（如果存在）。
+安装Docker，并启动Docker服务。
+测试Docker安装是否成功。（注：本人一般会使用宝塔面板等工具来管理Docker，其配置过程简单，对docker镜像的管理也比较方便。）
 
-镜像Docker 镜像（Image），就相当于是一个 root 文件系统。
-容器容器（Container）的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、自己的进程空间，甚至自己的用户 ID 空间。容器内的进程是运行在一个隔离的环境里，使用起来，就好像是在一个独立于宿主的系统下操作一样。
-按照 Docke...
+
+
+1234yum -y install docker # 安装dockersystemctl start docker # 启动docker服务后台docker pull swr.cn-north-4.myhuaweicloud.com/library/hello-world:latest # 拉取hello-world镜像d...
             
           </div>
         

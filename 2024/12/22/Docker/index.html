@@ -20,15 +20,15 @@
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta name="description" content="前言【2024年12月22日】在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源。（再也不用一篇一篇去找文章写大纲了hhhh">
+  <meta name="description" content="前言【2024年12月22日】在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源之一。（再也不用一篇一篇去找文章写大纲了hh">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker">
 <meta property="og:url" content="https://buyun14.github.io/2024/12/22/Docker/index.html">
 <meta property="og:site_name" content="Buyun&#39;s Blog">
-<meta property="og:description" content="前言【2024年12月22日】在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源。（再也不用一篇一篇去找文章写大纲了hhhh">
+<meta property="og:description" content="前言【2024年12月22日】在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源之一。（再也不用一篇一篇去找文章写大纲了hh">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-12-21T16:07:26.000Z">
-<meta property="article:modified_time" content="2024-12-21T15:34:15.779Z">
+<meta property="article:modified_time" content="2024-12-21T18:02:31.448Z">
 <meta property="article:author" content="buyun">
 <meta property="article:tag" content="docker">
 <meta property="article:tag" content="云计算技术及应用">
@@ -208,7 +208,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            3.6k words 
+            2.3k words 
           </div>
         </div>
         
@@ -217,105 +217,60 @@
       </header>
       <div class="e-content article-entry" itemprop="articleBody">
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>【2024年12月22日】<br>在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。<br>大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。<br>不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源。（再也不用一篇一篇去找文章写大纲了hhhhh）</p>
-<h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><p>Docker 包括三个基本概念</p>
-<ul>
-<li>镜像（Image）</li>
-<li>容器（Container）</li>
-<li>仓库（Repository）<br>理解了这三个概念，就理解了 Docker 的整个生命周期。</li>
-</ul>
-<h4 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h4><p>Docker 镜像（Image），就相当于是一个 root 文件系统。</p>
-<h4 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h4><p>容器（Container）的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、自己的进程空间，甚至自己的用户 ID 空间。容器内的进程是运行在一个隔离的环境里，使用起来，就好像是在一个独立于宿主的系统下操作一样。</p>
-<p>按照 Docker 最佳实践的要求，容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用 数据卷（Volume）、或者 绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高。</p>
-<p>数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此，使用数据卷后，容器删除或者重新运行之后，数据却不会丢失。</p>
-<h4 id="仓库"><a href="#仓库" class="headerlink" title="仓库"></a>仓库</h4><p>镜像构建完成后，可以很容易的在当前宿主机上运行，但是，如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务，Docker Registry 就是这样的服务。</p>
-<p>一个 Docker Registry 中可以包含多个 仓库（Repository）；每个仓库可以包含多个 标签（Tag）；每个标签对应一个镜像。</p>
-<p>通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 <code>&lt;仓库名&gt;:&lt;标签&gt;</code> 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签。</p>
-<p>以 Ubuntu 镜像 为例，ubuntu 是仓库的名字，其内包含有不同的版本标签，如，16.04, 18.04。我们可以通过 ubuntu:16.04，或者 <code>ubuntu:18.04</code> 来具体指定所需哪个版本的镜像。如果忽略了标签，比如 ubuntu，那将视为 <code>ubuntu:latest</code>。</p>
-<p>仓库名经常以 两段式路径 形式出现，比如 <code>jwilder/nginx-proxy</code>，前者往往意味着 Docker Registry 多用户环境下的用户名，后者则往往是对应的软件名。但这并非绝对，取决于所使用的具体 Docker Registry 的软件或服务。</p>
-<h4 id="获取镜像并运行"><a href="#获取镜像并运行" class="headerlink" title="获取镜像并运行"></a>获取镜像并运行</h4><p>获取镜像<br>从 Docker 镜像仓库获取镜像的命令是 docker pull<br><code>$ docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]</code><br>比如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull ubuntu:18.04</span><br><span class="line">18.04: Pulling from library/ubuntu</span><br><span class="line">92dc2a97ff99: Pull complete</span><br><span class="line">be13a9d27eb8: Pull complete</span><br><span class="line">c8299583700a: Pull complete</span><br><span class="line">Digest: sha256:4bc3ae6596938cb0d9e5ac51a1152ec9dcac2a1c50829c74abd9c4361e321b26</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> ubuntu:18.04</span><br><span class="line">docker.io/library/ubuntu:18.04</span><br></pre></td></tr></table></figure>
-<p>有了镜像后，我们就能够以这个镜像为基础启动并运行一个容器。以上面的 ubuntu:18.04 为例，如果我们打算启动里面的 bash 并且进行交互式操作的话，可以执行下面的命令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --<span class="built_in">rm</span> ubuntu:18.04 bash</span><br><span class="line"></span><br><span class="line">root@e7009c6ce357:/<span class="comment"># cat /etc/os-release</span></span><br><span class="line">NAME=<span class="string">&quot;Ubuntu&quot;</span></span><br><span class="line">VERSION=<span class="string">&quot;18.04.1 LTS (Bionic Beaver)&quot;</span></span><br><span class="line">ID=ubuntu</span><br><span class="line">ID_LIKE=debian</span><br><span class="line">PRETTY_NAME=<span class="string">&quot;Ubuntu 18.04.1 LTS&quot;</span></span><br><span class="line">VERSION_ID=<span class="string">&quot;18.04&quot;</span></span><br><span class="line">HOME_URL=<span class="string">&quot;https://www.ubuntu.com/&quot;</span></span><br><span class="line">SUPPORT_URL=<span class="string">&quot;https://help.ubuntu.com/&quot;</span></span><br><span class="line">BUG_REPORT_URL=<span class="string">&quot;https://bugs.launchpad.net/ubuntu/&quot;</span></span><br><span class="line">PRIVACY_POLICY_URL=<span class="string">&quot;https://www.ubuntu.com/legal/terms-and-policies/privacy-policy&quot;</span></span><br><span class="line">VERSION_CODENAME=bionic</span><br><span class="line">UBUNTU_CODENAME=bionic</span><br></pre></td></tr></table></figure>
-
-<p><code>docker run</code> 就是运行容器的命令，具体格式我们会在 容器 一节进行详细讲解，我们这里简要的说明一下上面用到的参数。</p>
-<p><code>-it</code>：这是两个参数，一个是 <code>-i</code>：交互式操作，一个是 <code>-t</code> 终端。我们这里打算进入 bash 执行一些命令并查看返回结果，因此我们需要交互式终端。<br><code>--rm</code>：这个参数是说容器退出后随之将其删除。默认情况下，为了排障需求，退出的容器并不会立即删除，除非手动 <code>docker rm</code>。我们这里只是随便执行个命令，看看结果，不需要排障和保留结果，因此使用 <code>--rm</code> 可以避免浪费空间。<br><code>ubuntu:18.04</code>：这是指用 <code>ubuntu:18.04</code> 镜像为基础来启动容器。<br><code>bash</code>：放在镜像名后的是 命令，这里我们希望有个交互式 Shell，因此用的是 <code>bash</code>。<br>进入容器后，我们可以在 Shell 下操作，执行任何所需的命令。这里，我们执行了 <code>cat /etc/os-release</code>，这是 Linux 常用的查看当前系统版本的命令，从返回的结果可以看到容器内是 <code>Ubuntu 18.04.1 LTS</code> 系统。</p>
-<p>最后我们通过 <code>exit</code> 退出了这个容器。</p>
-<h3 id="Docker-命令"><a href="#Docker-命令" class="headerlink" title="Docker 命令"></a>Docker 命令</h3><p>下面是一些常用的 Docker 命令及其参数：</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>【2024年12月22日】<br>在选择云计算技术及应用这门课程后，虽然整体的课程依然是枯燥无聊的理论讲解，但对我的知识扩充还是有一定用处的。<br>大规模的云计算实现往往都是企业级的，与私人的云存储还是有很大的区别。分布式存储与集群架构，在云计算的环境中更易体现。<br>不过这门课程的三门实验报告指导书倒是非常的详细，其中docker部分也可以作为我本篇博客的主要信息来源之一。（再也不用一篇一篇去找文章写大纲了hhhhh）</p>
 <ol>
-<li><p><code>docker run</code> - 运行一个新的容器</p>
-<ul>
-<li><code>-d, --detach</code>：后台运行容器并打印容器ID。</li>
-<li><code>-p, --publish</code>：将容器的端口发布到主机。</li>
-<li><code>--name</code>：为容器指定一个名称。</li>
-<li><code>-e, --env</code>：设置环境变量。</li>
-<li><code>-v, --volume</code>：挂载一个卷。</li>
-<li><code>--rm</code>：容器退出时自动清理容器文件系统。</li>
-<li><code>--network</code>：连接到网络。</li>
-<li><code>--link</code>：将此容器链接到另一个容器。</li>
-<li><code>--restart</code>：设置重启策略。</li>
-<li><code>IMAGE[:TAG]</code>：要运行的镜像名，可以指定标签。</li>
-</ul>
-</li>
-<li><p><code>docker ps</code> - 列出正在运行的容器</p>
-<ul>
-<li><code>-a, --all</code>：显示所有容器（包括已停止的）。</li>
-<li><code>-q, --quiet</code>：只显示容器ID。</li>
-</ul>
-</li>
-<li><p><code>docker stop</code> - 停止一个或多个正在运行的容器</p>
-<ul>
-<li><code>CONTAINER</code>：容器的ID或名称。</li>
-</ul>
-</li>
-<li><p><code>docker start</code> - 启动一个或多个已经存在的容器</p>
-<ul>
-<li><code>CONTAINER</code>：容器的ID或名称。</li>
-</ul>
-</li>
-<li><p><code>docker restart</code> - 重启一个或多个容器</p>
-<ul>
-<li><code>CONTAINER</code>：容器的ID或名称。</li>
-</ul>
-</li>
-<li><p><code>docker rm</code> - 删除一个或多个容器</p>
-<ul>
-<li><code>-f, --force</code>：强制删除正在运行的容器。</li>
-<li><code>-l, --link</code>：删除容器的链接，但保留容器本身。</li>
-<li><code>-v, --volumes</code>：删除与容器关联的卷。</li>
-<li><code>CONTAINER</code>：容器的ID或名称。</li>
-</ul>
-</li>
-<li><p><code>docker images</code> - 列出本地镜像</p>
-<ul>
-<li><code>-a, --all</code>：显示所有镜像（包括中间层镜像）。</li>
-<li><code>-q, --quiet</code>：只显示镜像ID。</li>
-</ul>
-</li>
-<li><p><code>docker rmi</code> - 删除一个或多个镜像</p>
-<ul>
-<li><code>-f, --force</code>：强制删除镜像。</li>
-<li><code>IMAGE</code>：镜像的ID或名称。</li>
-</ul>
-</li>
-<li><p><code>docker build</code> - 使用 Dockerfile 创建一个镜像</p>
-<ul>
-<li><code>-t, --tag</code>：为新创建的镜像添加标签。</li>
-<li><code>-f, --file</code>：指定使用的 Dockerfile 文件路径。</li>
-<li><code>PATH</code>：上下文路径或者URL。</li>
-</ul>
-</li>
-<li><p><code>docker exec</code> - 在运行的容器中执行命令</p>
-<ul>
-<li><code>-i, --interactive</code>：保持 STDIN 打开即使没有附加。</li>
-<li><code>-t, --tty</code>：分配一个伪TTY。</li>
-<li><code>CONTAINER</code>：容器的ID或名称。</li>
-<li><code>COMMAND</code>：在容器中执行的命令。</li>
+<li><strong>Docker的安装和配置</strong><ul>
+<li>移除旧版本的Docker（如果存在）。</li>
+<li>安装Docker，并启动Docker服务。</li>
+<li>测试Docker安装是否成功。<br>（注：本人一般会使用宝塔面板等工具来管理Docker，其配置过程简单，对docker镜像的管理也比较方便。）</li>
 </ul>
 </li>
 </ol>
-<p>这只是 Docker 命令的一小部分。每个命令都有更多的选项和功能，可以通过 <code>docker help</code> 或者 <code>docker COMMAND --help</code> 来获取更详细的帮助信息。例如，要查看 <code>docker run</code> 的所有可用选项，可以使用 <code>docker run --help</code>。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker <span class="comment"># 安装docker</span></span><br><span class="line">systemctl start docker <span class="comment"># 启动docker服务后台</span></span><br><span class="line">docker pull swr.cn-north-4.myhuaweicloud.com/library/hello-world:latest <span class="comment"># 拉取hello-world镜像</span></span><br><span class="line">docker images <span class="comment"># 查看已下载的镜像</span></span><br></pre></td></tr></table></figure>
 
+<ol start="2">
+<li><strong>镜像的基本操作</strong><ul>
+<li>获取、查询及删除镜像。</li>
+<li>使用官方镜像加速器来提高下载速度。</li>
+</ul>
+</li>
+</ol>
+<p>A.从Docker镜像仓库获取镜像的命令是docker pull，其命令格式为：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull [选项]  [Docker Registry 地址[:端口号]/]仓库名[:标签]</span><br></pre></td></tr></table></figure>
+
+<p>B.由于直接从国外下载镜像有网络限制，先按照文档配置华为SWR镜像加速器：<a target="_blank" rel="noopener" href="https://console.huaweicloud.com/swr/?region=cn-north-4#/swr/mirror">https://console.huaweicloud.com/swr/?region=cn-north-4#/swr/mirror</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano /etc/docker/daemon.json <span class="comment"># 编辑配置文件</span></span><br></pre></td></tr></table></figure>
+<p>编辑配置文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span> <span class="string">&quot;https://7046a839d8b94ca190169bc6f8b55644.mirror.swr.myhuaweicloud.com&quot;</span> <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>C.注意，需要重启docker服务使配置生效。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><font color = red>注意：Docker已经配置国内镜像源但没有生效，还是使用默认的镜像源<br>无论你是否有代理节点，想要docker配置的镜像源生效，一定要额外添加上一个Proxy！！！！（可以是你的宿主机），你的代理节点可以不用接外网，但是一定要配置，只有配置了代理节点后，docker 才会优先走你自己配置的镜像源<br></font></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;registry-mirrors&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;https://ab82f541eb254f90b7faf14b8ad77f69.mirror.swr.myhuaweicloud.com&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;dns&quot;</span>: [<span class="string">&quot;114.114.114.114&quot;</span>, <span class="string">&quot;8.8.8.8&quot;</span>],</span><br><span class="line">  <span class="string">&quot;proxies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;default&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;httpProxy&quot;</span>: <span class="string">&quot;http://&lt;代理IP&gt;:&lt;代理端口&gt;&quot;</span>,</span><br><span class="line">      <span class="string">&quot;httpsProxy&quot;</span>: <span class="string">&quot;http://&lt;代理IP&gt;:&lt;代理端口&gt;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;exec-opts&quot;</span>: [<span class="string">&quot;native.cgroupdriver=systemd&quot;</span>],</span><br><span class="line">  <span class="string">&quot;log-driver&quot;</span>: <span class="string">&quot;json-file&quot;</span>,</span><br><span class="line">  <span class="string">&quot;log-opts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;max-size&quot;</span>: <span class="string">&quot;200m&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<ol start="3">
+<li><strong>容器的基本操作</strong><ul>
+<li>创建、启动、停止、重启、暂停、恢复、杀掉以及删除容器。</li>
+<li>进入容器进行交互式操作或执行命令。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker create httpd <span class="comment"># 创建一个httpd容器</span></span><br><span class="line">docker ps -a <span class="comment"># 查看所有容器</span></span><br><span class="line">docker start cb98db916abf <span class="comment"># 启动容器</span></span><br><span class="line">docker stop cb98db916abf <span class="comment"># 停止容器</span></span><br><span class="line">docker restart cb98db916abf <span class="comment"># 重启容器</span></span><br><span class="line">docker pause cb98db916abf <span class="comment"># 暂停容器</span></span><br><span class="line">docker unpause cb98db916abf <span class="comment"># 恢复容器</span></span><br><span class="line">docker <span class="built_in">kill</span> cb98db916abf <span class="comment"># 杀掉容器</span></span><br><span class="line">docker <span class="built_in">rm</span> cb98db916abf <span class="comment"># 删除容器</span></span><br></pre></td></tr></table></figure>
+
+
+<ol start="4">
+<li><strong>私有镜像仓库搭建</strong><ul>
+<li>安装运行docker-registry。</li>
+<li>标记本地镜像并上传到私有仓库。</li>
+<li>从私有仓库中拉取镜像进行验证。</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 5000:5000 --restart=always --name registry registry <span class="comment">#获取官方registry 镜像并运行容器。</span></span><br><span class="line">docker images <span class="comment">#先在本机查看已有的镜像</span></span><br><span class="line">docker tag [本地镜像名] [私有仓库地址[:端口号]/]仓库名[:标签] <span class="comment">#标记本地镜像</span></span><br><span class="line">docker push [私有仓库地址[:端口号]/]仓库名[:标签] <span class="comment">#上传本地镜像到私有仓库</span></span><br><span class="line">docker pull [私有仓库地址[:端口号]/]仓库名[:标签] <span class="comment">#从私有仓库拉取镜像</span></span><br><span class="line">curl 127.0.0.1:5000/v2/_catalog <span class="comment">#查看私有仓库中的镜像</span></span><br></pre></td></tr></table></figure>
         
       </div>
 

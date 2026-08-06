@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>如何用好AI：Agent架构篇——从需求分析到测试验证的全流程指南 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="好的Agent架构不是堆砌模式，而是让“规划—执行—反思”在正确的粒度上各司其职。  一、引言：Agent开发的核心困惑AI Agent正从“能聊”走向“能用”。它以一个LLM为“大脑”，能够理解复杂目标、进行规划、并调用外部工具来执行任务。然而，很多开发者在构建Agent时面临一个共同的困惑：ReAct、Plan-and-Execute、Reflection、Multi-Agent，这些架构模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何用好AI：Agent架构篇——从需求分析到测试验证的全流程指南">
+<meta property="og:url" content="https://buyun14.github.io/2026/08/06/%E5%A6%82%E4%BD%95%E7%94%A8%E5%A5%BDAI%EF%BC%9AAgent%E6%9E%B6%E6%9E%84%E7%AF%87%E2%80%94%E2%80%94%E4%BB%8E%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E5%88%B0%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81%E7%9A%84%E5%85%A8%E6%B5%81%E7%A8%8B%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="好的Agent架构不是堆砌模式，而是让“规划—执行—反思”在正确的粒度上各司其职。  一、引言：Agent开发的核心困惑AI Agent正从“能聊”走向“能用”。它以一个LLM为“大脑”，能够理解复杂目标、进行规划、并调用外部工具来执行任务。然而，很多开发者在构建Agent时面临一个共同的困惑：ReAct、Plan-and-Execute、Reflection、Multi-Agent，这些架构模">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-08-06T08:18:57.000Z">
+<meta property="article:modified_time" content="2026-08-06T08:20:38.770Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="Agent架构,设计模式,Multi-Agent,P-R²-E框架,工程实践,AI开发">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://raw.githubusercontent.com/buyun14/KokomiPhoto/main/img/illust_100301994_20240520_125122.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/2024/05/04/%E6%B5%8B%E8%AF%95/%E4%B8%8D%E4%BA%91%E5%A4%B4%E5%83%8F.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">標籤</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Agent%E6%9E%B6%E6%9E%84-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-Multi-Agent-P-R%C2%B2-E%E6%A1%86%E6%9E%B6-%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5-AI%E5%BC%80%E5%8F%91/" rel="tag">Agent架构,设计模式,Multi-Agent,P-R²-E框架,工程实践,AI开发</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%BA%94%E7%94%A8/" rel="tag">云计算技术及应用</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D/" rel="tag">重中之重</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-如何用好AI：Agent架构篇——从需求分析到测试验证的全流程指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        如何用好AI：Agent架构篇——从需求分析到测试验证的全流程指南
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2026-08-06T08:18:57.000Z" itemprop="datePublished">2026-08-06</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    未分類 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            3.9k 詞 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Agent%E6%9E%B6%E6%9E%84-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-Multi-Agent-P-R%C2%B2-E%E6%A1%86%E6%9E%B6-%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5-AI%E5%BC%80%E5%8F%91/" rel="tag">Agent架构,设计模式,Multi-Agent,P-R²-E框架,工程实践,AI开发</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <blockquote>
+<p>好的Agent架构不是堆砌模式，而是让“规划—执行—反思”在正确的粒度上各司其职。</p>
+</blockquote>
+<h2 id="一、引言：Agent开发的核心困惑"><a href="#一、引言：Agent开发的核心困惑" class="headerlink" title="一、引言：Agent开发的核心困惑"></a>一、引言：Agent开发的核心困惑</h2><p>AI Agent正从“能聊”走向“能用”。它以一个LLM为“大脑”，能够理解复杂目标、进行规划、并调用外部工具来执行任务。然而，很多开发者在构建Agent时面临一个共同的困惑：<strong>ReAct、Plan-and-Execute、Reflection、Multi-Agent，这些架构模式到底是什么关系？我该怎么选、怎么组合？</strong></p>
+<p>本文试图回答这个问题。我将从一个完整软件工程流程的视角——需求分析、设计、实现、测试、验证——来梳理Agent架构的设计思路，并给出一个清晰的框架：<strong>P-R²-E（规划-双轨反思-执行）模型</strong>。</p>
+<h2 id="二、核心架构模式速览"><a href="#二、核心架构模式速览" class="headerlink" title="二、核心架构模式速览"></a>二、核心架构模式速览</h2><p>在深入之前，先简要回顾几个核心模式。</p>
+<h3 id="2-1-ReAct：推理与行动的循环"><a href="#2-1-ReAct：推理与行动的循环" class="headerlink" title="2.1 ReAct：推理与行动的循环"></a>2.1 ReAct：推理与行动的循环</h3><p>ReAct（Reasoning + Acting）是最基础的Agent模式。它将推理和行动交替进行：LLM先“思考”（Thought）当前状态，再“行动”（Action）调用工具，然后“观察”（Observation）结果，如此循环。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Thought → Action → Observation → (repeat) → Final Answer</span><br></pre></td></tr></table></figure>
+
+<p>ReAct的优势在于<strong>灵活</strong>——每一步都根据上一步的观察动态调整。但它的局限也很明显：每次只规划一步，缺乏全局视野。适合简单任务，如信息查询、单步工具调用。</p>
+<h3 id="2-2-Plan-and-Execute：规划与执行分离"><a href="#2-2-Plan-and-Execute：规划与执行分离" class="headerlink" title="2.2 Plan-and-Execute：规划与执行分离"></a>2.2 Plan-and-Execute：规划与执行分离</h3><p>Plan-and-Execute将“规划”和“执行”解耦为两个阶段。Planner先生成多步骤计划，Executor再按计划逐步执行。</p>
+<p>其核心优势在于<strong>全局视野</strong>——规划阶段就能看到全貌，避免“走一步看一步”的短视。但缺点是规划一旦定下就相对固化，对执行中的意外情况应变不足。</p>
+<h3 id="2-3-Reflection：自我反思与修正"><a href="#2-3-Reflection：自我反思与修正" class="headerlink" title="2.3 Reflection：自我反思与修正"></a>2.3 Reflection：自我反思与修正</h3><p>Reflection让Agent对自己的输出进行自我批评和改进。基础Reflection Agent就是“生成器+反思器”的循环：生成器起草，反思器批评，生成器根据反馈修订。</p>
+<p>Reflexion在此基础上更进一步，在日志中记录历史行为、假设和反思内容，让Agent从多次失败中汲取经验。</p>
+<h3 id="2-4-Multi-Agent：多角色协作"><a href="#2-4-Multi-Agent：多角色协作" class="headerlink" title="2.4 Multi-Agent：多角色协作"></a>2.4 Multi-Agent：多角色协作</h3><p>Multi-Agent系统由多个智能Agent组成，每个Agent承担特定角色，通过协作解决复杂任务。它不是一个独立的架构模式，而是<strong>组织多个Agent协作的拓扑方式</strong>。</p>
+<h2 id="三、P-R²-E：一个统一的架构框架"><a href="#三、P-R²-E：一个统一的架构框架" class="headerlink" title="三、P-R²-E：一个统一的架构框架"></a>三、P-R²-E：一个统一的架构框架</h2><p>有了以上基础，我们可以提出一个贯穿全流程的统一框架——<strong>P-R²-E（Plan -双轨Reflection - Execute）</strong> 。</p>
+<h3 id="3-1-核心思想：粒度决定模式"><a href="#3-1-核心思想：粒度决定模式" class="headerlink" title="3.1 核心思想：粒度决定模式"></a>3.1 核心思想：粒度决定模式</h3><p>ReAct和Plan-and-Execute不是“二选一”，而是<strong>在不同粒度上同时存在</strong>。</p>
+<ul>
+<li><strong>宏观ReAct（规划层）</strong> ：推理周期长，动作粒度粗。动作为“生成需求文档”“确定技术选型”“划分模块边界”。</li>
+<li><strong>微观ReAct（执行层）</strong> ：推理周期短，动作粒度细。动作为“编写这个函数”“调用这个API”“查询这条数据”。</li>
+</ul>
+<p>规划阶段本身就是一个ReAct过程——LLM反复思考、生成规划方案、评估方案、修正方案。执行阶段同样是一个ReAct过程——每执行一步都观察结果、调整下一步。</p>
+<p><strong>Plan-and-Execute的本质，就是用宏观ReAct产出蓝图，再用微观ReAct落实蓝图。</strong></p>
+<h3 id="3-2-双轨反思：两个质量闸门"><a href="#3-2-双轨反思：两个质量闸门" class="headerlink" title="3.2 双轨反思：两个质量闸门"></a>3.2 双轨反思：两个质量闸门</h3><p>Reflection作为“第四架构”，在P-R²-E中体现为两个独立的质量闸门：</p>
+<p><strong>规划期反思（战略反思）</strong> ：在动手之前，对规划方案进行对抗性评审。这就像建筑图纸的会审——在破土动工之前发现问题，成本最低。可以采用“魔鬼代言人”方式，让反思器从安全性、可扩展性、边界条件、依赖项等维度扫描规划。</p>
+<p><strong>执行期反思（战术反思）</strong> ：最简化的形式就是<strong>测试</strong>。单元测试验证逻辑正确性，集成测试验证模块间协作，端到端测试验证完整流程。测试失败就是最直接、最客观的“反思信号”——它告诉Agent：“你错了，需要调整。”</p>
+<h3 id="3-3-Multi-Agent的定位：贯穿流程的协作拓扑"><a href="#3-3-Multi-Agent的定位：贯穿流程的协作拓扑" class="headerlink" title="3.3 Multi-Agent的定位：贯穿流程的协作拓扑"></a>3.3 Multi-Agent的定位：贯穿流程的协作拓扑</h3><p>Multi-Agent<strong>不是第四架构，而是贯穿P-R²-E全程的“执行拓扑”</strong> 。它在不同阶段以不同形态出现：</p>
+<ul>
+<li><strong>规划期的头脑风暴拓扑</strong>：架构师Agent、资深开发Agent、测试专家Agent并行评审规划。</li>
+<li><strong>执行期的流水线拓扑</strong>：起草Agent写代码 → 测试Agent写测试 → 审查Agent运行验证。</li>
+<li><strong>纠偏期的仲裁拓扑</strong>：执行失败且微观ReAct无法修复时，主管Agent介入，触发重规划。</li>
+</ul>
+<h2 id="四、全流程应用指南"><a href="#四、全流程应用指南" class="headerlink" title="四、全流程应用指南"></a>四、全流程应用指南</h2><h3 id="4-1-需求分析阶段：宏观ReAct-规划期反思"><a href="#4-1-需求分析阶段：宏观ReAct-规划期反思" class="headerlink" title="4.1 需求分析阶段：宏观ReAct + 规划期反思"></a>4.1 需求分析阶段：宏观ReAct + 规划期反思</h3><p><strong>目标</strong>：将模糊的用户需求转化为结构化的任务蓝图。</p>
+<p><strong>做法</strong>：</p>
+<ol>
+<li><strong>需求理解（宏观ReAct的“思考”）</strong> ：LLM分析用户输入，识别隐含假设和约束条件。</li>
+<li><strong>方案生成（宏观ReAct的“行动”）</strong> ：生成初步的任务规划和执行方案。</li>
+<li><strong>规划期反思</strong>：调用反思器扫描方案漏洞——边界条件、资源依赖、风险点。</li>
+<li><strong>迭代修正</strong>：根据反思结果修正方案，直到通过评审。</li>
+</ol>
+<p><strong>产出</strong>：一份带验收标准的结构化执行蓝图。</p>
+<h3 id="4-2-设计阶段：任务分解-Multi-Agent拓扑设计"><a href="#4-2-设计阶段：任务分解-Multi-Agent拓扑设计" class="headerlink" title="4.2 设计阶段：任务分解 + Multi-Agent拓扑设计"></a>4.2 设计阶段：任务分解 + Multi-Agent拓扑设计</h3><p><strong>目标</strong>：将蓝图拆解为可并行执行的子任务，并设计Agent间的协作方式。</p>
+<p><strong>做法</strong>：</p>
+<ol>
+<li><strong>任务分解</strong>：将大任务拆解为独立的子任务。</li>
+<li><strong>角色分配</strong>：为每个子任务分配专门的执行Agent——搜索Agent、代码Agent、报告Agent等。</li>
+<li><strong>协作拓扑设计</strong>：确定Agent间的通信方式和协作流程——串行、并行、还是条件分支。</li>
+</ol>
+<h3 id="4-3-实现阶段：微观ReAct-执行期反思"><a href="#4-3-实现阶段：微观ReAct-执行期反思" class="headerlink" title="4.3 实现阶段：微观ReAct + 执行期反思"></a>4.3 实现阶段：微观ReAct + 执行期反思</h3><p><strong>目标</strong>：按蓝图落实每个子任务，并通过持续反思保证质量。</p>
+<p><strong>做法</strong>：</p>
+<ol>
+<li><strong>微观ReAct循环</strong>：每个执行Agent针对自己的子任务，循环执行“思考→行动→观察”。</li>
+<li><strong>执行期反思（测试驱动）</strong> ：每完成一个功能模块，立即运行对应的测试用例。</li>
+<li><strong>红绿重构</strong>：测试通过则提交；测试失败则触发微观ReAct修正代码。</li>
+</ol>
+<h3 id="4-4-测试与验证阶段：系统性验证-跨层传导"><a href="#4-4-测试与验证阶段：系统性验证-跨层传导" class="headerlink" title="4.4 测试与验证阶段：系统性验证 + 跨层传导"></a>4.4 测试与验证阶段：系统性验证 + 跨层传导</h3><p><strong>目标</strong>：验证整体功能正确性，并建立“失败向上传导”机制。</p>
+<p><strong>做法</strong>：</p>
+<ol>
+<li><strong>分层测试</strong>：单元测试（逻辑正确性）→ 集成测试（模块协作）→ 端到端测试（完整流程）。</li>
+<li><strong>跨层传导机制</strong>：如果微观ReAct重试N次仍然失败，则<strong>向上抛出异常</strong>，触发宏观层面的重规划，而非在同一层无限死循环。</li>
+<li><strong>经验沉淀</strong>：将失败案例和修正方案存入记忆库，供未来类似任务参考。</li>
+</ol>
+<h2 id="五、通俗实例：一个旅行规划Agent"><a href="#五、通俗实例：一个旅行规划Agent" class="headerlink" title="五、通俗实例：一个旅行规划Agent"></a>五、通俗实例：一个旅行规划Agent</h2><p>让我们用一个具体的例子来理解上述框架。</p>
+<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>用户输入：“帮我规划一个从上海出发、去北京玩3天的行程，预算5000元，想去故宫和长城。”</p>
+<h3 id="阶段一：需求分析（宏观ReAct-规划期反思）"><a href="#阶段一：需求分析（宏观ReAct-规划期反思）" class="headerlink" title="阶段一：需求分析（宏观ReAct + 规划期反思）"></a>阶段一：需求分析（宏观ReAct + 规划期反思）</h3><p><strong>宏观ReAct思考</strong>：“用户要去北京玩3天，预算5000，必去故宫和长城。我需要考虑交通、住宿、门票、餐饮、市内交通等维度。但用户没说具体日期、住宿偏好、饮食禁忌……”</p>
+<p><strong>宏观ReAct行动</strong>：生成初版规划方案——</p>
+<ol>
+<li>查询上海-北京往返交通（高铁&#x2F;飞机）</li>
+<li>查询故宫、长城门票及开放时间</li>
+<li>推荐2-3家预算内酒店</li>
+<li>规划3天行程（D1故宫+天安门，D2长城，D3自由活动）</li>
+<li>计算总预算</li>
+</ol>
+<p><strong>规划期反思</strong>（魔鬼代言人）：“方案没考虑天气——长城下雨怎么办？没考虑周一故宫闭馆？没考虑用户是否愿意早起赶高铁？没考虑景点间交通时间？”</p>
+<p><strong>修正后方案</strong>：增加天气查询、日期校验、交通时间评估、备选方案（雨天室内景点）。</p>
+<h3 id="阶段二：设计（任务分解-Multi-Agent拓扑）"><a href="#阶段二：设计（任务分解-Multi-Agent拓扑）" class="headerlink" title="阶段二：设计（任务分解 + Multi-Agent拓扑）"></a>阶段二：设计（任务分解 + Multi-Agent拓扑）</h3><p>将任务分解给多个专业Agent——</p>
+<ul>
+<li><strong>搜索Agent</strong>：查询高铁&#x2F;机票价格、酒店信息</li>
+<li><strong>景点Agent</strong>：查询故宫、长城门票、开放时间、游览建议</li>
+<li><strong>行程Agent</strong>：综合信息生成每日行程</li>
+<li><strong>预算Agent</strong>：逐项计算并控制总预算</li>
+<li><strong>反思Agent</strong>：全程监控方案合理性</li>
+</ul>
+<h3 id="阶段三：实现（微观ReAct-执行期反思）"><a href="#阶段三：实现（微观ReAct-执行期反思）" class="headerlink" title="阶段三：实现（微观ReAct + 执行期反思）"></a>阶段三：实现（微观ReAct + 执行期反思）</h3><p><strong>搜索Agent的微观ReAct</strong>：</p>
+<ul>
+<li>Thought：“需要查询上海到北京的高铁时刻和价格。”</li>
+<li>Action：调用12306 API查询</li>
+<li>Observation：“返回10个车次，价格从553到933不等……”</li>
+<li>Thought：“用户预算5000，建议选择性价比高的G字头，票价约553。”</li>
+<li>Action：筛选并记录推荐车次</li>
+</ul>
+<p><strong>执行期反思（测试）</strong> ：</p>
+<ul>
+<li>单元测试：“查询结果是否包含日期、车次、价格、时长？”</li>
+<li>集成测试：“行程Agent能否正确读取搜索Agent的输出？”</li>
+<li>若测试失败 → 微观ReAct修正 → 重试</li>
+</ul>
+<h3 id="阶段四：测试与验证（系统性验证-跨层传导）"><a href="#阶段四：测试与验证（系统性验证-跨层传导）" class="headerlink" title="阶段四：测试与验证（系统性验证 + 跨层传导）"></a>阶段四：测试与验证（系统性验证 + 跨层传导）</h3><p><strong>端到端测试</strong>：输入用户需求，检查输出的3天行程是否——</p>
+<ul>
+<li>包含故宫和长城</li>
+<li>总预算≤5000元</li>
+<li>交通时间合理（如高铁不早于6:00、不晚于22:00）</li>
+<li>景点开放时间匹配</li>
+</ul>
+<p><strong>跨层传导</strong>：假设长城门票查询失败（API超时），微观ReAct重试3次仍失败→<strong>向上传导</strong>到宏观层→规划期反思触发→方案增加备选：推荐慕田峪长城（人少、体验好）或调整行程顺序。</p>
+<p>最终，Agent输出一份完整的3天北京旅行方案，包含每日行程、交通建议、酒店推荐、预算明细和备选方案。</p>
+<h2 id="六、总结：核心原则"><a href="#六、总结：核心原则" class="headerlink" title="六、总结：核心原则"></a>六、总结：核心原则</h2><ol>
+<li><strong>粒度分层</strong>：规划是宏观ReAct，执行是微观ReAct，各司其职。</li>
+<li><strong>反思即质量</strong>：规划期用对抗性评审，执行期用测试——反思是贯穿全程的质量闸门。</li>
+<li><strong>Multi-Agent是工具而非目的</strong>：它是承载上述流程的“角色演员表”，核心在于协作拓扑的设计。</li>
+<li><strong>失败向上传导</strong>：执行层解决不了的问题，交给规划层重新思考，避免死循环。</li>
+<li><strong>经验可积累</strong>：将失败案例和修正方案存入记忆，让Agent越用越聪明。</li>
+</ol>
+<p>好的Agent架构，不是堆砌模式，而是让每一种模式在正确的粒度、正确的阶段发挥应有的作用。</p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2024/12/22/Docker/"
+      title="Docker"
+     >
+
+    <p class="title-text">
+      
+        Docker
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title">留言 </div>
+    </div>
+    <div id="vcomments"></div>
+  </div>
+  <script>
+      new Valine({"enable":true,"appId":"AVo4oPTEvfsleHngLc8BZ535-gzGzoHsz","appKey":"gSa0juG3A4yPHmR3nL5ENl3i","placeholder":"Just go go","pageSize":10,"highlight":true,"serverURLs":null,"el":"#vcomments"});
+  </script>
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2026 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

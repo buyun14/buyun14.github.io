@@ -1,0 +1,268 @@
+/* ============================================================
+   博客自定义样式（覆盖 Vivia 主题默认样式）
+   通过 scripts/inject-custom.js 注入到所有页面
+   定调：浅色纸感 · 单主色 · 克制动效 · 信息可扫读
+   ============================================================ */
+
+/* ---------- 字体与基础 ---------- */
+body {
+  font-family: "Roboto", "Noto Sans SC", "PingFang SC", "Microsoft YaHei",
+    "Segoe UI", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* 极淡冷色纸感背景（不抢内容） */
+html[theme="light"] body,
+html:not([theme]) body {
+  background-color: #f4f6f8;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 10% -10%, rgba(120, 160, 190, 0.07), transparent 55%),
+    radial-gradient(ellipse 90% 60% at 100% 0%, rgba(140, 170, 195, 0.05), transparent 50%);
+}
+
+/* ---------- Banner 首次淡入 ---------- */
+#banner {
+  animation: banner-fade-in 0.7s ease-out both;
+}
+
+@keyframes banner-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- 首页文章卡：布局与悬停 ---------- */
+#content-body > .article,
+.archives .article {
+  transition:
+    transform 0.22s ease-out,
+    box-shadow 0.22s ease-out;
+}
+
+#content-body > .article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(40, 70, 100, 0.08);
+}
+
+.article-inner {
+  padding-bottom: 0.15em;
+}
+
+.article-header {
+  padding-bottom: 0.15em;
+}
+
+.meta-info-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15em 0.35em;
+  line-height: 1.55;
+  opacity: 0.92;
+}
+
+.truncate-text {
+  line-height: 1.8;
+  margin-top: 0.75em;
+  margin-bottom: 1em;
+}
+
+/* 无封面右侧面板：同色系低饱和渐变占位 */
+.right-panel.non-pic {
+  min-width: 88px;
+  background:
+    linear-gradient(145deg, rgba(130, 165, 195, 0.18) 0%, rgba(170, 195, 215, 0.1) 45%, rgba(210, 225, 235, 0.22) 100%),
+    var(--enter-btn-bg);
+}
+
+.right-panel.non-pic:hover {
+  background:
+    linear-gradient(145deg, rgba(110, 150, 185, 0.28) 0%, rgba(150, 180, 205, 0.16) 50%, rgba(200, 220, 235, 0.28) 100%),
+    var(--enter-btn-hover);
+}
+
+.right-panel.with-pic {
+  min-width: 32%;
+}
+
+/* ---------- 入场动画初始态（由 ui-motion.js 触发） ---------- */
+.article.motion-ready,
+.widget-wrap.motion-ready,
+#banner.motion-ready {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.article.motion-in,
+.widget-wrap.motion-in,
+#banner.motion-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.45s ease-out,
+    transform 0.45s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  #banner,
+  .article.motion-ready,
+  .widget-wrap.motion-ready,
+  #banner.motion-ready,
+  .article.motion-in,
+  .widget-wrap.motion-in,
+  #banner.motion-in,
+  #content-body > .article {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ---------- 侧栏：区块间距与层级 ---------- */
+#sidebar .widget-wrap {
+  margin-bottom: 1.1em;
+}
+
+#sidebar .widget-title,
+#sidebar .main-title {
+  letter-spacing: 0.02em;
+  font-weight: 600;
+}
+
+#sidebar .info-card {
+  transition: box-shadow 0.22s ease-out;
+}
+
+#sidebar .info-card:hover {
+  box-shadow: 0 6px 18px rgba(40, 70, 100, 0.06);
+}
+
+#sidebar .link-btn {
+  transition: color 0.2s ease-out, transform 0.2s ease-out;
+}
+
+#sidebar .link-btn:hover {
+  transform: translateY(-1px);
+}
+
+#sidebar .category-list-link,
+#sidebar .tag-list-link,
+#sidebar a {
+  transition: color 0.2s ease-out;
+}
+
+/* ---------- 文章正文排版 ---------- */
+.article-entry {
+  font-size: 16.5px;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+}
+
+.article-entry p {
+  margin: 1.25em 0;
+}
+
+.article-entry h2 {
+  font-size: 1.45em;
+  margin-top: 2em;
+  padding-bottom: 0.35em;
+  border-bottom: 2px solid var(--neut-L10);
+}
+
+.article-entry h3 {
+  font-size: 1.2em;
+  margin-top: 1.8em;
+}
+
+.article-entry h2::before,
+.article-entry h3::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 0.95em;
+  margin-right: 10px;
+  border-radius: 2px;
+  background: var(--primary);
+  vertical-align: -0.08em;
+}
+
+.article-entry blockquote {
+  border-left: 3px solid var(--primary);
+  background: var(--blockquote-bg);
+  padding: 0.8em 1.2em;
+}
+
+.article-entry code {
+  font-family: "JetBrains Mono", "Source Code Pro", Consolas, "Courier New",
+    monospace;
+  font-size: 0.9em;
+  background: var(--article-code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+}
+
+.article-entry a {
+  text-decoration: underline;
+  text-decoration-color: var(--neut-L30);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease-out;
+}
+
+.article-entry a:hover {
+  text-decoration-color: var(--primary);
+}
+
+.article-entry img,
+.article-entry video {
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  margin: 1.5em auto;
+}
+
+.article-entry table {
+  font-size: 0.95em;
+}
+
+.article-entry th {
+  background: var(--btn-bg);
+}
+
+.article-entry td,
+.article-entry th {
+  padding: 0.6em 0.9em;
+  border-bottom: 1px solid var(--neut-L10);
+}
+
+/* ---------- 留言页轻提示 ---------- */
+.page-comments .article-entry > p:first-child {
+  color: var(--neut-L50, #667);
+  margin-bottom: 0.5em;
+}
+
+/* ---------- 移动端 ---------- */
+@media (max-width: 767px) {
+  .article-entry {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  #content-body > .article:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .meta-info-bar {
+    font-size: 0.92em;
+  }
+}

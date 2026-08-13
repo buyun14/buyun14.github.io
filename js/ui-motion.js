@@ -25,6 +25,8 @@
     return;
   }
 
+  // threshold 必须用 0：超长文章（如研究长文）在视口内可见比例
+  // 可能永远达不到 0.08，会导致一直停在 motion-ready（opacity:0）而“消失”。
   var io = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
@@ -35,7 +37,7 @@
         io.unobserve(el);
       });
     },
-    { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+    { rootMargin: "0px 0px -8% 0px", threshold: 0 }
   );
 
   targets.forEach(function (el) {

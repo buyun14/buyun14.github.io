@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="false" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>如何用好AI：上下文工程篇 | Buyun&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="上下文工程（Context Engineering）研究草稿 草稿状态：本文是穷尽式研究的第一稿，追求”面面俱到”，不求精炼。来源构成：菜鸟教程《Agent 上下文工程》原文 + Anthropic《Effective context engineering for AI agents》+ LangChain《Context Engineering》+ OWASP GenAI Security +">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何用好AI：上下文工程篇">
+<meta property="og:url" content="https://buyun14.github.io/2026/08/14/%E5%A6%82%E4%BD%95%E7%94%A8%E5%A5%BDAI%EF%BC%9A%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E7%AF%87/index.html">
+<meta property="og:site_name" content="Buyun&#39;s Blog">
+<meta property="og:description" content="上下文工程（Context Engineering）研究草稿 草稿状态：本文是穷尽式研究的第一稿，追求”面面俱到”，不求精炼。来源构成：菜鸟教程《Agent 上下文工程》原文 + Anthropic《Effective context engineering for AI agents》+ LangChain《Context Engineering》+ OWASP GenAI Security +">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-08-13T17:48:45.000Z">
+<meta property="article:modified_time" content="2026-08-13T17:57:30.346Z">
+<meta property="article:author" content="buyun">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="上下文工程">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Buyun's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/custom.css"><script>(function(){if(!localStorage.getItem("theme")){document.documentElement.setAttribute("theme","light");}})();</script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Buyun's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">首页</a>
+    
+      <a class="main-nav-link" href="/archives">归档</a>
+    
+      <a class="main-nav-link" href="/about">关于</a>
+    
+      <a class="main-nav-link" href="/comments/">留言</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS 订阅">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">首页</a>
+    
+      <a class="nav-dropdown-link" href="/archives">归档</a>
+    
+      <a class="nav-dropdown-link" href="/about">关于</a>
+    
+      <a class="nav-dropdown-link" href="/comments/">留言</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS 订阅">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/images/avatar.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">不云 </div>
+      <div class="dot"></div>
+      <div class="subtitle">因为什么都不懂，所以想多试多学。 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/profiles/76561199351730270/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/buyun14" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://buyun14.mysxl.cn/" title="QQ"><i class="fa-brands fa-qq"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">分类</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/">
+                计算机组成
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4%E4%B8%8E%E6%8A%98%E8%85%BE/">
+                运维与折腾
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">
+                数据库
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+                计算机网络
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/AI/">
+                AI
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">
+                笔记
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+                操作系统
+                <div class="category-count">5</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">标签</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/AI%E5%BC%80%E5%8F%91/" rel="tag">AI开发</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Agent%E6%9E%B6%E6%9E%84/" rel="tag">Agent架构</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Multi-Agent/" rel="tag">Multi-Agent</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/P-R%C2%B2-E%E6%A1%86%E6%9E%B6/" rel="tag">P-R²-E框架</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/WPS/" rel="tag">WPS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B/" rel="tag">上下文工程</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97%E6%8A%80%E6%9C%AF%E5%8F%8A%E5%BA%94%E7%94%A8/" rel="tag">云计算技术及应用</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E4%BB%A3%E7%90%86/" rel="tag">代理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E5%91%A8%E6%9C%9FCPU/" rel="tag">单周期CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B1%80%E5%9F%9F%E7%BD%91/" rel="tag">局域网</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BFCPU/" rel="tag">流水线CPU</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%87%AA%E5%90%AF%E5%8A%A8/" rel="tag">自启动</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86/" rel="tag">计算机网络原理</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/" rel="tag">迁移学习</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D/" rel="tag">重中之重</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">最新文章</h3>
+      <ul>
+        
+          <a class="recent-link" href="/2026/08/14/%E5%A6%82%E4%BD%95%E7%94%A8%E5%A5%BDAI%EF%BC%9A%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%E7%AF%87/" title="如何用好AI：上下文工程篇" >
+            <div class="recent-link-text">
+              如何用好AI：上下文工程篇
+            </div>
+          </a>
+        
+          <a class="recent-link" href="/2026/08/14/WPS%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8%E6%8E%92%E6%9F%A5%E4%B8%8E%E6%A0%B9%E6%B2%BB/" title="WPS开机自启动排查与根治" >
+            <div class="recent-link-text">
+              WPS开机自启动排查与根治
+            </div>
+          </a>
+        
+          <a class="recent-link" href="/2026/08/06/%E5%A6%82%E4%BD%95%E7%94%A8%E5%A5%BDAI%EF%BC%9AAgent%E6%9E%B6%E6%9E%84%E7%AF%87%E2%80%94%E2%80%94%E4%BB%8E%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E5%88%B0%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81%E7%9A%84%E5%85%A8%E6%B5%81%E7%A8%8B%E6%8C%87%E5%8D%97/" title="如何用好AI：Agent架构篇——从需求分析到测试验证的全流程指南" >
+            <div class="recent-link-text">
+              如何用好AI：Agent架构篇——从需求分析到测试验证的全流程指南
+            </div>
+          </a>
+        
+          <a class="recent-link" href="/2024/12/22/Docker/" title="Docker" >
+            <div class="recent-link-text">
+              Docker
+            </div>
+          </a>
+        
+          <a class="recent-link" href="/2024/12/17/web%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/" title="web渗透学习" >
+            <div class="recent-link-text">
+              web渗透学习
+            </div>
+          </a>
+        
+          <a class="recent-link" href="/2024/12/06/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E5%9B%9B%E8%A1%A5%E5%85%85%E8%87%AA%E7%94%A8/" title="计网实验四补充自用" >
+            <div class="recent-link-text">
+              计网实验四补充自用
+            </div>
+          </a>
+        
+          <a class="recent-link" href="/2024/12/02/%E8%AE%A1%E7%BD%91%E5%AE%9E%E9%AA%8C%E5%9B%9B/" title="计网实验四" >
+            <div class="recent-link-text">
+              计网实验四
+            </div>
+          </a>
+        
+          <a class="recent-link" href="/2024/12/01/%E6%8F%90%E9%97%AE%E7%9A%84%E8%89%BA%E6%9C%AF/" title="提问的艺术" >
+            <div class="recent-link-text">
+              提问的艺术
+            </div>
+          </a>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-如何用好AI：上下文工程篇" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        如何用好AI：上下文工程篇
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2026-08-13T17:48:45.000Z" itemprop="datePublished">2026-08-14</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/AI/">AI</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            13k 词 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B/" rel="tag">上下文工程</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="上下文工程（Context-Engineering）研究草稿"><a href="#上下文工程（Context-Engineering）研究草稿" class="headerlink" title="上下文工程（Context Engineering）研究草稿"></a>上下文工程（Context Engineering）研究草稿</h1><blockquote>
+<p><strong>草稿状态</strong>：本文是穷尽式研究的第一稿，追求”面面俱到”，不求精炼。<br>来源构成：菜鸟教程《Agent 上下文工程》原文 + Anthropic《Effective context engineering for AI agents》+ LangChain《Context Engineering》+ OWASP GenAI Security + arXiv RAG 综述 + 本地 RAG 学习笔记。<br>标记约定：<code>[已验证]</code> &#x3D; 直接抓取到原文；<code>[业界认知]</code> &#x3D; 公开讨论中广泛引用但本次未抓到一手原文；<code>[待核实]</code> &#x3D; 数字&#x2F;细节需要后续确认。后续迭代方向：删减冗余、统一叙事线、补充一手来源核实。</p>
+</blockquote>
+<hr>
+<h2 id="0-一句话摘要"><a href="#0-一句话摘要" class="headerlink" title="0. 一句话摘要"></a>0. 一句话摘要</h2><p>上下文工程（Context Engineering）是<strong>在有限的上下文窗口内，为每一次模型调用策展和维护”恰好够用、信号最高”的 token 集合</strong>的技术实践。它是把提示词、记忆、检索、工具、历史、多智能体协作全部纳入视野的元学科——正如 Karpathy 所言，是”用恰到好处的信息填满上下文窗口、为下一步推理做准备的精巧艺术与科学”。</p>
+<hr>
+<h2 id="1-起源与定位：为什么上下文工程成为一门独立学科"><a href="#1-起源与定位：为什么上下文工程成为一门独立学科" class="headerlink" title="1. 起源与定位：为什么上下文工程成为一门独立学科"></a>1. 起源与定位：为什么上下文工程成为一门独立学科</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h3><ul>
+<li><strong>Anthropic 的定义</strong> <code>[已验证]</code>：context 是采样时喂给 LLM 的 token 集合；context engineering 是”为生成目标行为而策展和维护最优 token 集合”的策略集，覆盖 system instructions、tools、MCP、外部数据、消息历史等全部上下文状态。</li>
+<li><strong>菜鸟教程的定义</strong> <code>[已验证]</code>：系统化设计和优化传递给 AI Agent 的上下文信息的技术实践，目标是让 Agent 在有限上下文窗口内获得最有效的信息，从而提升任务执行的准确性、效率和可靠性。</li>
+<li><strong>Karpathy 的定义</strong> <code>[已验证，经 LangChain 转述]</code>：LLM 如 CPU，context window 如 RAM——容量有限，操作系统式的策展即 context engineering。</li>
+<li><strong>Cognition 的断言</strong> <code>[已验证，经 LangChain 转述]</code>：context engineering 是构建 AI agent 工程师的”第一要务”。</li>
+</ul>
+<h3 id="1-2-Prompt-Engineering-→-Context-Engineering：不是替代，是超集"><a href="#1-2-Prompt-Engineering-→-Context-Engineering：不是替代，是超集" class="headerlink" title="1.2 Prompt Engineering → Context Engineering：不是替代，是超集"></a>1.2 Prompt Engineering → Context Engineering：不是替代，是超集</h3><ul>
+<li>prompt engineering 关注”如何写好提示词”（尤其是 system prompt），是<strong>离散的、一次性的写作</strong>。</li>
+<li>context engineering 关注”每次推理前策展整个上下文状态”，是<strong>迭代式的、持续发生的过程</strong>；prompt 只是其中的一块。</li>
+<li>Anthropic 视 context engineering 为 prompt engineering 的<strong>自然演进</strong> <code>[已验证]</code>。</li>
+<li>菜鸟教程的表述 <code>[已验证]</code>：上下文工程不是一次性的提示词编写，而是贯穿 Agent 系统开发、测试和运维全生命周期的持续优化过程。</li>
+</ul>
+<h3 id="1-3-为什么它突然变得重要（三个驱动力）"><a href="#1-3-为什么它突然变得重要（三个驱动力）" class="headerlink" title="1.3 为什么它突然变得重要（三个驱动力）"></a>1.3 为什么它突然变得重要（三个驱动力）</h3><ol>
+<li><strong>Agent 在循环中自行产生海量数据</strong>：每一轮工具调用、每一次观察都会成为下一轮上下文，上下文在无人干预下指数膨胀——必须系统化管理 <code>[已验证，Anthropic]</code>。</li>
+<li><strong>上下文本身不可靠</strong>：长上下文中存在性能衰减（见第 3 节 context rot），塞得越多不一定越好。</li>
+<li><strong>成本与延迟的现实约束</strong>：token 是钱，延迟是体验，缓存与压缩直接决定经济性。</li>
+</ol>
+<h3 id="1-4-核心问题"><a href="#1-4-核心问题" class="headerlink" title="1.4 核心问题"></a>1.4 核心问题</h3><p>整个学科可以被压缩成一个问题：<strong>在这轮调用中，Agent 最需要知道什么？</strong> <code>[已验证，菜鸟教程]</code></p>
+<hr>
+<h2 id="2-上下文是什么：构成全景"><a href="#2-上下文是什么：构成全景" class="headerlink" title="2. 上下文是什么：构成全景"></a>2. 上下文是什么：构成全景</h2><h3 id="2-1-五层基本构成-已验证，菜鸟教程"><a href="#2-1-五层基本构成-已验证，菜鸟教程" class="headerlink" title="2.1 五层基本构成 [已验证，菜鸟教程]"></a>2.1 五层基本构成 <code>[已验证，菜鸟教程]</code></h3><table>
+<thead>
+<tr>
+<th>层次</th>
+<th>内容</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统提示（System Prompt）</td>
+<td>角色定义、行为规则、输出格式要求</td>
+<td>每次调用都会携带，相对稳定</td>
+</tr>
+<tr>
+<td>工具定义（Tool Definitions）</td>
+<td>可用工具的名称、参数和功能描述</td>
+<td>占用大量 token，需要精简</td>
+</tr>
+<tr>
+<td>历史记录（History）</td>
+<td>当前会话的对话和工具调用记录</td>
+<td>持续增长，需要截断或摘要策略</td>
+</tr>
+<tr>
+<td>检索上下文（Retrieved Context）</td>
+<td>从外部知识库或代码库中检索的内容</td>
+<td>按需注入，需要相关性排序</td>
+</tr>
+<tr>
+<td>用户输入（User Input）</td>
+<td>用户当前的指令或问题</td>
+<td>不可控，但可以通过澄清来优化</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-更广的视角：凡是进入窗口的都是上下文"><a href="#2-2-更广的视角：凡是进入窗口的都是上下文" class="headerlink" title="2.2 更广的视角：凡是进入窗口的都是上下文"></a>2.2 更广的视角：凡是进入窗口的都是上下文</h3><p>用户的原始理解 <code>[用户笔记]</code>：提示词、外部记忆、工具索引、Agent&#x2F;对话逐步迭代中映入的历史上下文、Skill、知识库的检索返回、联网搜索结果的加入……（还有更多没提到的）都是上下文工程的范畴。</p>
+<p>这个视角很重要：<strong>上下文工程的对象不是”提示词”这一个东西，而是所有被拼进窗口的信息流</strong>。包括：记忆系统的召回结果、子 Agent 的回传摘要、MCP 工具返回的数据、图片等多模态输入、代码库索引片段。</p>
+<h3 id="2-3-静态-vs-动态：两条完全不同的优化路线-前稿提炼"><a href="#2-3-静态-vs-动态：两条完全不同的优化路线-前稿提炼" class="headerlink" title="2.3 静态 vs 动态：两条完全不同的优化路线 [前稿提炼]"></a>2.3 静态 vs 动态：两条完全不同的优化路线 <code>[前稿提炼]</code></h3><ul>
+<li><strong>静态上下文</strong>（系统提示、工具定义、固定规则文件）：每轮调用都携带、内容相对固定。优化方向 &#x3D; “打磨到最精简有效”，一次性做好、长期复用。</li>
+<li><strong>动态上下文</strong>（历史记录、检索结果、用户输入、记忆召回）：每轮变化、随任务膨胀。优化方向 &#x3D; “按需注入、随时可缩”，靠闸门动态调节。</li>
+</ul>
+<p>这一划分贯穿全文：第 5 节每一层的工程化手段，本质都在处理”静态的怎么精”或”动态的怎么控”。</p>
+<hr>
+<h2 id="3-为什么上下文是稀缺资源：物理与经验基础"><a href="#3-为什么上下文是稀缺资源：物理与经验基础" class="headerlink" title="3. 为什么上下文是稀缺资源：物理与经验基础"></a>3. 为什么上下文是稀缺资源：物理与经验基础</h2><p>理解上下文工程，先要理解”为什么不能简单地给大窗口”。</p>
+<h3 id="3-1-注意力预算（Attention-Budget）-已验证，Anthropic"><a href="#3-1-注意力预算（Attention-Budget）-已验证，Anthropic" class="headerlink" title="3.1 注意力预算（Attention Budget）[已验证，Anthropic]"></a>3.1 注意力预算（Attention Budget）<code>[已验证，Anthropic]</code></h3><p>Transformer 的注意力是 <strong>n² 复杂度</strong>：序列越长，每个 token 与其他所有 token 的注意力计算越贵。长上下文不仅是成本问题，更是<strong>注意力稀释</strong>问题——关键信息淹没在无关 token 中。</p>
+<h3 id="3-2-Context-Rot：长上下文的性能衰减-已验证，Anthropic-引-Chroma-研究"><a href="#3-2-Context-Rot：长上下文的性能衰减-已验证，Anthropic-引-Chroma-研究" class="headerlink" title="3.2 Context Rot：长上下文的性能衰减 [已验证，Anthropic 引 Chroma 研究]"></a>3.2 Context Rot：长上下文的性能衰减 <code>[已验证，Anthropic 引 Chroma 研究]</code></h3><p>Chroma 的研究发现：<strong>上下文越长，模型的召回能力越差</strong>。token 数量增加时，模型对早期关键信息的利用能力呈”梯度衰减”而非硬性悬崖——没有一条明确的”窗口满了就崩”的线，而是缓慢、持续的退化。</p>
+<h3 id="3-3-训练分布偏差-已验证，Anthropic"><a href="#3-3-训练分布偏差-已验证，Anthropic" class="headerlink" title="3.3 训练分布偏差 [已验证，Anthropic]"></a>3.3 训练分布偏差 <code>[已验证，Anthropic]</code></h3><p>训练数据以短序列为主，模型在长序列上的注意力参数没有得到充分训练——长上下文的”用不好”是模型本身的先天不足，不是工程能完全弥补的。</p>
+<h3 id="3-4-四种失败模式-已验证，经-LangChain-转述-Drew-Breunig"><a href="#3-4-四种失败模式-已验证，经-LangChain-转述-Drew-Breunig" class="headerlink" title="3.4 四种失败模式 [已验证，经 LangChain 转述 Drew Breunig]"></a>3.4 四种失败模式 <code>[已验证，经 LangChain 转述 Drew Breunig]</code></h3><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>含义</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Context Poisoning（投毒）</strong></td>
+<td>幻觉或恶意内容混入上下文</td>
+<td>检索结果里混入了错误代码片段</td>
+</tr>
+<tr>
+<td><strong>Distraction（干扰）</strong></td>
+<td>上下文淹没关键信息</td>
+<td>塞入 50 个文件，关键文件被忽视</td>
+</tr>
+<tr>
+<td><strong>Confusion（混淆）</strong></td>
+<td>冗余上下文干扰理解</td>
+<td>同一规则出现在两处且措辞不同</td>
+</tr>
+<tr>
+<td><strong>Clash（冲突）</strong></td>
+<td>上下文之间互相矛盾</td>
+<td>系统提示说”优先安全”，工具描述暗示可以绕过</td>
+</tr>
+</tbody></table>
+<h3 id="3-5-推论"><a href="#3-5-推论" class="headerlink" title="3.5 推论"></a>3.5 推论</h3><blockquote>
+<p><strong>上下文窗口不是越大越好。</strong> 菜鸟教程 <code>[已验证]</code> 与 Anthropic <code>[已验证]</code> 在同一结论上汇合：过多的上下文稀释注意力、增加成本、引入更多失败模式。上下文工程的第一性原理由此确立——<strong>每一条进入窗口的信息，都必须有明确的 ROI</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="4-方法论全景：Write-Select-Compress-Isolate-四大策略"><a href="#4-方法论全景：Write-Select-Compress-Isolate-四大策略" class="headerlink" title="4. 方法论全景：Write &#x2F; Select &#x2F; Compress &#x2F; Isolate 四大策略"></a>4. 方法论全景：Write &#x2F; Select &#x2F; Compress &#x2F; Isolate 四大策略</h2><p>LangChain 的框架 <code>[已验证]</code> 是目前最清晰的方法论总结，把一切上下文操作归纳为四个动作：</p>
+<h3 id="4-1-Write：写出窗口外"><a href="#4-1-Write：写出窗口外" class="headerlink" title="4.1 Write：写出窗口外"></a>4.1 Write：写出窗口外</h3><p>把不该留在窗口里的信息<strong>写到外部</strong>，需要时再取回。</p>
+<ul>
+<li><strong>Scratchpad &#x2F; 笔记</strong>：工具调用时写文件，或写进运行时 state 字段；Anthropic 多智能体研究者把计划写入 Memory 防止截断丢失 <code>[已验证]</code>。</li>
+<li><strong>结构化笔记（agentic memory）</strong>：Anthropic 的 Claude 玩 Pokémon 案例——agent 自发写地图、目标计数、战斗策略笔记，跨上下文重置后靠读笔记延续数小时策略，完全不依赖提示词设计 <code>[已验证]</code>。</li>
+<li><strong>长期记忆文件</strong>：user profile、rules、CLAUDE.md。</li>
+</ul>
+<h3 id="4-2-Select：选入窗口内"><a href="#4-2-Select：选入窗口内" class="headerlink" title="4.2 Select：选入窗口内"></a>4.2 Select：选入窗口内</h3><p>决定”哪些信息值得占用窗口”——这是上下文工程最核心的动作。</p>
+<ul>
+<li>检索（RAG）：见 5.4。</li>
+<li>记忆选择：从长期记忆中召回相关片段，而非全部。</li>
+<li><strong>工具级 RAG</strong>：对工具描述做语义检索、只注入相关工具，可将工具选择准确率提升约 3 倍 <code>[已验证，经 LangChain 引 arXiv:2410.14594 / arXiv:2505.03275]</code>。</li>
+<li><strong>渐进式披露（progressive disclosure）</strong>：不一次性注入，按执行阶段逐步披露工具、规则和数据 <code>[已验证，Anthropic + 菜鸟教程]</code>。</li>
+</ul>
+<h3 id="4-3-Compress：压缩"><a href="#4-3-Compress：压缩" class="headerlink" title="4.3 Compress：压缩"></a>4.3 Compress：压缩</h3><p>在信息不丢失的前提下减少 token 占用。</p>
+<ul>
+<li>截断（Trimming）：启发式规则，如删除旧消息 <code>[已验证，LangChain]</code>。</li>
+<li>摘要（Summarization）：轨迹级摘要 &#x2F; 特定点摘要（见 5.3）。</li>
+<li>工具结果清除（tool result clearing）：已执行过的工具调用不必再看原始结果——最轻量、最安全的压缩起点 <code>[已验证，Anthropic]</code>。</li>
+<li>上下文压缩链：大任务拆链式调用，每步只保留上一步精炼的中间结果 <code>[已验证，菜鸟教程]</code>。</li>
+</ul>
+<h3 id="4-4-Isolate：隔离"><a href="#4-4-Isolate：隔离" class="headerlink" title="4.4 Isolate：隔离"></a>4.4 Isolate：隔离</h3><p>让不同职责的上下文<strong>互不污染</strong>。</p>
+<ul>
+<li>子 Agent 架构：主 Agent 持高层计划，子 Agent 在各自干净窗口内深潜，只回传浓缩摘要 <code>[已验证，Anthropic]</code>。</li>
+<li>沙箱&#x2F;环境隔离：重 token 对象放环境变量，只回传选中值（HuggingFace CodeAgent + E2B）<code>[已验证，LangChain]</code>。</li>
+<li>运行时 state 字段隔离：不同字段选择性暴露给 LLM <code>[已验证，LangChain]</code>。</li>
+</ul>
+<h3 id="4-5-预算管理：横切四大策略的元策略-已验证，菜鸟教程"><a href="#4-5-预算管理：横切四大策略的元策略-已验证，菜鸟教程" class="headerlink" title="4.5 预算管理：横切四大策略的元策略 [已验证，菜鸟教程]"></a>4.5 预算管理：横切四大策略的元策略 <code>[已验证，菜鸟教程]</code></h3><p>把上下文窗口视为有限的「预算」。以 200K token 窗口为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">系统提示　　██████████　10%　（20K token）</span><br><span class="line">工具定义　　████████████████　20%　（40K token）</span><br><span class="line">检索上下文　████████████████████　25%　（50K token）</span><br><span class="line">历史记录　　████████████████████████　30%　（60K token）</span><br><span class="line">用户输入　　████████　5%~10%　（10-20K token）</span><br><span class="line">预留缓冲　　████　5%　（10K token）</span><br></pre></td></tr></table></figure>
+
+<p>比例随任务类型动态调整：代码生成调高检索占比；多轮对话优先保证历史预算。**预算思维的意义在于：先决定”给多少”，再决定”给什么”**——避免信息争夺窗口时的无序竞争。</p>
+<hr>
+<h2 id="5-逐层深入：各类上下文的工程化"><a href="#5-逐层深入：各类上下文的工程化" class="headerlink" title="5. 逐层深入：各类上下文的工程化"></a>5. 逐层深入：各类上下文的工程化</h2><h3 id="5-1-系统提示（System-Prompt）"><a href="#5-1-系统提示（System-Prompt）" class="headerlink" title="5.1 系统提示（System Prompt）"></a>5.1 系统提示（System Prompt）</h3><p><strong>编写五原则 <code>[已验证，菜鸟教程]</code>：</strong></p>
+<table>
+<thead>
+<tr>
+<th>原则</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>分层组织</td>
+<td>按角色、规则、流程、格式分块</td>
+<td>使用 Markdown 标题分隔</td>
+</tr>
+<tr>
+<td>正面表述</td>
+<td>告诉 Agent 该怎么做，而非不怎么做</td>
+<td>「保持回答简洁」优于「不要啰嗦」</td>
+</tr>
+<tr>
+<td>提供示例</td>
+<td>用 few-shot 示例代替长篇描述</td>
+<td>输出格式示例比文字描述更高效</td>
+</tr>
+<tr>
+<td>优先级明确</td>
+<td>规则冲突时遵循哪条</td>
+<td>「安全规则优先于效率要求」</td>
+</tr>
+<tr>
+<td>去除冗余</td>
+<td>删除从未被触发的规则和重复说明</td>
+<td>定期审查并精简</td>
+</tr>
+</tbody></table>
+<p><strong>“正确海拔” <code>[已验证，Anthropic]</code>：</strong> 系统提示有两端失败模式——① 硬编码脆弱的 if-else 逻辑（过度具体）；② 过于笼统、假设共享上下文（过度抽象）。中间地带是”具体到能引导行为、灵活到留出启发式空间”。组织成 XML 标签 &#x2F; Markdown 分节；few-shot 用”多样、典范”的少量示例，而非穷举边角案例。</p>
+<p><strong>安全提醒 <code>[已验证，OWASP]</code>：</strong> 系统提示本身是攻击目标（LLM07 系统提示词泄露）——提示词中不能放机密信息，且需声明”忽略修改核心指令的企图”。</p>
+<h3 id="5-2-工具与技能（Tools-Skills）"><a href="#5-2-工具与技能（Tools-Skills）" class="headerlink" title="5.2 工具与技能（Tools &amp; Skills）"></a>5.2 工具与技能（Tools &amp; Skills）</h3><p><strong>核心矛盾 <code>[已验证，Anthropic]</code>：</strong> 工具是 Agent 的信息&#x2F;动作契约，应自包含、抗错误、意图清晰、参数描述无歧义；但<strong>最普遍的失败模式是工具集臃肿</strong>——功能重叠导致选择歧义。”人无法判断该用哪个工具时，Agent 更不可能。”</p>
+<p><strong>优化四策略 <code>[已验证，菜鸟教程]</code>：</strong></p>
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>方法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>工具精简</td>
+<td>移除与当前任务无关的工具定义</td>
+<td>减少 30%~50% 的工具上下文</td>
+</tr>
+<tr>
+<td>描述精炼</td>
+<td>每个工具一句话说明用途和参数</td>
+<td>提升模型对工具的理解准确度</td>
+</tr>
+<tr>
+<td>参数约束</td>
+<td>明确参数的使用场景和限制</td>
+<td>减少工具调用中的参数错误</td>
+</tr>
+<tr>
+<td>分组注册</td>
+<td>按任务阶段动态注册不同的工具集</td>
+<td>避免工具过多导致的「选择困难」</td>
+</tr>
+</tbody></table>
+<p><strong>补充手段：</strong></p>
+<ul>
+<li><strong>最小可行工具集</strong> <code>[已验证，Anthropic]</code>：少而清晰的工具利于长交互中的维护与上下文修剪。</li>
+<li><strong>工具级 RAG</strong> <code>[已验证，LangChain]</code>：语义检索工具描述，动态注入（见 4.2）。</li>
+<li><strong>渐进式披露工具</strong> <code>[已验证，Anthropic + 菜鸟教程]</code>：先注入”读取”类工具，完成阶段后再注入”执行”类工具。</li>
+<li><strong>Skill 上下文</strong> <code>[用户笔记]</code>：技能（如本工作区的 Skill 体系）本身也是一种注入上下文的单元——技能描述要像工具描述一样精炼，技能内容按需展开。</li>
+</ul>
+<h3 id="5-3-历史与对话上下文（History）"><a href="#5-3-历史与对话上下文（History）" class="headerlink" title="5.3 历史与对话上下文（History）"></a>5.3 历史与对话上下文（History）</h3><p><strong>四种压缩策略 <code>[已验证，菜鸟教程]</code>：</strong></p>
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>方法</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>滑动窗口</td>
+<td>保留最近 N 轮完整记录</td>
+<td>短对话、实时交互</td>
+</tr>
+<tr>
+<td>阶梯摘要</td>
+<td>每轮做一次增量摘要</td>
+<td>长对话、客服场景</td>
+</tr>
+<tr>
+<td>分层摘要</td>
+<td>近期保留完整、远期做摘要</td>
+<td>文档生成、复杂任务</td>
+</tr>
+<tr>
+<td>关键轮标记</td>
+<td>标记重要轮次，其余丢弃</td>
+<td>调试、分步执行任务</td>
+</tr>
+</tbody></table>
+<p>分层摘要是最常用策略：最近 3-5 轮保持完整，更早的对话用结构化摘要代替——用户目标是什么、Agent 做了什么、产生了什么输出、遇到了什么错误 <code>[已验证，菜鸟教程]</code>。</p>
+<p><strong>Compaction（对话压缩）<code>[已验证，Anthropic]</code>：</strong> 对话接近窗口上限时，让模型把消息历史总结成高保真摘要，重建新窗口。Claude Code 的实现要点：</p>
+<ul>
+<li>压缩关键细节（架构决策、未解决 bug、实现细节）；</li>
+<li>丢弃冗余工具输出；</li>
+<li>保留摘要 + 最近访问的 5 个文件；</li>
+<li>在 95% 窗口占用时触发 auto-compact <code>[已验证，LangChain]</code>；</li>
+<li>调优建议：先在复杂 agent trace 上<strong>最大化召回率</strong>，再迭代提升精确度 <code>[已验证，Anthropic]</code>。</li>
+</ul>
+<p><strong>摘要的两种应用位置 <code>[已验证，LangChain]</code>：</strong></p>
+<ul>
+<li>轨迹级：agent 全程（递归&#x2F;分层摘要）；</li>
+<li>特定点级：对 token 密集的工具输出做后处理（Cognition 在 agent 间交接处摘要，甚至用微调模型做此步）。</li>
+</ul>
+<p><strong>Tool result clearing <code>[已验证，Anthropic]</code>：</strong> 已执行过的工具调用不必再看原始结果——最轻量的压缩形式，见 4.3。</p>
+<p><strong>Context caching（前缀缓存）<code>[业界认知，待核实具体数字]</code>：</strong> Anthropic&#x2F;OpenAI&#x2F;Google 均提供前缀缓存：复用 system prompt、工具定义、few-shot 与长文档的公共前缀以降低延迟与成本（官方宣传可省约 90% 输入 token 成本）。机制要点：缓存命中要求前缀逐 token 匹配；TTL 过期策略；缓存读写按不同费率计费。<strong>工程含义：把”不变的内容”放前面、变化的内容放后面，是免费的优化。</strong></p>
+<h3 id="5-4-检索上下文（Retrieval）"><a href="#5-4-检索上下文（Retrieval）" class="headerlink" title="5.4 检索上下文（Retrieval）"></a>5.4 检索上下文（Retrieval）</h3><p><strong>RAG 范式演进 <code>[已验证，arXiv 2312.10997 综述 + 本地学习大纲]</code>：</strong></p>
+<ol>
+<li><strong>Naive RAG</strong>：文档 → 切块 → 向量化 → 检索 → 拼进 prompt。流程直白但检索质量差。</li>
+<li><strong>Advanced RAG</strong>：检索前（查询改写&#x2F;路由）+ 检索中（混合检索&#x2F;Reranker）+ 检索后（重排&#x2F;压缩）全链路优化。</li>
+<li><strong>Modular RAG</strong>：拆成可自由组合的模块（路由、改写、融合、记忆……），2025 年生产系统基本都走这条。</li>
+</ol>
+<p><strong>检索前（查询优化）<code>[本地学习大纲]</code>：</strong></p>
+<ul>
+<li>查询改写：用户问题太短&#x2F;指代不明 → 先改写再检索；</li>
+<li>Multi-Query：一个问题拆多个角度分别检索；</li>
+<li>HyDE：先让 LLM 生成假设答案再检索；</li>
+<li>查询路由：按问题类型分发到不同数据源（向量库&#x2F;图库&#x2F;SQL）。</li>
+</ul>
+<p><strong>检索中（召回）<code>[本地学习大纲]</code>：</strong></p>
+<ul>
+<li>稀疏检索（BM25）：擅长专有名词、编号、精确匹配；</li>
+<li>稠密检索（向量）：擅长同义改写、语义相关；</li>
+<li><strong>混合检索 + RRF</strong>（倒数排名融合）：按排名而非分数合并两路结果，避免分数不可比的问题；</li>
+<li><strong>Reranker</strong>（重排序，cross-encoder）：对 (query, chunk) 逐对精排，k 从 50→5，准确率显著提升（BGE-reranker-v2-m3 中文效果好）。</li>
+</ul>
+<p><strong>检索后（注入优化）<code>[已验证，菜鸟教程]</code>：</strong></p>
+<ul>
+<li>相关性过滤：设置阈值，不足时主动提示；</li>
+<li>来源标注：附上来源路径和更新时间，让 Agent 判断可信度；</li>
+<li>长度裁剪：按段落截取，只保留最相关片段。</li>
+</ul>
+<p><strong>分块与索引的工程细节 <code>[本地学习大纲]</code>：</strong> 核心矛盾是”块太大→检索噪音多；块太小→上下文断裂”。生产级教训（Windsurf）<code>[已验证，经 LangChain 转述]</code>：<strong>索引 ≠ 检索</strong>——AST 解析按语义边界分块，embedding 在大代码库上不可靠，需 grep&#x2F;文件搜索、知识图谱检索与重排序组合。</p>
+<p><strong>从预检索到 just-in-time 检索 <code>[已验证，Anthropic]</code>：</strong> 新一代范式是 Agent 只持<strong>轻量标识符</strong>（文件路径、存储查询、链接），运行时用工具动态取数据，而不是预先把所有内容嵌入上下文。Claude Code 用 head&#x2F;tail 分析大数据库而不全量加载。<strong>元数据（目录层级、命名约定、时间戳）本身就是行为信号。</strong> 策略选择取决于任务动态性：低动态场景（法律&#x2F;金融）适合前置加载 + 自主探索的混合模式。</p>
+<p><strong>GraphRAG <code>[待核实]</code>：</strong> 知识图谱用于记忆索引与检索（Graphiti、Zep），本次未抓到专门原文，待补充。</p>
+<h3 id="5-5-记忆系统（Memory）"><a href="#5-5-记忆系统（Memory）" class="headerlink" title="5.5 记忆系统（Memory）"></a>5.5 记忆系统（Memory）</h3><p>**工作记忆 &#x3D; 上下文窗口 <code>[已验证，LangChain 引 Karpathy]</code>**——所以”记忆管理”与”上下文工程”是同一件事的两面。</p>
+<p><strong>记忆类型学 <code>[已验证，经 LangChain 引 arXiv:2309.02427]</code>：</strong></p>
+<ul>
+<li>Episodic（情景记忆）：少样本示例；</li>
+<li>Procedural（程序记忆）：指令、怎么做；</li>
+<li>Semantic（语义记忆）：事实。</li>
+</ul>
+<p><strong>按作用域划分 <code>[已验证，LangChain]</code>：</strong></p>
+<ul>
+<li>短期记忆：thread 作用域，靠 checkpointing 持久化 agent state（LangGraph 实现）；</li>
+<li>长期记忆：跨 session 持久化，两种形态——小集合文件（user profile、rules）与大集合（语义记忆，需检索）。</li>
+</ul>
+<p><strong>代表性系统 <code>[已验证，LangChain + Anthropic]</code>：</strong></p>
+<ul>
+<li>Reflexion：反思后复用自生成记忆；</li>
+<li>Generative Agents：周期性综合记忆；</li>
+<li>ChatGPT Memory、Cursor&#x2F;Windsurf rules、Claude Code 的 CLAUDE.md；</li>
+<li>Anthropic 发布 <strong>memory tool</strong>（Sonnet 4.5 同期）做文件式持久记忆。</li>
+</ul>
+<p><strong>关键洞察 <code>[已验证，Anthropic]</code>：</strong> Claude 玩 Pokémon 的案例证明——<strong>agent 自发写出的结构化笔记（agentic memory）比任何提示词设计都更能解决长时任务</strong>：跨上下文重置后，agent 靠读笔记延续数小时策略。这意味着上下文工程的最高形态，是让 Agent 学会”自己管理自己的上下文”。</p>
+<p><strong>副作用警示 <code>[已验证，经 LangChain 引 Simon Willison]</code>：</strong> ChatGPT 从记忆中调出用户位置并注入到图片请求——“上下文窗口不再属于用户”，记忆系统会引入隐私与可控性问题。</p>
+<h3 id="5-6-多智能体上下文传递（Multi-Agent）"><a href="#5-6-多智能体上下文传递（Multi-Agent）" class="headerlink" title="5.6 多智能体上下文传递（Multi-Agent）"></a>5.6 多智能体上下文传递（Multi-Agent）</h3><p><strong>核心模式 &#x3D; 上下文隔离 <code>[已验证，Anthropic]</code>：</strong> 主 Agent 持高层计划，子 Agent 在各自干净窗口内深潜（可用数万 token），只回传 1,000–2,000 token 的浓缩摘要。Anthropic 多智能体研究系统在多任务上显著优于单 Agent。<strong>代价：token 消耗可达普通聊天的约 15 倍 <code>[已验证，LangChain 转述]</code>。</strong></p>
+<p><strong>三种隔离形态 <code>[已验证，LangChain]</code>：</strong></p>
+<ol>
+<li>多 Agent 分工（OpenAI Swarm 的 separation of concerns）；</li>
+<li>沙箱环境隔离（HuggingFace CodeAgent：重 token 对象存环境变量，只回传选中值）；</li>
+<li>运行时 state 对象 schema 字段隔离（不同字段选择性暴露给 LLM）。</li>
+</ol>
+<p><strong>交接处压缩 <code>[已验证，经 LangChain 引 Cognition]</code>：</strong> Agent-Agent 边界做摘要以减少知识移交 token，Cognition 用微调模型保证关键事件不丢。</p>
+<p><strong>反方观点 <code>[已验证，经 LangChain 引 Cognition]</code>：</strong> Cognition 主张”不要构建多 Agent”——单长时 Agent + 上下文管理可能更优。这是当前最值得关注的争论点之一。</p>
+<h3 id="5-7-上下文水印（Context-Watermarking）-已验证，菜鸟教程"><a href="#5-7-上下文水印（Context-Watermarking）-已验证，菜鸟教程" class="headerlink" title="5.7 上下文水印（Context Watermarking）[已验证，菜鸟教程]"></a>5.7 上下文水印（Context Watermarking）<code>[已验证，菜鸟教程]</code></h3><p>在上下文关键位置放置标记，帮助监控与诊断：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;system-reminder&gt;</span><br><span class="line">当前使用的上下文策略版本：v2.3</span><br><span class="line">检索到的文档来源：docs/api-reference/ 共 3 个文件</span><br><span class="line">已消耗上下文：85,000 / 200,000 tokens</span><br><span class="line">&lt;/system-reminder&gt;</span><br></pre></td></tr></table></figure>
+
+<p>水印不影响 Agent 行为，但调试时能快速定位”上下文注入是否按预期执行”。</p>
+<hr>
+<h2 id="6-评估与可观测性：上下文工程不能靠感觉"><a href="#6-评估与可观测性：上下文工程不能靠感觉" class="headerlink" title="6. 评估与可观测性：上下文工程不能靠感觉"></a>6. 评估与可观测性：上下文工程不能靠感觉</h2><h3 id="6-1-先观测，再优化-已验证，LangChain"><a href="#6-1-先观测，再优化-已验证，LangChain" class="headerlink" title="6.1 先观测，再优化 [已验证，LangChain]"></a>6.1 先观测，再优化 <code>[已验证，LangChain]</code></h3><p>用追踪&#x2F;可观测性工具（LangSmith 等）看 token 消耗与轨迹，找到上下文工程的最佳着力点；再配 Agent 评估跑 A&#x2F;B，判断改动是提升还是损害性能。</p>
+<h3 id="6-2-四维评估指标-已验证，菜鸟教程"><a href="#6-2-四维评估指标-已验证，菜鸟教程" class="headerlink" title="6.2 四维评估指标 [已验证，菜鸟教程]"></a>6.2 四维评估指标 <code>[已验证，菜鸟教程]</code></h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>评估方式</th>
+<th>关键指标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>任务完成率</td>
+<td>在标准测试集上运行 Agent</td>
+<td>成功率、失败原因分布</td>
+</tr>
+<tr>
+<td>上下文效率</td>
+<td>统计每次调用的上下文使用量</td>
+<td>平均 token 消耗、上下文利用率</td>
+</tr>
+<tr>
+<td>工具调用质量</td>
+<td>分析工具调用的准确率和参数正确率</td>
+<td>无效调用占比、重试次数</td>
+</tr>
+<tr>
+<td>响应一致性</td>
+<td>相同输入多次测试</td>
+<td>输出稳定性、格式合规率</td>
+</tr>
+</tbody></table>
+<h3 id="6-3-RAG-Triad（检索侧安全评估）-已验证，OWASP"><a href="#6-3-RAG-Triad（检索侧安全评估）-已验证，OWASP" class="headerlink" title="6.3 RAG Triad（检索侧安全评估）[已验证，OWASP]"></a>6.3 RAG Triad（检索侧安全评估）<code>[已验证，OWASP]</code></h3><ul>
+<li><strong>Context Relevance</strong>：检索到的上下文是否与问题相关；</li>
+<li><strong>Groundedness</strong>：输出是否基于给定上下文（而非幻觉）；</li>
+<li><strong>Question&#x2F;Answer Relevance</strong>：回答是否对上了问题。</li>
+</ul>
+<p>三个指标用于检测输出是否被恶意或无关内容污染。</p>
+<h3 id="6-4-Compaction-的调优方法-已验证，Anthropic"><a href="#6-4-Compaction-的调优方法-已验证，Anthropic" class="headerlink" title="6.4 Compaction 的调优方法 [已验证，Anthropic]"></a>6.4 Compaction 的调优方法 <code>[已验证，Anthropic]</code></h3><p>先最大化召回（关键信息不丢），再提升精确度（减少噪音）——在复杂 agent trace 上迭代。</p>
+<h3 id="6-5-迭代循环-已验证，菜鸟教程"><a href="#6-5-迭代循环-已验证，菜鸟教程" class="headerlink" title="6.5 迭代循环 [已验证，菜鸟教程]"></a>6.5 迭代循环 <code>[已验证，菜鸟教程]</code></h3><p><strong>测试 → 分析 → 优化 → 再测试</strong>。上下文工程不是一次性配置，而是持续调优的过程。</p>
+<hr>
+<h2 id="7-安全与隐私：上下文的黑暗面"><a href="#7-安全与隐私：上下文的黑暗面" class="headerlink" title="7. 安全与隐私：上下文的黑暗面"></a>7. 安全与隐私：上下文的黑暗面</h2><h3 id="7-1-Prompt-Injection（LLM01）-已验证，OWASP-2025"><a href="#7-1-Prompt-Injection（LLM01）-已验证，OWASP-2025" class="headerlink" title="7.1 Prompt Injection（LLM01）[已验证，OWASP 2025]"></a>7.1 Prompt Injection（LLM01）<code>[已验证，OWASP 2025]</code></h3><p>用户输入改变模型行为的漏洞。两种形态：</p>
+<ul>
+<li><strong>直接注入</strong>：用户直接输入指令；</li>
+<li><strong>间接注入</strong>：外部内容（网页、文件、检索结果）携带指令——<strong>这正是检索上下文的天然风险面</strong>。</li>
+</ul>
+<p>注入无需人类可读（可藏于图像、Base64、多语言）。<strong>RAG 与微调不能根治。</strong></p>
+<h3 id="7-2-上下文中毒与知识库投毒"><a href="#7-2-上下文中毒与知识库投毒" class="headerlink" title="7.2 上下文中毒与知识库投毒"></a>7.2 上下文中毒与知识库投毒</h3><ul>
+<li>LLM04 数据与模型投毒：污染训练或检索数据；</li>
+<li>LLM08 向量&#x2F;嵌入弱点：RAG 知识库投毒——检索结果里混入恶意内容，直接污染 Agent 的决策依据（对应 3.4 的 Context Poisoning 失败模式）。</li>
+</ul>
+<h3 id="7-3-其他相关风险"><a href="#7-3-其他相关风险" class="headerlink" title="7.3 其他相关风险"></a>7.3 其他相关风险</h3><ul>
+<li>LLM02 敏感信息泄露：上下文中的 API 密钥、内部路径会在工具调用和日志中传播；</li>
+<li>LLM07 系统提示词泄露：提示词工程的内容会成为攻击目标；</li>
+<li>LLM10 无界消费：token 耗尽攻击——上下文工程里”贪婪塞入”也可能被滥用为成本攻击。</li>
+</ul>
+<h3 id="7-4-缓解策略七条-已验证，OWASP"><a href="#7-4-缓解策略七条-已验证，OWASP" class="headerlink" title="7.4 缓解策略七条 [已验证，OWASP]"></a>7.4 缓解策略七条 <code>[已验证，OWASP]</code></h3><ol>
+<li>system prompt 约束行为、声明忽略修改核心指令的企图；</li>
+<li>强制输出格式与引用；</li>
+<li>输入输出过滤 + RAG Triad 检测；</li>
+<li>最小权限：特权操作放在代码层而非模型层；</li>
+<li>高风险操作人工审批；</li>
+<li>隔离并明确标记不可信内容；</li>
+<li>对抗性渗透测试。</li>
+</ol>
+<h3 id="7-5-与上下文工程的关系"><a href="#7-5-与上下文工程的关系" class="headerlink" title="7.5 与上下文工程的关系"></a>7.5 与上下文工程的关系</h3><p>上下文工程的两面性：<strong>压缩、裁剪、隔离做得越好，攻击面越小</strong>（少注入 &#x3D; 少暴露）；而缓存、记忆、检索做得越激进，风险越大（记忆召回可能带回敏感信息；检索可能引入中毒内容）。安全约束必须作为上下文预算的一部分被显式设计。</p>
+<hr>
+<h2 id="8-业界实践与案例"><a href="#8-业界实践与案例" class="headerlink" title="8. 业界实践与案例"></a>8. 业界实践与案例</h2><h3 id="8-1-Anthropic-Claude-Code-已验证"><a href="#8-1-Anthropic-Claude-Code-已验证" class="headerlink" title="8.1 Anthropic &#x2F; Claude Code [已验证]"></a>8.1 Anthropic &#x2F; Claude Code <code>[已验证]</code></h3><ul>
+<li>CLAUDE.md 前置 + grep&#x2F;glob 即时检索的混合模型（对应 just-in-time 检索）；</li>
+<li>95% 阈值 auto-compact；</li>
+<li>tool result clearing 产品化；</li>
+<li>memory tool 公开测试；</li>
+<li>Multi-agent research system；</li>
+<li>Sonnet 4.5 起的方向判断：”更聪明的模型需要更少的处方式工程”。</li>
+</ul>
+<h3 id="8-2-Cognition（Devin）-已验证，经-LangChain-转述"><a href="#8-2-Cognition（Devin）-已验证，经-LangChain-转述" class="headerlink" title="8.2 Cognition（Devin）[已验证，经 LangChain 转述]"></a>8.2 Cognition（Devin）<code>[已验证，经 LangChain 转述]</code></h3><ul>
+<li>在长时任务的 agent 边界做摘要，用微调模型承担压缩职责；</li>
+<li>主张”不要构建多 Agent”：单长时 Agent + 上下文管理。</li>
+</ul>
+<h3 id="8-3-ChatGPT-Cursor-Windsurf-已验证，经-LangChain-转述"><a href="#8-3-ChatGPT-Cursor-Windsurf-已验证，经-LangChain-转述" class="headerlink" title="8.3 ChatGPT &#x2F; Cursor &#x2F; Windsurf [已验证，经 LangChain 转述]"></a>8.3 ChatGPT &#x2F; Cursor &#x2F; Windsurf <code>[已验证，经 LangChain 转述]</code></h3><ul>
+<li>都实现了自动生成、跨 session 持久化的长期记忆与 rules 文件。</li>
+</ul>
+<h3 id="8-4-HuggingFace-Open-Deep-Research-已验证，经-LangChain-转述"><a href="#8-4-HuggingFace-Open-Deep-Research-已验证，经-LangChain-转述" class="headerlink" title="8.4 HuggingFace Open Deep Research [已验证，经 LangChain 转述]"></a>8.4 HuggingFace Open Deep Research <code>[已验证，经 LangChain 转述]</code></h3><ul>
+<li>CodeAgent + E2B 沙箱：把重 token 状态隔离在环境中。</li>
+</ul>
+<h3 id="8-5-LangGraph-生态-已验证，经-LangChain-转述"><a href="#8-5-LangGraph-生态-已验证，经-LangChain-转述" class="headerlink" title="8.5 LangGraph 生态 [已验证，经 LangChain 转述]"></a>8.5 LangGraph 生态 <code>[已验证，经 LangChain 转述]</code></h3><ul>
+<li>Short-term memory（checkpointing）、Long-term memory（store：profile 文件 + collection 语义检索）；</li>
+<li>LangMem 库、Bigtool 工具语义选择、supervisor&#x2F;swarm 多 Agent 库。</li>
+</ul>
+<h3 id="8-6-本工作区的相关性-本地"><a href="#8-6-本工作区的相关性-本地" class="headerlink" title="8.6 本工作区的相关性 [本地]"></a>8.6 本工作区的相关性 <code>[本地]</code></h3><ul>
+<li><code>RAG/学习大纲.md</code>：Naive → Advanced → Modular RAG 的实操路线（BM25、RRF、Reranker、查询改写、Text2SQL）——对应本文 5.4 的落地路径；</li>
+<li><code>agent架构/介绍.md</code>：P-R²-E 框架——上下文工程与其互为表里（见下节）。</li>
+</ul>
+<hr>
+<h2 id="9-与-Agent-架构的关系：互为表里"><a href="#9-与-Agent-架构的关系：互为表里" class="headerlink" title="9. 与 Agent 架构的关系：互为表里"></a>9. 与 Agent 架构的关系：互为表里</h2><p>结合前作《agent架构》的 P-R²-E（规划-双轨反思-执行）框架，上下文工程与 Agent 架构是<strong>同一枚硬币的两面</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>Agent 架构维度</th>
+<th>上下文工程对应物</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>宏观 ReAct（规划层）</td>
+<td>规划上下文：目标、约束、任务蓝图常驻</td>
+</tr>
+<tr>
+<td>微观 ReAct（执行层）</td>
+<td>执行上下文：每步只带当前子任务所需的工具与数据（渐进式披露）</td>
+</tr>
+<tr>
+<td>规划期反思</td>
+<td>上下文水印 + 静态侧评审（系统提示&#x2F;工具集定期审查）</td>
+</tr>
+<tr>
+<td>执行期反思（测试）</td>
+<td>四维评估 + RAG Triad + 回归测试</td>
+</tr>
+<tr>
+<td>失败向上传导</td>
+<td>Compaction 保留”未解决 bug”清单；重规划时恢复关键上下文</td>
+</tr>
+<tr>
+<td>经验沉淀（记忆库）</td>
+<td>长期记忆系统（Reflexion 反思记忆、CLAUDE.md、memory tool）</td>
+</tr>
+<tr>
+<td>Multi-Agent 拓扑</td>
+<td>子 Agent 隔离 + 交接处压缩 + 摘要回传</td>
+</tr>
+</tbody></table>
+<p><strong>一句话：Agent 架构决定”谁在什么时候做什么”，上下文工程决定”每个’做’的时刻，窗口里放什么”。架构错了，上下文再精也白搭；上下文乱了，架构再对也崩。</strong></p>
+<hr>
+<h2 id="10-核心洞察与开放问题"><a href="#10-核心洞察与开放问题" class="headerlink" title="10. 核心洞察与开放问题"></a>10. 核心洞察与开放问题</h2><h3 id="10-1-核心洞察（10-条）"><a href="#10-1-核心洞察（10-条）" class="headerlink" title="10.1 核心洞察（10 条）"></a>10.1 核心洞察（10 条）</h3><ol>
+<li><strong>上下文工程 &#x3D; 在注意力预算约束下做策展</strong>：根本动因是 n² 注意力的成本与 context rot 的衰减，”最小高信号 token 集”是贯穿始终的元原则。</li>
+<li><strong>它是 prompt engineering 的超集与自然演进</strong>：从”写对提示词”到”每次推理前策展整个上下文状态”，迭代性是其分水岭。</li>
+<li><strong>四大策略 Write &#x2F; Select &#x2F; Compress &#x2F; Isolate</strong> 覆盖全部操作；预算管理（先定给多少，再定给什么）是横切其上的元策略。</li>
+<li><strong>上下文有四种失败模式：Poisoning &#x2F; Distraction &#x2F; Confusion &#x2F; Clash</strong>——评估与设计都应围绕这四种失败展开。</li>
+<li><strong>从预检索转向 just-in-time 检索 + 渐进式披露</strong>：Agent 持轻量引用、运行时按需取数，元数据即信号。</li>
+<li><strong>长时任务的三大杠杆：Compaction、结构化笔记（agentic memory）、子 Agent 架构</strong>——按任务特征选择。</li>
+<li><strong>压缩质量决定一切：先最大化召回、再优化精确度</strong>；最安全的低成本起点是 tool result clearing。</li>
+<li><strong>上下文既是性能问题也是安全问题</strong>：间接 prompt injection 与知识库投毒针对的就是注入的上下文；隔离、最小权限、人工审批是标配。</li>
+<li><strong>评估与可观测性是上下文工程的闭环</strong>：四维指标 + RAG Triad + 追踪工具，没有评估的优化是玄学。</li>
+<li><strong>架构与上下文互为表里</strong>：架构决定执行拓扑，上下文决定每个执行点的信息质量；Cognition 与 Anthropic 在多 Agent 上的分歧，本质是上下文管理策略的分歧。</li>
+</ol>
+<h3 id="10-2-开放问题与待研究-待核实-待补充"><a href="#10-2-开放问题与待研究-待核实-待补充" class="headerlink" title="10.2 开放问题与待研究 [待核实/待补充]"></a>10.2 开放问题与待研究 <code>[待核实/待补充]</code></h3><ul>
+<li>Context caching 的具体计费与命中率数据（90% 成本节省的说法需一手核实）；</li>
+<li>GraphRAG 对上下文工程的增量价值；</li>
+<li>Lilian Weng 关于 Memory Stream、反思机制的经典论述（本次境外站点不可达，可补抓 arXiv 2304.03442 Generative Agents 原文）；</li>
+<li>“更聪明的模型需要更少的上下文工程”（Sonnet 4.5 方向）——上下文工程的长期价值是否会被模型能力进步稀释；</li>
+<li>多 Agent vs 单长时 Agent 的实证对比。</li>
+</ul>
+<h3 id="10-3-后续行动建议"><a href="#10-3-后续行动建议" class="headerlink" title="10.3 后续行动建议"></a>10.3 后续行动建议</h3><ol>
+<li>核实标注 <code>[待核实]</code> 的数字与细节；</li>
+<li>补读 Lilian Weng《LLM Powered Autonomous Agents》与 Generative Agents 原文；</li>
+<li>结合本工作区 RAG 学习笔记，把 5.4 节的检索优化写成可运行的实验；</li>
+<li>在”用户理解”一节补上我自己的实践观察（如本工作区 Skills、CLAUDE.md、.venv 等真实上下文工程实例）。</li>
+</ol>
+<hr>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ol>
+<li>菜鸟教程《Agent 上下文工程》— <a target="_blank" rel="noopener" href="https://www.runoob.com/ai-agent/agent-context-engineering.html">https://www.runoob.com/ai-agent/agent-context-engineering.html</a> <code>[已验证]</code></li>
+<li>Anthropic Engineering《Effective context engineering for AI agents》(2025-09-29) — <a target="_blank" rel="noopener" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents</a> <code>[已验证]</code></li>
+<li>LangChain《Context Engineering》(2025-07-02) — <a target="_blank" rel="noopener" href="https://blog.langchain.com/context-engineering-for-agents/">https://blog.langchain.com/context-engineering-for-agents/</a> <code>[已验证]</code></li>
+<li>OWASP GenAI Security《LLM01:2025 Prompt Injection》— <a target="_blank" rel="noopener" href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">https://genai.owasp.org/llmrisk/llm01-prompt-injection/</a> <code>[已验证]</code></li>
+<li>arXiv《Retrieval-Augmented Generation for Large Language Models: A Survey》(2312.10997) — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.10997">https://arxiv.org/abs/2312.10997</a> <code>[摘要级]</code></li>
+<li>本地笔记：RAG&#x2F;学习大纲.md、RAG&#x2F;3OTK.md（BM25、RRF、Reranker、查询改写等实操细节）</li>
+<li>前作：agent架构&#x2F;介绍.md（P-R²-E 框架）</li>
+<li>用户原始笔记：ContextEngineering&#x2F;参考资料.md（”上下文工程涉及之广”）</li>
+</ol>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left  disabled "
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2026/08/14/WPS%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8%E6%8E%92%E6%9F%A5%E4%B8%8E%E6%A0%B9%E6%B2%BB/"
+      title="WPS开机自启动排查与根治"
+     >
+
+    <p class="title-text">
+      
+        WPS开机自启动排查与根治
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title">留言 </div>
+    </div>
+    <div id="vcomments"></div>
+  </div>
+  <script>
+      new Valine({"enable":true,"appId":"AVo4oPTEvfsleHngLc8BZ535-gzGzoHsz","appKey":"gSa0juG3A4yPHmR3nL5ENl3i","placeholder":"说点什么吧…","pageSize":10,"highlight":true,"serverURLs":null,"el":"#vcomments"});
+  </script>
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2026 不云<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+<!-- hexo injector body_end start --><script src="/js/ui-motion.js" defer></script><!-- hexo injector body_end end --></body>
+</html>
